@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
-import { Device } from "react-native-ble-plx";
-import { useConnectToDevice, disconnectFromDevice } from "../ble-api/bleManager";
+import { Device, Subscription } from "react-native-ble-plx";
+import { disconnectFromDevice, connectToDevice } from "../ble-api/bleManager";
 
 
 interface Props {
@@ -10,10 +10,11 @@ interface Props {
 
 export const DeviceListItem = ({device}: Props) => {
     const [isConnectToDevice, setIsConnectToDevice] = React.useState(false);
-    const subscription = useConnectToDevice(device, isConnectToDevice);
+    const [subscription, setSubscription] = React.useState<Subscription>();
 
-    const connectOnPress = () => {
+    const connectOnPress = async () => {
         setIsConnectToDevice(true);
+        setSubscription(await connectToDevice(device));
     };
 
     const disconnectOnPress = () => {
@@ -23,9 +24,9 @@ export const DeviceListItem = ({device}: Props) => {
     return (
         <View>
             <Text>{device.id}</Text>
-            <Button title='connect' onPress={connectOnPress} />
+            <Button title='connect' disabled={isConnectToDevice} onPress={connectOnPress} />
 
-            <Button title='disconnect' onPress={disconnectOnPress} />
+            <Button title='disconnect'  disabled={!isConnectToDevice} onPress={disconnectOnPress} />
         </View>
     );
 };

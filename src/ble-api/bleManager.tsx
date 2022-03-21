@@ -57,62 +57,48 @@ export const getPrimaryCharacteristic = async (device: Device): Promise<Characte
     return undefined;
 };
 
-export const useConnectToDevice = (device: Device, isConnectToDevice: boolean) => {
-    const [connectedDevice, setConnectedDevice] = React.useState<Device>();
-    const [characteristic, setCharacteristic] = React.useState<Characteristic>();
-    const [subscription, setSubscription] = React.useState<Subscription>();
+export const connectToDevice = async (device: Device) => {
+    let subscription: Subscription | undefined;
 
-    React.useEffect(() => {
-        let needToSet = true;
-        console.log("isConnectToDevice: " + isConnectToDevice);
-
-        device.isConnected().then(isConnected => {
-            console.log("trying to connect");
-            if (!isConnected && isConnectToDevice) {
-                device.connect().then(cDevice => {
-                    cDevice.discoverAllServicesAndCharacteristics().then((deviceWithChar) => {
-                        needToSet && setConnectedDevice(deviceWithChar);
-                    });
+    const connectedDevice = await device.isConnected().then(isConnected => {
+        console.log("trying to connect");
+        if (!isConnected) {
+            return device.connect().then(cDevice => {
+                return cDevice.discoverAllServicesAndCharacteristics().then((deviceWithChar) => {
                     console.log("connected");
+                    return deviceWithChar;
                 });
-            }
-        }).catch(err => console.log(err));
-        
-        return () => {
-            needToSet = false;
-        };
-    }, [isConnectToDevice]);
+            });
+        }
+    }).catch(err => {
+        console.log(err);
+        return undefined;
+    });
 
-    React.useEffect(() => {
-        let needToSet = true;
-        connectedDevice?.isConnected().then(isConnected => {
+    const characteristic = await connectedDevice?.isConnected()
+        .then(isConnected => isConnected ? getPrimaryCharacteristic(connectedDevice) : undefined)
+        .catch(err => {
+            console.log(err);
+            return undefined;
+        });
+
+
+    if (characteristic) {
+        subscription = await connectedDevice?.isConnected().then(isConnected => {
             if (isConnected) {
-                getPrimaryCharacteristic(connectedDevice)
-                    .then(char => needToSet && setCharacteristic(char))
-                    .catch(err => console.log(err));
-            }
-        }).catch(err => console.log(err));
-
-        return () => {
-            needToSet = false;
-        };
-    }, [connectedDevice]);
-
-    React.useEffect(() => {
-        connectedDevice?.isConnected().then(isConnected => {
-            if (isConnected && characteristic) {
                 subscription?.remove();
-                const sub = connectedDevice.monitorCharacteristicForService(characteristic.serviceUUID, characteristic.uuid, (error, char) => {
+                return connectedDevice.monitorCharacteristicForService(characteristic.serviceUUID, characteristic.uuid, (error, char) => {
                     if (error) {
-                        if (error.errorCode === 2 && error.message === "Operation was cancelled") return;
                         console.log(error);
                     }
                     char?.value && console.log("gautas ats: " + base64.decode(char.value));
                 });
-                setSubscription(sub);
             }
-        }).catch(err => console.log(err));
-    }, [connectedDevice, characteristic]);
+        }).catch(err => {
+            console.log(err);
+            return undefined;
+        });
+    }
 
     return subscription;
 };

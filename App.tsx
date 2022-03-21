@@ -34,6 +34,13 @@ const App = () => {
         backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     };
 
+    const requestPermissions = async () => {
+        await requestBluetoothPermission();
+        await requestBluetoothAdminPermission();
+        await requestBluetoothAdvPermission();
+        await requestLocationPermission();
+    };
+
     return (
         <SafeAreaView style={backgroundStyle}>
             <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
@@ -46,10 +53,7 @@ const App = () => {
                         backgroundColor: isDarkMode ? Colors.black : Colors.white,
                     }}>
 
-                    <Button title='request bluetooth perm' onPress={requestBluetoothPermission} />
-                    <Button title='request bluetooth admin perm' onPress={requestBluetoothAdminPermission} />
-                    <Button title='request bluetooth adv' onPress={requestBluetoothAdvPermission} />
-                    <Button title='request location perm' onPress={requestLocationPermission} />
+                    <Button title='request permissions' onPress={requestPermissions} />
 
                     <Button title='start scan' onPress={() => setStartScan(true)} />
                     <Button title='stop scan' onPress={() => setStartScan(false)} />
