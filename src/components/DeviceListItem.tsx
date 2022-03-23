@@ -1,7 +1,9 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
 import { Device, Subscription } from "react-native-ble-plx";
+import { connect } from "react-redux";
 import { disconnectFromDevice, connectToDevice } from "../ble-api/bleManager";
+import { DeviceReducerState } from "../reducers/DevicesReducer";
 
 
 interface Props {
@@ -30,3 +32,10 @@ export const DeviceListItem = ({device}: Props) => {
         </View>
     );
 };
+
+const mapStateToProps = (state: DeviceReducerState) => {
+    const { counter } = state;
+    return { counter };
+};
+  
+export default connect(mapStateToProps)(DeviceListItem);
