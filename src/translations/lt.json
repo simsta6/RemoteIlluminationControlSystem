@@ -1,0 +1,34 @@
+{
+    "AddScreen": {
+        "title": "Pridėjimo Ekranas"
+    },
+    "LanguageSelector": {
+        "selectYourLanguage": "Pasirinkite Savo Kalbą"
+    },
+    "permissions": {
+        "location": {
+            "title": "Lokacijos leidimas bluetooth skanavimui",
+            "message": "Lokacijos leidimas reikalingas programėlei"
+        },
+        "bluetoothAdvertise": {
+            "title": "Bluetooth Komunikacijos leidimas reikalingas bluetooth komunikacijai",
+            "message": "Bluetooth Skanavimo leidimas reikalingas programėlei"
+        },
+        "bluetoothScan": {
+            "title": "Bluetooth Skanavimo leidimas reikalingas bluetooth skanavimui",
+            "message": "Bluetooth Skanavimo leidimas reikalingas programėlei"
+        },
+        "bluetoothConnect": {
+            "title": "Bluetooth Prisijungimo leidimas reikalingas bluetooth prisijungimui",
+            "message": "Bluetooth Prisijungimo leidimas reikalingas programėlei"
+        },
+        "buttonNeutral": "Paklausti Manęs Vėliau",
+        "buttonNegative": "Nesutikti",
+        "buttonPositive": "Sutkti"
+    },
+    "routes": {
+        "Adjust": "Keisti",
+        "Add": "Pridėti",
+        "History": "Istorija"
+    }
+}

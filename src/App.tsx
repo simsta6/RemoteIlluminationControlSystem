@@ -15,6 +15,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { TabsView } from "./navigation/Tabs";
 import { persistor, store } from "./reducers/Store";
 import { LogBox } from "react-native";
+import "./constants/IMLocalize";
 
 LogBox.ignoreLogs(["new NativeEventEmitter"]); // Ignore log notification by message
 

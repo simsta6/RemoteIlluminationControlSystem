@@ -1,0 +1,34 @@
+{
+    "AddScreen": {
+        "title": "Add Screen"
+    },
+    "LanguageSelector": {
+        "selectYourLanguage": "Select Your Language"
+    },
+    "permissions": {
+        "location": {
+            "title": "Location permission for bluetooth scanning",
+            "message": "Location permission is needed for this App"
+        },
+        "bluetoothAdvertise": {
+            "title": "Bluetooth Advertise permission for bluetooth communicating",
+            "message": "Bluetooth Advertise is needed for this App"
+        },
+        "bluetoothScan": {
+            "title": "Bluetooth Scan permission for bluetooth scanning",
+            "message": "Bluetooth Scan is needed for this App"
+        },
+        "bluetoothConnect": {
+            "title": "Bluetooth Connect permission for bluetooth connecting",
+            "message": "Bluetooth Connect is needed for this App"
+        },
+        "buttonNeutral": "Ask Me Later",
+        "buttonNegative": "Cancel",
+        "buttonPositive": "OK"
+    },
+    "routes": {
+        "Adjust": "Adjust",
+        "Add": "Add",
+        "History": "History"
+    }
+}

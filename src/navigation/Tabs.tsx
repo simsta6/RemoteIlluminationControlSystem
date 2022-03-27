@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
 import { NavigationState, SceneMap, SceneRendererProps, TabView } from "react-native-tab-view";
 import AddIcon from "../assets/icons/AddIcon";
@@ -46,20 +47,23 @@ type RenderTabBarProps = SceneRendererProps & {
 };
 
 export const TabsView = () => {
+    const { t } = useTranslation();
+
     const [state, setState] = React.useState({
         index: 0,
-        routes: ROUTES.map(({title: name}) => ({key: name.toLocaleLowerCase(), title: name}))
+        routes: ROUTES.map(({title}) => ({key: title.toLocaleLowerCase(), title}))
     });
 
     const handleIndexChange = (index: number) => setState(curr => ({...curr, index}));
 
     const renderTabBar = (props: RenderTabBarProps) => {
-        const inputRange = props.navigationState.routes.map((_x, i) => i);
+        const { navigationState, position } = props;
+        const inputRange = navigationState.routes.map((_x, i) => i);
     
         return (
             <View style={styles.tabBar}>
-                {props.navigationState.routes.map((route, i) => {
-                    const opacity = props.position.interpolate({
+                {navigationState.routes.map((route, i) => {
+                    const opacity = position.interpolate({
                         inputRange,
                         outputRange: inputRange.map((inputIndex) =>
                             inputIndex === i ? 1 : 0.5
@@ -84,7 +88,10 @@ export const TabsView = () => {
                                     opacity
                                 }} 
                             >
-                                {route.title.toUpperCase()}
+                                {
+                                    //@ts-ignore
+                                    t("routes:" + route.title)
+                                }
                             </Animated.Text>
                         </TouchableOpacity>
                     );
