@@ -1,16 +1,13 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React from "react";
-import { Button, Text } from "react-native";
-import { RootStackParamList } from "../navigation/navigation";
+import React, { ReactNode } from "react";
+import { Button, Text, View } from "react-native";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Add">;
-
-export const HistoryScreen = ({ route, navigation }: Props) => {
+export const HistoryScreen = (props: {children?: ReactNode}) => {
     return (
         <>
             <Text>History Screen</Text>
-            <Button title='Go to Adjust screen' onPress={() => navigation.navigate("Adjust")} />
-            <Button title='Go to Add screen' onPress={() => navigation.navigate("Add")} />
+            <Button title='Go to Adjust screen' />
+            <Button title='Go to Add screen' />
+            <View style={{height: "100%", backgroundColor: "orange"}}></View>
         </>
     );
 };

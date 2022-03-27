@@ -1,16 +1,12 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React from "react";
+import React, { ReactNode } from "react";
 import { Button, SafeAreaView, ScrollView, View } from "react-native";
 import { Device } from "react-native-ble-plx";
 import { Header } from "react-native/Libraries/NewAppScreen";
 import { sendMessage, useBleManager, useScannedDevices } from "../ble-api/bleManager";
 import DeviceListItem from "../components/DeviceListItem";
 import { requestBluetoothAdminPermission, requestBluetoothAdvPermission, requestBluetoothPermission, requestLocationPermission } from "../helpers/permissions";
-import { RootStackParamList } from "../navigation/navigation";
-
-type Props = NativeStackScreenProps<RootStackParamList, "Adjust">;
  
-export const AdjustScreen = ({ route, navigation }: Props) => {
+export const AdjustScreen = (props: {children?: ReactNode}) => {
     const bleManager = useBleManager();
     const [startScan, setStartScan] = React.useState(false);
     const [scannedDevices, setScannedDevices] = React.useState<Device[]>([]);
@@ -41,8 +37,8 @@ export const AdjustScreen = ({ route, navigation }: Props) => {
                         const device = scannedDevices[0];
                         sendMessage(device, "AT");
                     }} />
-                    <Button title='Go to add screen' onPress={() => navigation.navigate("Add")} />
-                    <Button title='Go to History screen' onPress={() => navigation.navigate("History")} />
+                    <Button title='Go to add screen' />
+                    <Button title='Go to History screen' />
 
                 </View>
             </ScrollView>

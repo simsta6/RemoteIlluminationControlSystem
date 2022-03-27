@@ -32,14 +32,20 @@ export const useScannedDevices = (bleManager: BleManager, setDevices: React.Disp
 };
 
 export const disconnectFromDevice = async (device: Device, subscription: Subscription | undefined) => {
-    await device.isConnected().then(async isConnected => {
-        if (isConnected) {
-            subscription?.remove();
-            await device.cancelConnection().then(device => {
-                console.log("atsijungta " + device.name);
-            }).catch(err => console.log(err));
-        }
-    }).catch(err => console.log(err));
+    await device
+        .isConnected()
+        .then(async isConnected => {
+            if (isConnected) {
+                subscription?.remove();
+                await device
+                    .cancelConnection()
+                    .then(device => {
+                        console.log("atsijungta " + device.name);
+                    })
+                    .catch(err => console.log(err));
+            }
+        })
+        .catch(err => console.log(err));
 };
 
 export const getPrimaryCharacteristic = async (device: Device): Promise<Characteristic | undefined> => {
@@ -60,22 +66,28 @@ export const getPrimaryCharacteristic = async (device: Device): Promise<Characte
 export const connectToDevice = async (device: Device) => {
     let subscription: Subscription | undefined;
 
-    const connectedDevice = await device.isConnected().then(isConnected => {
-        console.log("trying to connect");
-        if (!isConnected) {
-            return device.connect().then(cDevice => {
-                return cDevice.discoverAllServicesAndCharacteristics().then((deviceWithChar) => {
-                    console.log("connected");
-                    return deviceWithChar;
-                });
-            });
-        }
-    }).catch(err => {
-        console.log(err);
-        return undefined;
-    });
+    const connectedDevice = await device
+        .isConnected()
+        .then(isConnected => {
+            console.log("trying to connect");
+            if (!isConnected) {
+                return device
+                    .connect()
+                    .then(cDevice => {
+                        return cDevice.discoverAllServicesAndCharacteristics().then((deviceWithChar) => {
+                            console.log("connected");
+                            return deviceWithChar;
+                        });
+                    });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return undefined;
+        });
 
-    const characteristic = await connectedDevice?.isConnected()
+    const characteristic = await connectedDevice
+        ?.isConnected()
         .then(isConnected => isConnected ? getPrimaryCharacteristic(connectedDevice) : undefined)
         .catch(err => {
             console.log(err);
@@ -84,20 +96,23 @@ export const connectToDevice = async (device: Device) => {
 
 
     if (characteristic) {
-        subscription = await connectedDevice?.isConnected().then(isConnected => {
-            if (isConnected) {
-                subscription?.remove();
-                return connectedDevice.monitorCharacteristicForService(characteristic.serviceUUID, characteristic.uuid, (error, char) => {
-                    if (error) {
-                        console.log(error);
-                    }
-                    char?.value && console.log("gautas ats: " + base64.decode(char.value));
-                });
-            }
-        }).catch(err => {
-            console.log(err);
-            return undefined;
-        });
+        subscription = await connectedDevice
+            ?.isConnected()
+            .then(isConnected => {
+                if (isConnected) {
+                    subscription?.remove();
+                    return connectedDevice.monitorCharacteristicForService(characteristic.serviceUUID, characteristic.uuid, (error, char) => {
+                        if (error) {
+                            console.log(error);
+                        }
+                        char?.value && console.log("gautas ats: " + base64.decode(char.value));
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                return undefined;
+            });
     }
 
     return subscription;
@@ -114,6 +129,7 @@ export const sendMessage = async (device: Device, message: string) => {
                 console.log("issiusta (base64): " + characteristic.value);
                 if (characteristic.value)
                     console.log("issiusta: " + base64.decode(characteristic.value));
-            }).catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
     }
 };

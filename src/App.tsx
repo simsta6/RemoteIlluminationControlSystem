@@ -12,8 +12,11 @@ import React from "react";
 import { hideNavigationBar } from "react-native-navigation-bar-color";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { Tabs } from "./navigation/Tabs";
+import { TabsView } from "./navigation/Tabs";
 import { persistor, store } from "./reducers/Store";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs(["new NativeEventEmitter"]); // Ignore log notification by message
 
 const App = () => {
 
@@ -24,7 +27,7 @@ const App = () => {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <Tabs />
+                <TabsView />
             </PersistGate>
         </Provider>
     );
