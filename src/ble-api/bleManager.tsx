@@ -1,13 +1,14 @@
 import base64 from "base-64";
 import React from "react";
-import { BleManager, Characteristic, Device, Subscription } from "react-native-ble-plx";
+import { BleManager, Characteristic, Subscription } from "react-native-ble-plx";
+import { DeviceState } from "../state/types";
 
 export const useBleManager = () => {
     const [bleManager] = React.useState(new BleManager());
     return bleManager;
 };
 
-export const useScannedDevices = (bleManager: BleManager, setDevices: React.Dispatch<React.SetStateAction<Device[]>>, startScan: boolean) => {
+export const useScannedDevices = (bleManager: BleManager, devices: DeviceState[], add: (device: DeviceState) => void, startScan: boolean) => {
     React.useEffect(() => {
         bleManager.startDeviceScan(null, null, (err, device) => {
             if (!startScan) {
@@ -19,26 +20,23 @@ export const useScannedDevices = (bleManager: BleManager, setDevices: React.Disp
             if (err) //TODO: error handling
                 console.log(err);
 
-            if (device) {
+            if (device && !devices.some(dev => dev.device.id === device.id)) {
+                console.log(device.id);
                 //TODO: check device name or smth. Only add right ones
-                setDevices(arr => {
-                    console.log(device.id);
-                    arr.push(device);
-                    return [...new Map(arr.map(item => [item.id, item])).values()];
-                });
+                add({device, isDeviceConnected: false});
             }
         });
-    }, [bleManager, setDevices, startScan]);
+    }, [bleManager, devices, startScan]);
 };
 
-export const disconnectFromDevice = async (device: Device, subscription: Subscription | undefined) => {
-    await device
-        .isConnected()
+export const disconnectFromDevice = async (bleManager: BleManager, deviceId: string, subscription: Subscription | undefined) => {
+    await bleManager
+        .isDeviceConnected(deviceId)
         .then(async isConnected => {
             if (isConnected) {
                 subscription?.remove();
-                await device
-                    .cancelConnection()
+                await bleManager
+                    .cancelDeviceConnection(deviceId)
                     .then(device => {
                         console.log("atsijungta " + device.name);
                     })
@@ -48,11 +46,11 @@ export const disconnectFromDevice = async (device: Device, subscription: Subscri
         .catch(err => console.log(err));
 };
 
-export const getPrimaryCharacteristic = async (device: Device): Promise<Characteristic | undefined> => {
-    const services = await device.services();
+export const getPrimaryCharacteristic = async (bleManager: BleManager, deviceId: string): Promise<Characteristic | undefined> => {
+    const services = await bleManager.servicesForDevice(deviceId);
     
     for (const service of services) {
-        const characteristics = await device.characteristicsForService(service.uuid);
+        const characteristics = await bleManager.characteristicsForDevice(deviceId, service.uuid);
     
         for (const characteristic of characteristics) {
             if (characteristic.isNotifiable) {
@@ -63,16 +61,16 @@ export const getPrimaryCharacteristic = async (device: Device): Promise<Characte
     return undefined;
 };
 
-export const connectToDevice = async (device: Device) => {
+export const connectToDevice = async (bleManager: BleManager, deviceId: string) => {
     let subscription: Subscription | undefined;
 
-    const connectedDevice = await device
-        .isConnected()
+    const connectedDevice = await bleManager
+        .isDeviceConnected(deviceId)
         .then(isConnected => {
             console.log("trying to connect");
             if (!isConnected) {
-                return device
-                    .connect()
+                return bleManager
+                    .connectToDevice(deviceId)
                     .then(cDevice => {
                         return cDevice.discoverAllServicesAndCharacteristics().then((deviceWithChar) => {
                             console.log("connected");
@@ -88,7 +86,7 @@ export const connectToDevice = async (device: Device) => {
 
     const characteristic = await connectedDevice
         ?.isConnected()
-        .then(isConnected => isConnected ? getPrimaryCharacteristic(connectedDevice) : undefined)
+        .then(isConnected => isConnected ? getPrimaryCharacteristic(bleManager, connectedDevice.id) : undefined)
         .catch(err => {
             console.log(err);
             return undefined;
@@ -118,18 +116,22 @@ export const connectToDevice = async (device: Device) => {
     return subscription;
 };
 
-export const sendMessage = async (device: Device, message: string) => {
-    if (await device.isConnected()) {
-        const characteristic = await getPrimaryCharacteristic(device);
+export const sendMessage = async (bleManager: BleManager, deviceId: string, message: string) => {
+    if (await bleManager.isDeviceConnected(deviceId)) {
+        const characteristic = await getPrimaryCharacteristic(bleManager, deviceId);
                         
         if (!characteristic) return;
         
-        device.writeCharacteristicWithResponseForService(characteristic.serviceUUID, characteristic.uuid, base64.encode(message))
+        bleManager.writeCharacteristicWithResponseForDevice(deviceId, characteristic.serviceUUID, characteristic.uuid, base64.encode(message))
             .then(characteristic => {
                 console.log("issiusta (base64): " + characteristic.value);
                 if (characteristic.value)
                     console.log("issiusta: " + base64.decode(characteristic.value));
             })
             .catch(err => console.log(err));
+    } else {
+        // TODO: handle subscription 
+        await connectToDevice(bleManager, deviceId);
+        sendMessage(bleManager, deviceId, message);
     }
 };

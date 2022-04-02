@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
+import { BleManager } from "react-native-ble-plx";
 import { NavigationState, SceneMap, SceneRendererProps, TabView } from "react-native-tab-view";
 import AddIcon from "../assets/icons/AddIcon";
 import AdjustIcon from "../assets/icons/AdjustIcon";
@@ -46,7 +47,11 @@ type RenderTabBarProps = SceneRendererProps & {
     }>;
 };
 
-export const TabsView = () => {
+interface TabsProps {
+    bleManager: BleManager;
+}
+
+export const TabsView = (props: TabsProps) => {
     const { t } = useTranslation();
 
     const [state, setState] = React.useState({
@@ -101,8 +106,8 @@ export const TabsView = () => {
     };
 
     const renderScene = SceneMap({
-        adjust: AdjustScreen,
-        add: AddScreen,
+        adjust: () => <AdjustScreen {...props}/>,
+        add: () => <AddScreen {...props}/>,
         history: HistoryScreen,
     });
     

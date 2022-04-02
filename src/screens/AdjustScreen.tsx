@@ -1,16 +1,25 @@
-import React, { ReactNode } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from "react";
 import { Button, SafeAreaView, ScrollView, View } from "react-native";
-import { Device } from "react-native-ble-plx";
+import { BleManager } from "react-native-ble-plx";
 import { Header } from "react-native/Libraries/NewAppScreen";
-import { sendMessage, useBleManager, useScannedDevices } from "../ble-api/bleManager";
-import DeviceListItem from "../components/DeviceListItem";
-import { requestBluetoothAdminPermission, requestBluetoothAdvPermission, requestBluetoothPermission, requestLocationPermission } from "../helpers/permissions";
+import { sendMessage, useScannedDevices } from "../ble-api/bleManager";
+import { 
+    requestBluetoothAdminPermission, 
+    requestBluetoothAdvPermission, 
+    requestBluetoothPermission, 
+    requestLocationPermission 
+} from "../helpers/permissions";
+import { useConnectDevices } from "../state/connectDevicesHooks";
  
-export const AdjustScreen = (props: {children?: ReactNode}) => {
-    const bleManager = useBleManager();
+interface Props {
+    bleManager: BleManager;
+}
+
+export const AdjustScreen = (props: Props) => {
+    const [devices, actions] = useConnectDevices();
     const [startScan, setStartScan] = React.useState(false);
-    const [scannedDevices, setScannedDevices] = React.useState<Device[]>([]);
-    useScannedDevices(bleManager, setScannedDevices, startScan);
+    useScannedDevices(props.bleManager, devices, actions.add, startScan);
 
     const requestPermissions = async () => {
         await requestBluetoothPermission();
@@ -26,16 +35,14 @@ export const AdjustScreen = (props: {children?: ReactNode}) => {
                 <Header />
                 <View>
                     <Button title='request permissions' onPress={requestPermissions} />
+                    <Button title='clear async storage' onPress={() => AsyncStorage.clear().then(() => console.log("Cleared")) } />
+                    <Button title='init async storage' onPress={() => AsyncStorage.getItem("root").then(value => { AsyncStorage.setItem("persistedReducer", "[]"); }) } />
+                    <Button title='get value of async storage' onPress={() => AsyncStorage.getItem("root").then(console.log) } />
                     <Button title='start scan' onPress={() => setStartScan(true)} />
                     <Button title='stop scan' onPress={() => setStartScan(false)} />
-                    {
-                        scannedDevices.map((device, index) => {
-                            return <DeviceListItem key={index.toString()} {...{device}}/>;
-                        })
-                    }
                     <Button title='siusti OK' onPress={async () => {
-                        const device = scannedDevices[0];
-                        sendMessage(device, "AT");
+                        const device = devices[0].device;
+                        sendMessage(props.bleManager, device.id, "AT");
                     }} />
                     <Button title='Go to add screen' />
                     <Button title='Go to History screen' />

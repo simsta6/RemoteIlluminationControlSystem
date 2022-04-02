@@ -1,41 +1,39 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
-import { Device, Subscription } from "react-native-ble-plx";
-import { connect } from "react-redux";
-import { disconnectFromDevice, connectToDevice } from "../ble-api/bleManager";
-import { DeviceReducerState } from "../reducers/DevicesReducer";
+import { Button, Text, View } from "react-native";
+import { BleManager } from "react-native-ble-plx";
+import { connectToDevice, disconnectFromDevice } from "../ble-api/bleManager";
+import { DeviceState } from "../state/types";
 
 
 interface Props {
-    device: Device;
+    deviceState: DeviceState;
+    index: number;
+    modify: (device: DeviceState, index: number) => void;
+    bleManager: BleManager
 }
 
-export const DeviceListItem = ({device}: Props) => {
-    const [isConnectToDevice, setIsConnectToDevice] = React.useState(false);
-    const [subscription, setSubscription] = React.useState<Subscription>();
+export const DeviceListItem = ({ deviceState, modify, index, bleManager }: Props) => {
+    const { device, subscription, isDeviceConnected } = deviceState;
 
     const connectOnPress = async () => {
-        setIsConnectToDevice(true);
-        setSubscription(await connectToDevice(device));
+        const subscription = await connectToDevice(bleManager, device.id);
+        modify({...deviceState, isDeviceConnected: true, subscription }, index);
     };
 
     const disconnectOnPress = () => {
-        disconnectFromDevice(device, subscription).then(() => setIsConnectToDevice(false));
+        disconnectFromDevice(bleManager, device.id, subscription).then(() => 
+            modify({...deviceState, isDeviceConnected: false}, index)
+        );
     };
 
     return (
         <View>
             <Text>{device.id}</Text>
-            <Button title='connect' disabled={isConnectToDevice} onPress={connectOnPress} />
-
-            <Button title='disconnect'  disabled={!isConnectToDevice} onPress={disconnectOnPress} />
+            <Text>{device.name}</Text>
+            <Button title='connect' disabled={isDeviceConnected} onPress={connectOnPress} />
+            <Button title='disconnect' disabled={!isDeviceConnected} onPress={disconnectOnPress} />
         </View>
     );
 };
-
-const mapStateToProps = (state: DeviceReducerState) => {
-    const { counter } = state;
-    return { counter };
-};
   
-export default connect(mapStateToProps)(DeviceListItem);
+export default DeviceListItem;

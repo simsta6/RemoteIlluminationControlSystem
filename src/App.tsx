@@ -13,13 +13,17 @@ import { hideNavigationBar } from "react-native-navigation-bar-color";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { TabsView } from "./navigation/Tabs";
-import { persistor, store } from "./reducers/Store";
+import { store, persistor } from "./state/store";
 import { LogBox } from "react-native";
+import { useBleManager } from "./ble-api/bleManager";
+import { Device } from "react-native-ble-plx";
 import "./constants/IMLocalize";
 
 LogBox.ignoreLogs(["new NativeEventEmitter"]); // Ignore log notification by message
 
 const App = () => {
+    const bleManager = useBleManager();
+    const [scannedDevices, setScannedDevices] = React.useState<Device[]>([]);
 
     React.useEffect(() => { 
         hideNavigationBar();
@@ -28,7 +32,7 @@ const App = () => {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <TabsView />
+                <TabsView {...{bleManager, scannedDevices, setScannedDevices}} />
             </PersistGate>
         </Provider>
     );
