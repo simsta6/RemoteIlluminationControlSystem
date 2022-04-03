@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Text, View } from "react-native";
 import { BleManager } from "react-native-ble-plx";
-import { connectToDevice, disconnectFromDevice } from "../ble-api/bleManager";
+import { connectToDevice, disconnectFromDevice, sendMessage } from "../ble-api/bleManager";
 import { DeviceState } from "../state/types";
 
 
@@ -32,6 +32,9 @@ export const DeviceListItem = ({ deviceState, modify, index, bleManager }: Props
             <Text>{device.name}</Text>
             <Button title='connect' disabled={isDeviceConnected} onPress={connectOnPress} />
             <Button title='disconnect' disabled={!isDeviceConnected} onPress={disconnectOnPress} />
+            <Button title='siusti OK' onPress={async () => {
+                sendMessage(bleManager, device.id, "AT");
+            }} />
         </View>
     );
 };

@@ -1,7 +1,7 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { Button, SafeAreaView, Text, View } from "react-native";
 
-export const HistoryScreen = (props: {children?: ReactNode}) => {
+export const HistoryTab = () => {
 
     return (
         <SafeAreaView>

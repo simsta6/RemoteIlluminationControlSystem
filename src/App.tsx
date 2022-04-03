@@ -8,22 +8,25 @@
  * @format
  */
 
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import { LogBox } from "react-native";
 import { hideNavigationBar } from "react-native-navigation-bar-color";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { TabsView } from "./navigation/Tabs";
-import { store, persistor } from "./state/store";
-import { LogBox } from "react-native";
 import { useBleManager } from "./ble-api/bleManager";
-import { Device } from "react-native-ble-plx";
 import "./constants/IMLocalize";
+import { SettingsScreen } from "./navigation/screens/SettingsScreen";
+import { TabsView } from "./navigation/Tabs";
+import { persistor, store } from "./state/store";
 
 LogBox.ignoreLogs(["new NativeEventEmitter"]); // Ignore log notification by message
 
+const Stack = createNativeStackNavigator();
+
 const App = () => {
     const bleManager = useBleManager();
-    const [scannedDevices, setScannedDevices] = React.useState<Device[]>([]);
 
     React.useEffect(() => { 
         hideNavigationBar();
@@ -32,7 +35,22 @@ const App = () => {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <TabsView {...{bleManager, scannedDevices, setScannedDevices}} />
+                <NavigationContainer>
+                    <Stack.Navigator>
+                        <Stack.Screen 
+                            name="Tabs" 
+                            component={TabsView}
+                            initialParams={{ bleManager: bleManager }}
+                            options={{
+                                headerShown: false
+                            }}
+                        />
+                        <Stack.Screen 
+                            name="Settings"
+                            component={SettingsScreen}
+                        />
+                    </Stack.Navigator>
+                </NavigationContainer>
             </PersistGate>
         </Provider>
     );

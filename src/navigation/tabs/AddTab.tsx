@@ -2,23 +2,25 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Button, SafeAreaView, Text, View } from "react-native";
 import { BleManager } from "react-native-ble-plx";
-import DeviceListItem from "../components/DeviceListItem";
-import { Selector } from "../components/LanguageSelector";
-import { useConnectDevices } from "../state/connectDevicesHooks";
+import { useScannedDevices } from "../../ble-api/bleManager";
+import DeviceListItem from "../../components/DeviceListItem";
+import { useConnectDevices } from "../../state/connectDevicesHooks";
 
 interface Props {
     bleManager: BleManager;
 }
 
-export const AddScreen = (props: Props) => {
-    const [devices, actions] = useConnectDevices();
+export const AddTab = (props: Props) => {
     const { t } = useTranslation();
+    const [devices, actions] = useConnectDevices();
+    const [startScan, setStartScan] = React.useState(false);
+    useScannedDevices(props.bleManager, devices, actions.add, startScan);
 
     return (
         <SafeAreaView>
-            <Text>{t("AddScreen:title")}</Text>
-            <Button title='Go to Adjust screen' />
-            <Button title='Go to History screen' />
+            <Text>{t("AddTab:title")}</Text>
+            <Button title='start scan' onPress={() => setStartScan(true)} />
+            <Button title='stop scan' onPress={() => setStartScan(false)} />
             {
                 devices.map((device, index) => {
                     return (
@@ -31,9 +33,6 @@ export const AddScreen = (props: Props) => {
                         />);
                 })
             }
-            <View style={{ flex: 1, backgroundColor: "#fff" }}>
-                <Selector />
-            </View>
             <View style={{height: "100%", backgroundColor: "orange"}}></View>
         </SafeAreaView>
     );
