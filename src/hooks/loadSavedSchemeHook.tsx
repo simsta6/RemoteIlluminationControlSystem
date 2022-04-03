@@ -10,13 +10,13 @@ export const useLoadSavedScheme = () => {
 
     React.useEffect(() => {
         let setIsNeeded = true;
-        AsyncStorage.getItem(KEY_FOR_STORAGE).then(savedScheme =>
+        AsyncStorage.getItem(KEY_FOR_STORAGE).then(savedScheme => {
             setIsNeeded && setSavedScheme(
-                savedScheme === "dark" ? 
-                    "dark" : 
-                    savedScheme === "light" ? 
-                        "light" : defaultScheme
-            ));
+                savedScheme === "dark" ? "dark" : 
+                    savedScheme === "light" ? "light" : 
+                        defaultScheme
+            );
+        });
 
         return () => {
             setIsNeeded = false;

@@ -7,8 +7,10 @@ import { AppDarkColors, AppLightColors, KEY_FOR_STORAGE } from "../constants/the
 export const useAppColorScheme = (savedScheme: ColorSchemeName) => {
     const [ scheme, setScheme ] = React.useState<ColorSchemeName>(savedScheme);
 
+    React.useEffect(() => setScheme(savedScheme), [savedScheme]);
+
     React.useEffect(() => {
-        AsyncStorage.setItem(KEY_FOR_STORAGE, scheme ?? "light");
+        scheme && AsyncStorage.setItem(KEY_FOR_STORAGE, scheme);
     }, [scheme]);
 
     return [
