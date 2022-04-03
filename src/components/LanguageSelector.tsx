@@ -3,20 +3,23 @@ import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import AddIcon from "../assets/icons/AddIcon";
 import { LANGUAGES } from "../constants/languages";
+import { useAppColors } from "../hooks/colorSchemeHooks";
 
 export const Selector = () => {
     const { t, i18n} = useTranslation();
+    const { colors } = useAppColors();
+    
     const selectedLanguageCode = i18n.language;
-  
+
     const setLanguage = (code: string) => {
         return i18n.changeLanguage(code);
     };
   
     return (
-        <View style={styles.container}>
+        <View style={{...styles.container}}>
             <View style={styles.row}>
-                <Text style={styles.title}>{t("LanguageSelector:selectYourLanguage")}</Text>
-                <AddIcon color="rgba(122, 85, 91, 1)" height={20} width={20} />
+                <Text style={{...styles.title, color: colors.text}}>{t("LanguageSelector:selectYourLanguage")}</Text>
+                <AddIcon color={ colors.icon } height={20} width={20} />
             </View>
             {LANGUAGES.map(language => {
                 const selectedLanguage = language.code === selectedLanguageCode;
@@ -29,7 +32,11 @@ export const Selector = () => {
                         onPress={() => setLanguage(language.code)}
                     >
                         <Text
-                            style={[selectedLanguage ? styles.selectedText : styles.text]}
+                            style={[
+                                selectedLanguage ? 
+                                    {...styles.selectedText, color: colors.text} : 
+                                    {...styles.text, color: colors.text}
+                            ]}
                         >
                             {language.label}
                         </Text>
@@ -51,7 +58,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between"
     },
     title: {
-        color: "#FFFFFF",
         fontSize: 28,
         fontWeight: "600"
     },
@@ -60,13 +66,11 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 18,
-        color: "#000",
         paddingVertical: 4
     },
     selectedText: {
         fontSize: 18,
         fontWeight: "600",
-        color: "tomato",
         paddingVertical: 4
     }
 });

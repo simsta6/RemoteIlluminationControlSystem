@@ -1,8 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Button, SafeAreaView, Text, View } from "react-native";
+import { SafeAreaView, Text } from "react-native";
 import { BleManager } from "react-native-ble-plx";
 import { useScannedDevices } from "../../ble-api/bleManager";
+import { Button } from "../../components/Button";
 import DeviceListItem from "../../components/DeviceListItem";
 import { useConnectDevices } from "../../state/connectDevicesHooks";
 
@@ -33,7 +34,6 @@ export const AddTab = (props: Props) => {
                         />);
                 })
             }
-            <View style={{height: "100%", backgroundColor: "orange"}}></View>
         </SafeAreaView>
     );
 };

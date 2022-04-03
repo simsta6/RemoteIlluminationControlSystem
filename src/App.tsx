@@ -16,7 +16,9 @@ import { hideNavigationBar } from "react-native-navigation-bar-color";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { useBleManager } from "./ble-api/bleManager";
-import "./constants/IMLocalize";
+import { AppDarkTheme, AppLightTheme } from "./constants/themes";
+import { useAppColorScheme } from "./hooks/colorSchemeHooks";
+import { useLoadSavedScheme } from "./hooks/loadSavedSchemeHook";
 import { SettingsScreen } from "./navigation/screens/SettingsScreen";
 import { TabsView } from "./navigation/Tabs";
 import { persistor, store } from "./state/store";
@@ -26,21 +28,31 @@ LogBox.ignoreLogs(["new NativeEventEmitter"]); // Ignore log notification by mes
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+    const savedScheme = useLoadSavedScheme();
+    const [ scheme, setScheme ] = useAppColorScheme(savedScheme);
     const bleManager = useBleManager();
 
     React.useEffect(() => { 
         hideNavigationBar();
     }, []);
 
+
+    if (!savedScheme) {
+        // Loader goes here
+        return null;
+    }
+
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <NavigationContainer>
-                    <Stack.Navigator>
+                <NavigationContainer
+                    theme={scheme === "dark" ? AppDarkTheme : AppLightTheme }
+                >
+                    <Stack.Navigator >
                         <Stack.Screen 
                             name="Tabs" 
                             component={TabsView}
-                            initialParams={{ bleManager: bleManager }}
+                            initialParams={{ bleManager, setScheme }}
                             options={{
                                 headerShown: false
                             }}
@@ -48,6 +60,7 @@ const App = () => {
                         <Stack.Screen 
                             name="Settings"
                             component={SettingsScreen}
+                            initialParams={{ setScheme }}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

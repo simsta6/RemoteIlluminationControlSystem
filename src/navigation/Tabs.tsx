@@ -6,17 +6,18 @@ import { NavigationState, SceneMap, SceneRendererProps, TabView } from "react-na
 import AddIcon from "../assets/icons/AddIcon";
 import AdjustIcon from "../assets/icons/AdjustIcon";
 import HistoryIcon from "../assets/icons/HistoryIcon";
+import { useAppColors } from "../hooks/colorSchemeHooks";
 import { AddTab } from "./tabs/AddTab";
 import { AdjustTab } from "./tabs/AdjustTab";
 import { HistoryTab } from "./tabs/HistoryTab";
 import { RootStackParamList } from "./types";
 
-const ROUTES = [
+const getRoutes = (color: string) => [
     {
         title: "Adjust",
         icon:
         <AdjustIcon 
-            color={"rgba(122, 85, 91, 1)"}
+            color={color}
             height={25}
             width={25}
         />
@@ -25,7 +26,7 @@ const ROUTES = [
         title: "Add",
         icon:
         <AddIcon 
-            color={"rgba(122, 85, 91, 1)"}
+            color={color}
             height={25}
             width={25}
         />
@@ -34,7 +35,7 @@ const ROUTES = [
         title: "History",
         icon:
         <HistoryIcon 
-            color={"rgba(122, 85, 91, 1)"}
+            color={color}
             height={25}
             width={25}
         />
@@ -51,7 +52,10 @@ type RenderTabBarProps = SceneRendererProps & {
 type TabsProps = NativeStackScreenProps<RootStackParamList, "Tabs">;
 
 export const TabsView = (props: TabsProps) => {
+    const { colors } = useAppColors();
     const { t } = useTranslation();
+
+    const ROUTES = getRoutes(colors.icon);
 
     const [state, setState] = React.useState({
         index: 0,
@@ -65,7 +69,7 @@ export const TabsView = (props: TabsProps) => {
         const inputRange = navigationState.routes.map((_x, i) => i);
     
         return (
-            <View style={styles.tabBar}>
+            <View style={{...styles.tabBar, backgroundColor: colors.card}}>
                 {navigationState.routes.map((route, i) => {
                     const opacity = position.interpolate({
                         inputRange,
@@ -89,12 +93,13 @@ export const TabsView = (props: TabsProps) => {
                             <Animated.Text 
                                 style={{ 
                                     ...styles.iconText,
-                                    opacity
+                                    opacity,
+                                    color: colors.text
                                 }} 
                             >
                                 {
                                     //@ts-ignore
-                                    t("routes:" + route.title)
+                                    t("routes:" + route.title).toString().toLocaleUpperCase()
                                 }
                             </Animated.Text>
                         </TouchableOpacity>
@@ -105,7 +110,7 @@ export const TabsView = (props: TabsProps) => {
     };
 
     const renderScene = SceneMap({
-        adjust: () => <AdjustTab navigation={props.navigation} />,
+        adjust: () => <AdjustTab navigation={props.navigation} setScheme={props.route.params.setScheme} />,
         add: () => <AddTab bleManager={props.route.params.bleManager} />,
         history: () => <HistoryTab />,
     });
@@ -131,7 +136,6 @@ const styles = StyleSheet.create({
         bottom: 20,
         left: 20,
         right: 20,
-        backgroundColor: "#E5D0ED",
         borderRadius: 15,
         height: 70,
     },
