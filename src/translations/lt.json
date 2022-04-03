@@ -2,8 +2,14 @@
     "AddTab": {
         "title": "Pridėjimo Skirtukas"
     },
+    "SettingsScreen": {
+        "title": "Nustatymai"
+    },
     "LanguageSelector": {
         "selectYourLanguage": "Pasirinkite Savo Kalbą"
+    },
+    "DarkModeToggle": {
+        "darkModeToggle": "Perjungti Temą"
     },
     "permissions": {
         "location": {

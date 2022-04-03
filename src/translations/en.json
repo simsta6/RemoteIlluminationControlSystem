@@ -2,8 +2,14 @@
     "AddTab": {
         "title": "Add Tab"
     },
+    "SettingsScreen": {
+        "title": "Settings"
+    },
     "LanguageSelector": {
         "selectYourLanguage": "Select Your Language"
+    },
+    "DarkModeToggle": {
+        "darkModeToggle": "Toggle Theme"
     },
     "permissions": {
         "location": {

@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import AddIcon from "../assets/icons/AddIcon";
 import { LANGUAGES } from "../constants/languages";
 import { useAppColors } from "../hooks/colorSchemeHooks";
 
@@ -16,10 +15,9 @@ export const LanguageSelector = () => {
     };
   
     return (
-        <View style={{...styles.container}}>
+        <View style={styles.container}>
             <View style={styles.row}>
                 <Text style={{...styles.title, color: colors.text}}>{t("LanguageSelector:selectYourLanguage")}</Text>
-                <AddIcon color={ colors.icon } height={20} width={20} />
             </View>
             {LANGUAGES.map(language => {
                 const selectedLanguage = language.code === selectedLanguageCode;
@@ -49,8 +47,7 @@ export const LanguageSelector = () => {
   
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 60,
-        paddingHorizontal: 16
+        paddingTop: 20,
     },
     row: {
         flexDirection: "row",
@@ -58,18 +55,18 @@ const styles = StyleSheet.create({
         justifyContent: "space-between"
     },
     title: {
-        fontSize: 28,
-        fontWeight: "600"
+        fontSize: 20,
+        fontWeight: "500"
     },
     buttonContainer: {
         marginTop: 10
     },
     text: {
-        fontSize: 18,
+        fontSize: 16,
         paddingVertical: 4
     },
     selectedText: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "600",
         paddingVertical: 4
     }

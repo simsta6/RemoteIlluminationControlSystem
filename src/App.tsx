@@ -11,6 +11,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { LogBox } from "react-native";
 import { hideNavigationBar } from "react-native-navigation-bar-color";
 import { useBleManager } from "./ble-api/bleManager";
@@ -24,14 +25,13 @@ LogBox.ignoreLogs(["new NativeEventEmitter"]); // Ignore log notification by mes
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+    const { t } = useTranslation();
     const [ scheme ] = useTheme();
     const bleManager = useBleManager();
 
     React.useEffect(() => { 
         hideNavigationBar();
     }, []);
-
-    console.log(scheme);
 
     return (
         <NavigationContainer
@@ -55,6 +55,12 @@ const App = () => {
                 <Stack.Screen 
                     name="Settings"
                     component={SettingsScreen}
+                    options={{
+                        title: t("SettingsScreen:title"),
+                        headerTitleStyle: {
+                            fontSize: 22,
+                        }
+                    }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
