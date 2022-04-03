@@ -1,7 +1,7 @@
 import base64 from "base-64";
 import React from "react";
 import { BleManager, Characteristic, Subscription } from "react-native-ble-plx";
-import { DeviceState } from "../state/types";
+import { DeviceState } from "../state/connectedDevicesTypes";
 
 export const useBleManager = () => {
     const [bleManager] = React.useState(new BleManager());

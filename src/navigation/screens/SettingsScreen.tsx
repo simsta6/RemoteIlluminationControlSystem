@@ -1,26 +1,25 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Button } from "../../components/Button";
 import { Container } from "../../components/Container";
-import { Selector } from "../../components/LanguageSelector";
-import { RootStackParamList } from "../types";
-  
-type Props = NativeStackScreenProps<RootStackParamList, "Settings">;
+import { DarModeToggle } from "../../components/DarkModeToggle";
+import { LanguageSelector } from "../../components/LanguageSelector";
+import { useTheme } from "../../hooks/themesHooks";
 
-export const SettingsScreen = ({ route }: Props) => {
-    const { setScheme } = route.params;
+export const SettingsScreen = () => {
+    const [ scheme, actions ] = useTheme();
+
+    const [ tempScheme, setScheme] = React.useState(scheme);
+
+    React.useEffect(() => {
+        tempScheme === "dark" ? actions.toDarkTheme() : actions.toLightTheme();
+    }, [tempScheme]);
 
     return (
         <Container>
-            <Button 
-                title="Set Dark Theme" 
-                onPress={() => setScheme("dark")}
+            <DarModeToggle 
+                scheme={scheme}
+                setScheme={setScheme}
             />
-            <Button
-                title="Set Light Theme" 
-                onPress={() => setScheme("light")}
-            />
-            <Selector />
+            <LanguageSelector />
         </Container>
     );
 };

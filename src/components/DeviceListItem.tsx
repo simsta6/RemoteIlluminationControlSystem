@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Text, View } from "react-native";
 import { BleManager } from "react-native-ble-plx";
 import { connectToDevice, disconnectFromDevice, sendMessage } from "../ble-api/bleManager";
-import { DeviceState } from "../state/types";
+import { DeviceState } from "../state/connectedDevicesTypes";
 
 
 interface Props {

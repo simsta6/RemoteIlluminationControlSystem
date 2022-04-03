@@ -6,7 +6,8 @@ import { useScannedDevices } from "../../ble-api/bleManager";
 import { Button } from "../../components/Button";
 import { Container } from "../../components/Container";
 import DeviceListItem from "../../components/DeviceListItem";
-import { useConnectDevices } from "../../state/connectDevicesHooks";
+import { useAppColors } from "../../hooks/colorSchemeHooks";
+import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 
 interface Props {
     bleManager: BleManager;
@@ -14,13 +15,16 @@ interface Props {
 
 export const AddTab = (props: Props) => {
     const { t } = useTranslation();
-    const [devices, actions] = useConnectDevices();
+    const { colors } = useAppColors();
+    
+    const [devices, actions] = useConnectedDevices();
     const [startScan, setStartScan] = React.useState(false);
+
     useScannedDevices(props.bleManager, devices, actions.add, startScan);
 
     return (
         <Container>
-            <Text>{t("AddTab:title")}</Text>
+            <Text style={{ color: colors.text, fontSize: 20 }}>{t("AddTab:title")}</Text>
             <Button title='start scan' onPress={() => setStartScan(true)} />
             <Button title='stop scan' onPress={() => setStartScan(false)} />
             {

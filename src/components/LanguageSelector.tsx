@@ -5,7 +5,7 @@ import AddIcon from "../assets/icons/AddIcon";
 import { LANGUAGES } from "../constants/languages";
 import { useAppColors } from "../hooks/colorSchemeHooks";
 
-export const Selector = () => {
+export const LanguageSelector = () => {
     const { t, i18n} = useTranslation();
     const { colors } = useAppColors();
     

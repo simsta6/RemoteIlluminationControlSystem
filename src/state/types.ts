@@ -1,42 +1,13 @@
-import { Device, Subscription } from "react-native-ble-plx";
+import { CombinedState } from "redux";
+import { ConnectDeviceState } from "./connectedDevicesTypes";
+import { ThemeState } from "./themeTypes";
 
-export interface DeviceState {
-    device: Device,
-    subscription?: Subscription,
-    isDeviceConnected: boolean,
-}
+export type IRootState = CombinedState<{
+    devicesReducer: State;
+    themeReducer: State;
+}>
 
-export type ConnectDeviceState = { 
-    devices: DeviceState[]
-}
-
-export const ActionTypes = {
-    AddDevice: "AddDevice",
-    RemoveDevice: "RemoveDevice",
-    ModifyDevice: "ModifyDevice",
-} as const;
-
-export type AddDeviceAction = {
-    type: typeof ActionTypes.AddDevice;
-    deviceState: DeviceState;
-}
-
-export type ModifyDeviceAction = {
-    type: typeof ActionTypes.ModifyDevice;
-    index: number;
-    deviceState: DeviceState;
-}
-
-export type RemoveDeviceAction = {
-    type: typeof ActionTypes.RemoveDevice;
-    index: number;
-}
-
-export type DevicesActions = AddDeviceAction | ModifyDeviceAction | RemoveDeviceAction;
-
-export type IRootState = {
-    devicesReducer: ConnectDeviceState;
-};
+export type State = ConnectDeviceState & ThemeState;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FunctionType = (...args: any[]) => any;

@@ -1,27 +1,24 @@
-import { 
-    ActionTypes, 
+import { initialState } from "./actions";
+import {
     AddDeviceAction, 
-    ConnectDeviceState, 
-    ModifyDeviceAction, 
-    RemoveDeviceAction, 
-    DevicesActions 
-} from "./types";
+    ConnectedDevicesActions, 
+    ConnectedDevicesActionsTypes, 
+    ModifyDeviceAction,
+    RemoveDeviceAction
+} from "./connectedDevicesTypes";
+import { State } from "./types";
 
-const initialDeviceState: ConnectDeviceState = {
-    devices: []
-};
-
-export default (state = initialDeviceState , action: DevicesActions): ConnectDeviceState  => {
+export const ConnectedDevicesReducer = (state = initialState , action: ConnectedDevicesActions): State  => {
     switch (action.type) {
-    case ActionTypes.AddDevice: {
+    case ConnectedDevicesActionsTypes.Add: {
         const { deviceState } = <AddDeviceAction>action;
         return { ...state, devices: state.devices.concat(deviceState) };
     }
-    case ActionTypes.RemoveDevice: {
+    case ConnectedDevicesActionsTypes.Remove: {
         const { index } = <RemoveDeviceAction>action;
         return { ...state, devices: state.devices.slice(0, index).concat(state.devices.slice(index + 1)) };
     }
-    case ActionTypes.ModifyDevice:{
+    case ConnectedDevicesActionsTypes.Modify:{
         const { deviceState, index } = <ModifyDeviceAction>action;
         return { ...state, 
             devices: state.devices.slice(0, index).concat(deviceState, state.devices.slice(index + 1)) };

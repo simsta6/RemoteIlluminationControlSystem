@@ -6,19 +6,23 @@ import {
     persistStore
 } from "redux-persist";
 import thunk from "redux-thunk";
-import DevicesReducer from "./reducer";
-import { ConnectDeviceState } from "./types";
+import { ConnectedDevicesReducer } from "./ConnectedDevicesReducer";
+import { ConnectedDevicesActions } from "./connectedDevicesTypes";
+import { ThemeReducer } from "./ThemeReducer";
+import { ThemeActions } from "./themeTypes";
+import { IRootState } from "./types";
 
-const persistConfig: PersistConfig<ConnectDeviceState> = {
+const persistConfig: PersistConfig<IRootState> = {
     key: "root",
     storage: AsyncStorage,
 };
 
-const persistedReducer = persistReducer(persistConfig, DevicesReducer);
-
 const rootReducer = combineReducers({
-    devicesReducer: persistedReducer
+    devicesReducer: ConnectedDevicesReducer,
+    themeReducer: ThemeReducer,
 });
 
-export const store = createStore(rootReducer, applyMiddleware(thunk));
+const persistedReducer = persistReducer<IRootState, ConnectedDevicesActions | ThemeActions>(persistConfig, rootReducer);
+
+export const store = createStore(persistedReducer, applyMiddleware(thunk));
 export const persistor = persistStore(store);

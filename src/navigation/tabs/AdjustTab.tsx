@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
-import { ColorSchemeName } from "react-native";
 import { Button } from "../../components/Button";
 import { Container } from "../../components/Container";
 import {
@@ -14,10 +13,9 @@ import { RootStackParamList } from "../types";
 
 interface Props {
     navigation: NativeStackNavigationProp<RootStackParamList, "Tabs", undefined>;
-    setScheme: React.Dispatch<React.SetStateAction<ColorSchemeName>>;
 }
  
-export const AdjustTab = ({ navigation, setScheme }: Props) => {
+export const AdjustTab = ({ navigation }: Props) => {
 
     const requestPermissions = async () => {
         await requestBluetoothPermission();
@@ -29,7 +27,7 @@ export const AdjustTab = ({ navigation, setScheme }: Props) => {
         <Container>
             <Button title='request permissions' onPress={requestPermissions} />
             <Button title='clear async storage' onPress={() => AsyncStorage.clear().then(() => console.log("Cleared")) } />
-            <Button title='Go to settings' onPress={() => navigation.navigate("Settings", { setScheme })} />
+            <Button title='Go to settings' onPress={() => navigation.navigate("Settings")} />
         </Container>
     );
 };

@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { ConnectDevicesActions } from "./actions";
-import { ActionsUnion, DeviceState, IRootState } from "./types";
+import { ConnectDevicesActions } from "../state/actions";
+import { DeviceState } from "../state/connectedDevicesTypes";
+import { ActionsUnion, IRootState } from "../state/types";
 
-export const useConnectDevices = () => {
+export const useConnectedDevices = () => {
     const { devices } = useSelector((state: IRootState) => state.devicesReducer);
     const dispatch: React.Dispatch<ActionsUnion<typeof ConnectDevicesActions>> = useDispatch();
 

@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
+import { BleManager } from "react-native-ble-plx";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NavigationState, SceneMap, SceneRendererProps, TabView } from "react-native-tab-view";
 import AddIcon from "../assets/icons/AddIcon";
@@ -50,7 +51,9 @@ type RenderTabBarProps = SceneRendererProps & {
     }>;
 };
   
-type TabsProps = NativeStackScreenProps<RootStackParamList, "Tabs">;
+type TabsProps = NativeStackScreenProps<RootStackParamList, "Tabs"> & {
+    bleManager: BleManager;
+};
 
 export const TabsView = (props: TabsProps) => {
     const insets = useSafeAreaInsets();
@@ -112,8 +115,12 @@ export const TabsView = (props: TabsProps) => {
     };
 
     const renderScene = SceneMap({
-        adjust: () => <AdjustTab navigation={props.navigation} setScheme={props.route.params.setScheme} />,
-        add: () => <AddTab bleManager={props.route.params.bleManager} />,
+        adjust: () => <AdjustTab 
+            navigation={props.navigation} 
+        />,
+        add: () => <AddTab 
+            bleManager={props.bleManager} 
+        />,
         history: () => <HistoryTab />,
     });
     

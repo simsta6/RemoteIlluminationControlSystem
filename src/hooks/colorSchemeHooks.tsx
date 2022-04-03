@@ -1,23 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "@react-navigation/native";
-import React from "react";
-import { ColorSchemeName } from "react-native";
-import { AppDarkColors, AppLightColors, KEY_FOR_STORAGE } from "../constants/themes";
-
-export const useAppColorScheme = (savedScheme: ColorSchemeName) => {
-    const [ scheme, setScheme ] = React.useState<ColorSchemeName>(savedScheme);
-
-    React.useEffect(() => setScheme(savedScheme), [savedScheme]);
-
-    React.useEffect(() => {
-        scheme && AsyncStorage.setItem(KEY_FOR_STORAGE, scheme);
-    }, [scheme]);
-
-    return [
-        scheme,
-        setScheme,
-    ] as const;
-};
+import { AppDarkColors, AppLightColors } from "../constants/themes";
 
 export const useAppColors = () => {
     const { dark } = useTheme();
