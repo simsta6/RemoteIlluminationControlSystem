@@ -1,5 +1,10 @@
 import React from "react";
-import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { 
+    GestureResponderEvent, 
+    StyleSheet, 
+    Text, 
+    TouchableOpacity 
+} from "react-native";
 import { useAppColors } from "../hooks/colorSchemeHooks";
 
 interface Props {
@@ -29,6 +34,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 8,  
         borderRadius: 2,
+        marginVertical: 5,
     },
     buttonText: {
         textTransform: "uppercase",

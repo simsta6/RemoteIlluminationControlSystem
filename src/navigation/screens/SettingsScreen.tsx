@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { SafeAreaView } from "react-native";
 import { Button } from "../../components/Button";
+import { Container } from "../../components/Container";
 import { Selector } from "../../components/LanguageSelector";
 import { RootStackParamList } from "../types";
   
@@ -11,7 +11,7 @@ export const SettingsScreen = ({ route }: Props) => {
     const { setScheme } = route.params;
 
     return (
-        <SafeAreaView>
+        <Container>
             <Button 
                 title="Set Dark Theme" 
                 onPress={() => setScheme("dark")}
@@ -21,6 +21,6 @@ export const SettingsScreen = ({ route }: Props) => {
                 onPress={() => setScheme("light")}
             />
             <Selector />
-        </SafeAreaView>
+        </Container>
     );
 };

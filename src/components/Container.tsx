@@ -1,38 +1,24 @@
 import React from "react";
-import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { useAppColors } from "../hooks/colorSchemeHooks";
+import { StyleSheet, View } from "react-native";
 
 interface Props {
-    title: string;
-    onPress?: ((event: GestureResponderEvent) => void) | undefined;
+    children?: React.ReactNode;
 }
 
-export const Container = ({ title, onPress }: Props) => {
-    const { colors } = useAppColors();
+export const Container = ({ children }: Props) => {
 
     return (
-        <TouchableOpacity 
-            style={{...styles.button, backgroundColor: colors.card }} 
-            onPress={onPress}
-        >
-            <Text 
-                style={{...styles.buttonText, color: colors.text}}
-            >
-                { title }
-            </Text>
-        </TouchableOpacity>
+        <View style={ styles.container }>
+            { children }
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    button: {
-        alignItems: "center",
-        padding: 8,  
-        borderRadius: 2,
+    container: {
+        display: "flex",
+        flexDirection: "column",
+        marginHorizontal: 10,
+        marginTop: 10,
     },
-    buttonText: {
-        textTransform: "uppercase",
-        textAlign: "center",
-        fontWeight: "500"
-    }
 });

@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NavigationState, SceneMap, SceneRendererProps, TabView } from "react-native-tab-view";
 import AddIcon from "../assets/icons/AddIcon";
 import AdjustIcon from "../assets/icons/AdjustIcon";
@@ -52,6 +53,7 @@ type RenderTabBarProps = SceneRendererProps & {
 type TabsProps = NativeStackScreenProps<RootStackParamList, "Tabs">;
 
 export const TabsView = (props: TabsProps) => {
+    const insets = useSafeAreaInsets();
     const { colors } = useAppColors();
     const { t } = useTranslation();
 
@@ -123,6 +125,7 @@ export const TabsView = (props: TabsProps) => {
             renderTabBar={renderTabBar}
             onIndexChange={handleIndexChange}
             tabBarPosition="bottom"
+            style={{marginTop: insets.top}}
         />
     );
 };

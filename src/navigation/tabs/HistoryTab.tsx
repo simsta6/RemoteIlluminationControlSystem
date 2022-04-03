@@ -1,14 +1,16 @@
 import React from "react";
-import { SafeAreaView, Text } from "react-native";
+import { Text } from "react-native";
 import { Button } from "../../components/Button";
+import { Container } from "../../components/Container";
+
 
 export const HistoryTab = () => {
 
     return (
-        <SafeAreaView>
+        <Container>
             <Text>History Screen</Text>
             <Button title='Go to Adjust screen' />
             <Button title='Go to Add screen' />
-        </SafeAreaView>
+        </Container>
     );
 };

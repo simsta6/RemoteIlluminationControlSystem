@@ -1,9 +1,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { SafeAreaView, Text } from "react-native";
+import { Text } from "react-native";
 import { BleManager } from "react-native-ble-plx";
 import { useScannedDevices } from "../../ble-api/bleManager";
 import { Button } from "../../components/Button";
+import { Container } from "../../components/Container";
 import DeviceListItem from "../../components/DeviceListItem";
 import { useConnectDevices } from "../../state/connectDevicesHooks";
 
@@ -18,7 +19,7 @@ export const AddTab = (props: Props) => {
     useScannedDevices(props.bleManager, devices, actions.add, startScan);
 
     return (
-        <SafeAreaView>
+        <Container>
             <Text>{t("AddTab:title")}</Text>
             <Button title='start scan' onPress={() => setStartScan(true)} />
             <Button title='stop scan' onPress={() => setStartScan(false)} />
@@ -34,6 +35,6 @@ export const AddTab = (props: Props) => {
                         />);
                 })
             }
-        </SafeAreaView>
+        </Container>
     );
 };

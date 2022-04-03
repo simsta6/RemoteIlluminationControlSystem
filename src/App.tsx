@@ -13,6 +13,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { LogBox } from "react-native";
 import { hideNavigationBar } from "react-native-navigation-bar-color";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { useBleManager } from "./ble-api/bleManager";
@@ -45,25 +46,27 @@ const App = () => {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <NavigationContainer
-                    theme={scheme === "dark" ? AppDarkTheme : AppLightTheme }
-                >
-                    <Stack.Navigator >
-                        <Stack.Screen 
-                            name="Tabs" 
-                            component={TabsView}
-                            initialParams={{ bleManager, setScheme }}
-                            options={{
-                                headerShown: false
-                            }}
-                        />
-                        <Stack.Screen 
-                            name="Settings"
-                            component={SettingsScreen}
-                            initialParams={{ setScheme }}
-                        />
-                    </Stack.Navigator>
-                </NavigationContainer>
+                <SafeAreaProvider>
+                    <NavigationContainer
+                        theme={scheme === "dark" ? AppDarkTheme : AppLightTheme }
+                    >
+                        <Stack.Navigator >
+                            <Stack.Screen 
+                                name="Tabs" 
+                                component={TabsView}
+                                initialParams={{ bleManager, setScheme }}
+                                options={{
+                                    headerShown: false
+                                }}
+                            />
+                            <Stack.Screen 
+                                name="Settings"
+                                component={SettingsScreen}
+                                initialParams={{ setScheme }}
+                            />
+                        </Stack.Navigator>
+                    </NavigationContainer>
+                </SafeAreaProvider>
             </PersistGate>
         </Provider>
     );
