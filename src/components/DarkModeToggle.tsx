@@ -1,26 +1,25 @@
 import React from "react";
-import { ColorSchemeName, Switch } from "react-native";
+import { Switch } from "react-native";
+import { useTheme } from "../hooks/themesHooks";
 
-interface Props {
-    scheme: ColorSchemeName;
-    setScheme: React.Dispatch<React.SetStateAction<ColorSchemeName>>;
-}
-
-export const DarModeToggle = (props: Props) => {
-
-    const { scheme, setScheme } = props;
-
+export const DarModeToggle = () => {
+    const [scheme, actions] = useTheme();
     const [isEnabled, setIsEnabled] = React.useState(scheme === "dark");
 
     const toggleSwitch = () => {
         setIsEnabled(previousState => !previousState);
     };
 
-    React.useEffect(() => setScheme(isEnabled ? "dark" : "light"), [isEnabled]);
-    return (            <Switch
-        trackColor={{ false: "light", true: "dark" }}
-        thumbColor={scheme === "dark" ? "light" : "dark"}
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-    />);
+    React.useEffect(() => {
+        isEnabled ? actions.toDarkTheme() : actions.toLightTheme();
+    }, [isEnabled]);
+
+    return (            
+        <Switch
+            trackColor={{ false: "light", true: "dark" }}
+            thumbColor={scheme === "dark" ? "light" : "dark"}
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+        />
+    );
 };
