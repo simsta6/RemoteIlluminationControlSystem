@@ -1,27 +1,35 @@
 import React from "react";
 import { 
     GestureResponderEvent, 
+    StyleProp, 
     StyleSheet, 
     Text, 
-    TouchableOpacity 
+    TextStyle, 
+    TouchableOpacity, 
+    ViewStyle
 } from "react-native";
 import { useAppColors } from "../hooks/colorSchemeHooks";
 
 interface Props {
     title: string;
     onPress?: ((event: GestureResponderEvent) => void) | undefined;
+    disabled?: boolean;
+    buttonStyle?: StyleProp<ViewStyle>;
+    textStyle?: StyleProp<TextStyle>;
 }
 
-export const Button = ({ title, onPress }: Props) => {
+export const Button = (props: Props) => {
+    const { title, onPress, disabled, buttonStyle, textStyle } = props;
     const { colors } = useAppColors();
 
     return (
         <TouchableOpacity 
-            style={{...styles.button, backgroundColor: colors.card }} 
+            style={[{...styles.button, backgroundColor: colors.card }, buttonStyle]} 
             onPress={onPress}
+            disabled={disabled}
         >
             <Text 
-                style={{...styles.buttonText, color: colors.text}}
+                style={[{...styles.buttonText, color: colors.text}, textStyle]}
             >
                 { title }
             </Text>

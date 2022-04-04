@@ -32,11 +32,15 @@ export const DarModeToggle = () => {
                     }
                     backgroundActive={colors.card}
                     backgroundInactive={colors.card}
+                    circleActiveColor={colors.background}
+                    circleInActiveColor={colors.background}
                     activeText={""}
                     inActiveText={""}
                     onValueChange={toggleSwitch}
                     value={isEnabled}
                     circleSize={30}
+                    circleBorderActiveColor={colors.border}
+                    circleBorderInactiveColor={colors.border}
                 />
             </View>
         </View>

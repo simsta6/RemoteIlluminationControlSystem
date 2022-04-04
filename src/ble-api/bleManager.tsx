@@ -1,7 +1,17 @@
 import base64 from "base-64";
 import React from "react";
 import { BleManager, Characteristic, Subscription } from "react-native-ble-plx";
+import Toast from "react-native-toast-message";
 import { DeviceState } from "../state/connectedDevicesTypes";
+
+const showToast = (message: string) => {
+    Toast.show({
+        type: "info",
+        text1: message,
+        position: "bottom",
+        bottomOffset: 110
+    });
+};
 
 export const useBleManager = () => {
     const [bleManager] = React.useState(new BleManager());
@@ -15,7 +25,8 @@ export const useScannedDevices = (bleManager: BleManager, devices: DeviceState[]
                 bleManager.stopDeviceScan();
                 return;
             }
-            console.log("scanning...");
+
+            showToast("Scanning...");
 
             if (err) //TODO: error handling
                 console.log(err);
@@ -67,7 +78,12 @@ export const connectToDevice = async (bleManager: BleManager, deviceId: string) 
     const connectedDevice = await bleManager
         .isDeviceConnected(deviceId)
         .then(isConnected => {
-            console.log("trying to connect");
+            Toast.show({
+                type: "success",
+                text1: "trying to connect",
+                text2: "This is some something 👋"
+            });
+            // console.log();
             if (!isConnected) {
                 return bleManager
                     .connectToDevice(deviceId)

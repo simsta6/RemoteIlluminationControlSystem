@@ -14,6 +14,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { LogBox } from "react-native";
 import { hideNavigationBar } from "react-native-navigation-bar-color";
+import Toast from "react-native-toast-message";
 import { useBleManager } from "./ble-api/bleManager";
 import { AppDarkTheme, AppLightTheme } from "./constants/themes";
 import { useTheme } from "./hooks/themesHooks";
@@ -63,6 +64,7 @@ const App = () => {
                     }}
                 />
             </Stack.Navigator>
+            <Toast />
         </NavigationContainer>
     );
 };

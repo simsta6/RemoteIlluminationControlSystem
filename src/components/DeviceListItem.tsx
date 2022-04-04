@@ -1,8 +1,10 @@
 import React from "react";
-import { Button, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { BleManager } from "react-native-ble-plx";
 import { connectToDevice, disconnectFromDevice, sendMessage } from "../ble-api/bleManager";
+import { useAppColors } from "../hooks/colorSchemeHooks";
 import { DeviceState } from "../state/connectedDevicesTypes";
+import { Button } from "./Button";
 
 
 interface Props {
@@ -13,6 +15,7 @@ interface Props {
 }
 
 export const DeviceListItem = ({ deviceState, modify, index, bleManager }: Props) => {
+    const { colors } = useAppColors();
     const { device, subscription, isDeviceConnected } = deviceState;
 
     const connectOnPress = async () => {
@@ -28,11 +31,11 @@ export const DeviceListItem = ({ deviceState, modify, index, bleManager }: Props
 
     return (
         <View>
-            <Text>{device.id}</Text>
-            <Text>{device.name}</Text>
-            <Button title='connect' disabled={isDeviceConnected} onPress={connectOnPress} />
-            <Button title='disconnect' disabled={!isDeviceConnected} onPress={disconnectOnPress} />
-            <Button title='siusti OK' onPress={async () => {
+            <Text style={{ color: colors.text }}>{device.id}</Text>
+            <Text style={{ color: colors.text }}>{device.name}</Text>
+            <Button buttonStyle={{ marginVertical: 1}} title='connect' disabled={isDeviceConnected} onPress={connectOnPress} />
+            <Button buttonStyle={{ marginVertical: 1}} title='disconnect' disabled={!isDeviceConnected} onPress={disconnectOnPress} />
+            <Button buttonStyle={{ marginVertical: 1}} title='siusti OK' onPress={async () => {
                 sendMessage(bleManager, device.id, "AT");
             }} />
         </View>
