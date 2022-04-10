@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
 import { BleManager } from "react-native-ble-plx";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { NavigationState, SceneMap, SceneRendererProps, TabView } from "react-native-tab-view";
+import { NavigationState, SceneRendererProps, TabView } from "react-native-tab-view";
 import AddIcon from "../assets/icons/AddIcon";
 import AdjustIcon from "../assets/icons/AdjustIcon";
 import HistoryIcon from "../assets/icons/HistoryIcon";
@@ -114,17 +114,23 @@ export const TabsView = (props: TabsProps) => {
         );
     };
 
-    const renderScene = SceneMap({
-        adjust: () => <AdjustTab 
-            navigation={props.navigation} 
-        />,
-        add: () => <AddTab 
-            bleManager={props.bleManager} 
-        />,
-        history: () => <HistoryTab />,
-    });
+    const renderScene = ({ route }: { route: { key: string, title: string }} ) => {
+        switch (route.key) {
+        case "adjust":
+            return <AdjustTab 
+                navigation={props.navigation} 
+            />;
+        case "add":
+            return <AddTab 
+                bleManager={props.bleManager} 
+            />;
+        case "history":
+            return <HistoryTab />;
+        default:
+            return null;
+        }
+    };
     
-
     return (
         <TabView
             navigationState={state}
