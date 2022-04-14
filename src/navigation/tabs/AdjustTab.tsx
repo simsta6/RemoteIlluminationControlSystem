@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import { Button } from "../../components/Button";
+import { ColorPicker } from "../../components/ColorPicker";
 import { Container } from "../../components/Container";
 import {
     requestBluetoothAdminPermission,
@@ -23,11 +24,14 @@ export const AdjustTab = ({ navigation }: Props) => {
         await requestBluetoothAdvPermission();
         await requestLocationPermission();
     };
+
     return (
         <Container>
             <Button title='request permissions' onPress={requestPermissions} />
             <Button title='clear async storage' onPress={() => AsyncStorage.clear().then(() => console.log("Cleared")) } />
             <Button title='Go to settings' onPress={() => navigation.navigate("Settings")} />
+
+            <ColorPicker />
         </Container>
     );
 };

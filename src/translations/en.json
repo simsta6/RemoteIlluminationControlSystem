@@ -34,7 +34,7 @@
     },
     "routes": {
         "Adjust": "Adjust",
-        "Add": "Add",
+        "Add": "Add Device",
         "History": "History"
     }
 }
