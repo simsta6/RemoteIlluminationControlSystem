@@ -1,6 +1,6 @@
 
 import React from "react";
-import { View } from "react-native";
+import { Dimensions, View } from "react-native";
 import ColorWheel from "react-native-wheel-color-picker";
 import { Slider } from "../slider";
 
@@ -38,8 +38,8 @@ export const ColorPicker = () => {
     }, [currColor]);
 
     return (
-        <View style={{ display: "flex", flexDirection: "column" }}>
-            <View style={{ backgroundColor: "yellow", width: 350, height: 350 }}>
+        <>
+            <View style={{ width: Dimensions.get("window").width - 16 * 2, height: Dimensions.get("window").width - 16 * 2 }}>
                 <ColorWheel
                     color={currColor}
                     onColorChange={setCurrColor}
@@ -61,6 +61,6 @@ export const ColorPicker = () => {
             />
             <View style={{height: 100, width: 100, backgroundColor: darkenedColor}}></View>
 
-        </View >
+        </>
     );
 };
