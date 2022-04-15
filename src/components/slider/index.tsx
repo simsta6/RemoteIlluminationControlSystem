@@ -731,14 +731,16 @@ export class Slider extends PureComponent<SliderProps, SliderState> {
                     <LinearGradient
                         colors={colors}
                         start={{x: 0, y: 0}}
-                        end={{x: 1, y: 0}}>
+                        end={{x: 1, y: 0}}
+                        style={[
+                            styles.track,
+                            trackStyle,
+                        ]}
+                    >
                         <View
                             renderToHardwareTextureAndroid
                             style={[
                                 styles.track,
-                                // {
-                                //     backgroundColor: maximumTrackTintColor,
-                                // },
                                 trackStyle,
                             ]}
                             onLayout={this._measureTrack}

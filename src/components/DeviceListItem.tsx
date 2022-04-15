@@ -1,42 +1,38 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { BleManager } from "react-native-ble-plx";
-import { connectToDevice, disconnectFromDevice, sendMessage } from "../ble-api/bleManager";
+import { BleManager, Device, Subscription } from "react-native-ble-plx";
+import { sendMessage } from "../ble-api/bleManager";
 import { useAppColors } from "../hooks/colorSchemeHooks";
-import { DeviceState } from "../state/connectedDevicesTypes";
 import { Button } from "./Button";
 
 
 interface Props {
-    deviceState: DeviceState;
-    index: number;
-    modify: (device: DeviceState, index: number) => void;
-    bleManager: BleManager
+    bleDevice: Device;
+    bleManager: BleManager;
+    isDeviceConnected: boolean;
+    subscription: Subscription | undefined;
+    connectOnPress: (device: Device) => Promise<void>;
+    disconnectOnPress: (device: Device, subscription: Subscription | undefined) => void;
 }
 
-export const DeviceListItem = ({ deviceState, modify, index, bleManager }: Props) => {
+export const DeviceListItem = (props: Props) => {
     const { colors } = useAppColors();
-    const { device, subscription, isDeviceConnected } = deviceState;
-
-    const connectOnPress = async () => {
-        const subscription = await connectToDevice(bleManager, device.id);
-        modify({...deviceState, isDeviceConnected: true, subscription }, index);
-    };
-
-    const disconnectOnPress = () => {
-        disconnectFromDevice(bleManager, device.id, subscription).then(() => 
-            modify({...deviceState, isDeviceConnected: false}, index)
-        );
-    };
+    const { bleDevice, bleManager, isDeviceConnected, subscription, connectOnPress, disconnectOnPress } = props;
 
     return (
         <View>
-            <Text style={{ color: colors.text }}>{device.id}</Text>
-            <Text style={{ color: colors.text }}>{device.name}</Text>
-            <Button buttonStyle={{ marginVertical: 1}} title='connect' disabled={isDeviceConnected} onPress={connectOnPress} />
-            <Button buttonStyle={{ marginVertical: 1}} title='disconnect' disabled={!isDeviceConnected} onPress={disconnectOnPress} />
+            <Text style={{ color: colors.text }}>{bleDevice?.id}</Text>
+            <Text style={{ color: colors.text }}>{bleDevice?.name}</Text>
+            <Button buttonStyle={{ marginVertical: 1 }} title='connect' disabled={isDeviceConnected} onPress={() => connectOnPress(bleDevice)} />
+            <Button 
+                buttonStyle={{ marginVertical: 1 }} 
+                title='disconnect' 
+                disabled={!isDeviceConnected} 
+                onPress={() => disconnectOnPress(bleDevice, subscription)} 
+            />
             <Button buttonStyle={{ marginVertical: 1}} title='siusti OK' onPress={async () => {
-                sendMessage(bleManager, device.id, "AT");
+                if (!bleDevice) return;
+                sendMessage(bleManager, bleDevice.id, "AT");
             }} />
         </View>
     );

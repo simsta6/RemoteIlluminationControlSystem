@@ -1,8 +1,7 @@
 import base64 from "base-64";
 import React from "react";
-import { BleManager, Characteristic, Subscription } from "react-native-ble-plx";
+import { BleManager, Characteristic, Device, Subscription } from "react-native-ble-plx";
 import Toast from "react-native-toast-message";
-import { DeviceState } from "../state/connectedDevicesTypes";
 
 const showToast = (message: string) => {
     Toast.show({
@@ -18,23 +17,32 @@ export const useBleManager = () => {
     return bleManager;
 };
 
-export const useScannedDevices = (bleManager: BleManager, devices: DeviceState[], add: (device: DeviceState) => void, startScan: boolean) => {
+export const useScannedDevices = (
+    bleManager: BleManager, 
+    devices: Device[], 
+    setAvailableBleDevices: React.Dispatch<React.SetStateAction<Device[]>>, 
+    startScan: boolean
+) => {
     React.useEffect(() => {
+        if (!startScan) {
+            bleManager.stopDeviceScan();
+            return;
+        }
+        
         bleManager.startDeviceScan(null, null, (err, device) => {
-            if (!startScan) {
-                bleManager.stopDeviceScan();
-                return;
-            }
 
             showToast("Scanning...");
 
-            if (err) //TODO: error handling
+            if (err) { 
+                //TODO: error handling
                 console.log(err);
+                Toast.hide();
+            }
 
-            if (device && !devices.some(dev => dev.device.id === device.id)) {
+            if (device && !devices.some(dev => dev.id === device.id)) {
                 console.log(device.id);
                 //TODO: check device name or smth. Only add right ones
-                add({device, isDeviceConnected: false});
+                setAvailableBleDevices(devices => [...devices, device]);
             }
         });
     }, [bleManager, devices, startScan]);

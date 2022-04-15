@@ -17,6 +17,7 @@ interface Props {
 }
  
 export const AdjustTab = ({ navigation }: Props) => {
+    const [color, setColor] = React.useState("#FFFFFF");
 
     const requestPermissions = async () => {
         await requestBluetoothPermission();
@@ -31,7 +32,7 @@ export const AdjustTab = ({ navigation }: Props) => {
             <Button title='clear async storage' onPress={() => AsyncStorage.clear().then(() => console.log("Cleared")) } />
             <Button title='Go to settings' onPress={() => navigation.navigate("Settings")} />
 
-            <ColorPicker />
+            <ColorPicker {...{color, setColor}} />
         </Container>
     );
 };

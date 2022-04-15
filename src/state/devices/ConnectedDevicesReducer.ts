@@ -1,4 +1,4 @@
-import { initialState } from "./actions";
+import { initialState } from "../actions";
 import {
     AddDeviceAction, 
     ConnectedDevicesActions, 
@@ -6,7 +6,7 @@ import {
     ModifyDeviceAction,
     RemoveDeviceAction
 } from "./connectedDevicesTypes";
-import { State } from "./types";
+import { State } from "../types";
 
 export const ConnectedDevicesReducer = (state = initialState , action: ConnectedDevicesActions): State  => {
     switch (action.type) {

@@ -24,12 +24,12 @@ export const Button = (props: Props) => {
 
     return (
         <TouchableOpacity 
-            style={[{...styles.button, backgroundColor: colors.card }, buttonStyle]} 
+            style={[{...styles.button, backgroundColor: disabled ? colors.disabledButton : colors.button }, buttonStyle]} 
             onPress={onPress}
             disabled={disabled}
         >
             <Text 
-                style={[{...styles.buttonText, color: colors.text}, textStyle]}
+                style={[{...styles.buttonText, color: disabled ? colors.disabledText : colors.text}, textStyle]}
             >
                 { title }
             </Text>

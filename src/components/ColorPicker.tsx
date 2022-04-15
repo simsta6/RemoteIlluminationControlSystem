@@ -1,8 +1,7 @@
-
 import React from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import ColorWheel from "react-native-wheel-color-picker";
-import { Slider } from "../slider";
+import { Slider as GradientSlider } from "./slider";
 
 // shades color if needed
 const shadeColorIfNeeded = (color: string, percent: number) => {
@@ -28,39 +27,77 @@ const shadeColorIfNeeded = (color: string, percent: number) => {
     return "#" + RR + GG + BB;
 };
 
-export const ColorPicker = () => {
+interface Props {
+    color: string;
+    setColor: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export const ColorPicker = (props: Props) => {
+    const {color, setColor} = props;
     const [currColor, setCurrColor] = React.useState("#FFFFFF");
-    const [darkenedColor, setDarkenedColor] = React.useState("#FFFFFF");
     const [sliderValue, setSliderValue] = React.useState(0);
 
     React.useEffect(() => {
-        setDarkenedColor(shadeColorIfNeeded(currColor, sliderValue));
+        setColor(shadeColorIfNeeded(currColor, sliderValue));
     }, [currColor]);
 
     return (
         <>
-            <View style={{ width: Dimensions.get("window").width - 16 * 2, height: Dimensions.get("window").width - 16 * 2 }}>
+            <View style={ styles.colorWheelContainerStyle }>
                 <ColorWheel
                     color={currColor}
                     onColorChange={setCurrColor}
-                    row={ false }
-                    sliderHidden={ true }
-                    swatches={ false }
+                    row={false}
+                    sliderHidden={true}
+                    swatches={false}
                 />
             </View>
-            <Slider
+            <GradientSlider
+                containerStyle={ styles.sliderContainerStyle }
                 minimumValue={0}
                 maximumValue={100}
-                colors={[currColor, "#000000"]}
-                value={sliderValue}
-                onValueChange={(v) => {
+                colors={[
+                    currColor, 
+                    "#000000"
+                ]}
+                value={ sliderValue }
+                trackStyle={ styles.trackStyle }
+                thumbStyle={{
+                    ...styles.thumbStyle, 
+                    backgroundColor: color
+                }}
+                thumbTouchSize={{ 
+                    width: 50, 
+                    height: 50,
+                }}
+                onValueChange={v => {
                     const value = v instanceof Array ? v[0] : v;
-                    setDarkenedColor(shadeColorIfNeeded(currColor, value));
+                    setColor(shadeColorIfNeeded(currColor, value));
                     setSliderValue(value);
                 }}
             />
-            <View style={{height: 100, width: 100, backgroundColor: darkenedColor}}></View>
-
         </>
     );
 };
+
+const styles = StyleSheet.create({
+    thumbStyle: {
+        height: 30,
+        width: 30,
+        borderRadius: 100,
+        borderWidth: 2,
+        borderColor: "#FFFFFF"
+    },
+    trackStyle: { 
+        height: 10, 
+        borderRadius: 10,
+    },
+    sliderContainerStyle: {
+        marginHorizontal: 32,
+        width: Dimensions.get("window").width - 96
+    },
+    colorWheelContainerStyle: {
+        width: Dimensions.get("window").width - 16, 
+        height: Dimensions.get("window").width - 16
+    }
+});

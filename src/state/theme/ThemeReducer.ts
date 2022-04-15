@@ -1,6 +1,6 @@
-import { initialState } from "./actions";
+import { initialState } from "../actions";
 import { ThemeActions, ThemeActionTypes } from "./themeTypes";
-import { State } from "./types";
+import { State } from "../types";
 
 export const ThemeReducer = (state = initialState, action: ThemeActions): State  => {
     switch (action.type) {

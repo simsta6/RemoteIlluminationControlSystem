@@ -1,4 +1,4 @@
-import { Device, Subscription } from "react-native-ble-plx";
+import { Subscription } from "react-native-ble-plx";
 
 export interface DeviceState {
     device: Device,
@@ -6,8 +6,19 @@ export interface DeviceState {
     isDeviceConnected: boolean,
 }
 
+export interface Device {
+    index: number;
+    number: number;
+    color: string;
+    bulbType: "RGB" | "Non-RGB";
+    temperature: string;
+    power: string;
+    voltage: string;
+    current: string;
+}
+
 export type ConnectDeviceState = { 
-    devices: DeviceState[]
+    devices: Device[]
 }
 
 export const ConnectedDevicesActionsTypes = {
@@ -18,13 +29,13 @@ export const ConnectedDevicesActionsTypes = {
 
 export type AddDeviceAction = {
     type: typeof ConnectedDevicesActionsTypes.Add;
-    deviceState: DeviceState;
+    deviceState: Device;
 }
 
 export type ModifyDeviceAction = {
     type: typeof ConnectedDevicesActionsTypes.Modify;
     index: number;
-    deviceState: DeviceState;
+    deviceState: Device;
 }
 
 export type RemoveDeviceAction = {
