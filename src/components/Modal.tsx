@@ -3,21 +3,21 @@ import { Modal as RNModal, StyleSheet, TouchableWithoutFeedback, View } from "re
 
 interface Props {
     isModalVisible: boolean;
-    setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+    onModalClose: () => void;
     children: JSX.Element[] | JSX.Element
 }
 
 export const Modal = (props: Props) => {
-    const { isModalVisible, setIsModalVisible, children } = props;
+    const { isModalVisible, children, onModalClose } = props;
     return (
         <RNModal
             visible={isModalVisible}
             animationType="slide"
             transparent={true}
-            onRequestClose={() => setIsModalVisible(false)}
+            onRequestClose={onModalClose}
         >
 
-            <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
+            <TouchableWithoutFeedback onPress={onModalClose}>
                 <View style={styles.modalOverlay} />
             </TouchableWithoutFeedback>
 

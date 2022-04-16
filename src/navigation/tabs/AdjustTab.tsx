@@ -20,24 +20,20 @@ export const AdjustTab = ({ navigation, bleManager }: Props) => {
     const [bleDevice, actions] = useBleDevice();
     const bleDeviceId = bleDevice.deviceId;
     const [message, setMessage] = React.useState("");
-    const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const [isConnectDevicesModalVisible, setIsConnectDevicesModalVisible] = React.useState(false);
 
     React.useEffect(() => {
         setMessage("id2clr" + color.substring(1, 7));
     }, [color]);
-
-    console.log(bleDevice.deviceId);
-
-    console.log(bleDevice.isDeviceConnected);
 
     React.useEffect(() => {
         let setHook = true;
         const timeOut = setTimeout(async () => {
             if (bleDeviceId) {
                 const messageSent = await sendMessage(bleManager, bleDeviceId, message, actions.modify);
-                !messageSent && setHook && setIsModalVisible(true);
+                !messageSent && setHook && setIsConnectDevicesModalVisible(true);
             } else {
-                setHook && setIsModalVisible(true);
+                setHook && setIsConnectDevicesModalVisible(true);
             }
         }, 200);
         return () => {
@@ -52,7 +48,7 @@ export const AdjustTab = ({ navigation, bleManager }: Props) => {
             <Button title='Go to settings' onPress={() => navigation.navigate("Settings")} />
 
             <ColorPicker {...{color, setColor}} />
-            <ConnectBleDeviceModal bleManager={bleManager} setIsModalVisible={setIsModalVisible} isModalVisible={isModalVisible} />
+            <ConnectBleDeviceModal bleManager={bleManager} setIsModalVisible={setIsConnectDevicesModalVisible} isModalVisible={isConnectDevicesModalVisible} />
         </Container>
     );
 };

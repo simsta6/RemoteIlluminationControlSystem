@@ -21,18 +21,17 @@ export const useBleManager = () => {
 
 export const useScannedDevices = (
     bleManager: BleManager, 
-    devices: Device[], 
     setAvailableBleDevices: React.Dispatch<React.SetStateAction<Device[]>>, 
     startScan: boolean
 ) => {
     React.useEffect(() => {
         if (!startScan) {
             bleManager.stopDeviceScan();
+            console.log("stopping scan");
             return;
         }
 
         bleManager.startDeviceScan(null, null, (err, device) => {
-
             showToast("Scanning...");
 
             if (err) { 
@@ -41,13 +40,13 @@ export const useScannedDevices = (
                 Toast.hide();
             }
 
-            if (device && !devices.some(dev => dev.id === device.id)) {
+            if (device) {
                 console.log(device.id);
                 //TODO: check device name or smth. Only add right ones
-                setAvailableBleDevices(devices => [...devices, device]);
+                setAvailableBleDevices(devices => devices.some(dev => dev.id === device.id) ? devices : [...devices, device]);
             }
         });
-    }, [bleManager, devices, startScan]);
+    }, [bleManager, startScan]);
 };
 
 export const disconnectFromDevice = async (bleManager: BleManager, deviceId: string, subscription: Subscription | undefined) => {

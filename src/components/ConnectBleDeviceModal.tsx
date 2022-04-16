@@ -4,6 +4,7 @@ import { BleManager, Device } from "react-native-ble-plx";
 import { connectToDevice, useScannedDevices } from "../ble-api/bleManager";
 import { useBleDevice } from "../hooks/bleDeviceHook";
 import { useAppColors } from "../hooks/colorSchemeHooks";
+import { Button } from "./Button";
 import DeviceListItem from "./DeviceListItem";
 import { Modal } from "./Modal";
 
@@ -21,10 +22,15 @@ export const ConnectBleDeviceModal = (props: Props) => {
     const [startScan, setStartScan] = React.useState(false);
     const [availableBleDevices, setAvailableBleDevices] = React.useState<Device[]>([]);
 
-    useScannedDevices(bleManager, availableBleDevices, setAvailableBleDevices, startScan);
+    useScannedDevices(bleManager, setAvailableBleDevices, startScan);
 
     const connectOnPress = async (deviceId: string) => {
         await connectToDevice(bleManager, deviceId, actions.modify);
+    };
+
+    const onModalClose = () => {
+        setIsModalVisible(false);
+        setAvailableBleDevices([]);
     };
 
     React.useEffect(() => {
@@ -37,7 +43,7 @@ export const ConnectBleDeviceModal = (props: Props) => {
     return (
         <Modal
             isModalVisible={isModalVisible}
-            setIsModalVisible={setIsModalVisible}
+            onModalClose={onModalClose}
         >
             <View style={styles.centeredView} >
                 <View style={{...styles.modalView, backgroundColor: colors.modal}}>
@@ -45,7 +51,7 @@ export const ConnectBleDeviceModal = (props: Props) => {
                         <Text style={{...styles.title, color: colors.text}}>{"Connect to device"}</Text>
                         <ActivityIndicator animating={startScan} size="large" />
                     </View>
-                    <ScrollView style={{maxHeight: 300}}>
+                    <ScrollView style={{maxHeight: 200}}>
                         {
                             availableBleDevices.map((device, index) => {
                                 return (
@@ -59,6 +65,7 @@ export const ConnectBleDeviceModal = (props: Props) => {
                             })
                         }
                     </ScrollView>
+                    <Button title="Cancel" onPress={onModalClose}/>
                 </View>
             </View>
         </Modal>
