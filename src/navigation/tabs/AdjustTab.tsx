@@ -1,18 +1,22 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
+import { StyleSheet, View } from "react-native";
 import { BleManager } from "react-native-ble-plx";
+import PowerOnIcon from "../../assets/icons/PowerOnIcon";
 import { sendMessage } from "../../ble-api/bleManager";
-import { Button } from "../../components/Button";
 import { ColorPicker } from "../../components/ColorPicker";
 import { ConnectBleDeviceModal } from "../../components/ConnectBleDeviceModal";
 import { Container } from "../../components/Container";
+import { DropDownDevicesPicker } from "../../components/DropDownDevicesPicker";
+import { IconButton } from "../../components/IconButton";
 import { useBleDevice } from "../../hooks/bleDeviceHook";
+import { useAppColors } from "../../hooks/colorSchemeHooks";
 
 interface Props {
     bleManager: BleManager;
 }
 
 export const AdjustTab = ({ bleManager }: Props) => {
+    const { colors: themeColors } = useAppColors();
     const [color, setColor] = React.useState("#FF0000");
     const [bleDevice, actions] = useBleDevice();
     const bleDeviceId = bleDevice.deviceId;
@@ -41,10 +45,23 @@ export const AdjustTab = ({ bleManager }: Props) => {
 
     return (
         <Container>
-            <Button title='clear async storage' onPress={() => AsyncStorage.clear().then(() => console.log("Cleared")) } />
-
-            <ColorPicker {...{color, setColor}} />
-            <ConnectBleDeviceModal bleManager={bleManager} setIsModalVisible={setIsConnectDevicesModalVisible} isModalVisible={isConnectDevicesModalVisible} />
+            <View style={styles.column}>
+                <ColorPicker {...{color, setColor}} />
+                <IconButton Icon={() => <PowerOnIcon color={themeColors.icon} width={40} height={40} />} />
+                <DropDownDevicesPicker />
+                <ConnectBleDeviceModal bleManager={bleManager} setIsModalVisible={setIsConnectDevicesModalVisible} isModalVisible={isConnectDevicesModalVisible} />
+            </View>
         </Container>
     );
 };
+
+const styles = StyleSheet.create({
+    column: {
+        height: "100%",
+        paddingBottom: 150,
+        alignItems: "center",
+        paddingTop: 16,
+        flexDirection: "column",
+        justifyContent: "space-between",
+    }
+});

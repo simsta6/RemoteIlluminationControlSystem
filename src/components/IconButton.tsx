@@ -8,7 +8,7 @@ import {
 interface Props {
     onPress?: ((event: GestureResponderEvent) => void) | undefined;
     buttonStyle?: StyleProp<ViewStyle>;
-    Icon?: () => JSX.Element;
+    Icon: () => JSX.Element;
 }
 
 export const IconButton = (props: Props) => {
@@ -19,7 +19,7 @@ export const IconButton = (props: Props) => {
             onPress={onPress}
             style={buttonStyle}
         >
-            {Icon && <Icon/>}
+            <Icon/>
         </TouchableOpacity>
     );
 };

@@ -53,7 +53,7 @@ export const ColorPicker = (props: Props) => {
     }, [currColor]);
 
     return (
-        <>
+        <View>
             <View style={ styles.colorWheelContainerStyle }>
                 <ColorWheel
                     noSnap={false}
@@ -95,11 +95,16 @@ export const ColorPicker = (props: Props) => {
                     </TouchableOpacity>
                 ))}
             </View>
-        </>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
+    baseContainer: {
+        alignItems: "baseline",
+        flexDirection: "column",
+        justifyContent: "space-between",
+    },
     swatchesBar: {
         justifyContent: "space-between",
         flexDirection: "row",
@@ -130,7 +135,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get("window").width - 96
     },
     colorWheelContainerStyle: {
-        width: Dimensions.get("window").width - 16, 
-        height: Dimensions.get("window").width - 16
+        width: Dimensions.get("window").width - 32, 
+        height: Dimensions.get("window").width - 32
     }
 });
