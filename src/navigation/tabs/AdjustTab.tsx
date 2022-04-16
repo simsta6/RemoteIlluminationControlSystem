@@ -1,5 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import { BleManager } from "react-native-ble-plx";
 import { sendMessage } from "../../ble-api/bleManager";
@@ -8,14 +7,12 @@ import { ColorPicker } from "../../components/ColorPicker";
 import { ConnectBleDeviceModal } from "../../components/ConnectBleDeviceModal";
 import { Container } from "../../components/Container";
 import { useBleDevice } from "../../hooks/bleDeviceHook";
-import { RootStackParamList } from "../types";
 
 interface Props {
-    navigation: NativeStackNavigationProp<RootStackParamList, "Tabs", undefined>;
     bleManager: BleManager;
 }
- 
-export const AdjustTab = ({ navigation, bleManager }: Props) => {
+
+export const AdjustTab = ({ bleManager }: Props) => {
     const [color, setColor] = React.useState("#FF0000");
     const [bleDevice, actions] = useBleDevice();
     const bleDeviceId = bleDevice.deviceId;
@@ -45,7 +42,6 @@ export const AdjustTab = ({ navigation, bleManager }: Props) => {
     return (
         <Container>
             <Button title='clear async storage' onPress={() => AsyncStorage.clear().then(() => console.log("Cleared")) } />
-            <Button title='Go to settings' onPress={() => navigation.navigate("Settings")} />
 
             <ColorPicker {...{color, setColor}} />
             <ConnectBleDeviceModal bleManager={bleManager} setIsModalVisible={setIsConnectDevicesModalVisible} isModalVisible={isConnectDevicesModalVisible} />

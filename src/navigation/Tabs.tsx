@@ -1,18 +1,18 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
 import { BleManager } from "react-native-ble-plx";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NavigationState, SceneRendererProps, TabView } from "react-native-tab-view";
-import AddIcon from "../assets/icons/AddIcon";
 import AdjustIcon from "../assets/icons/AdjustIcon";
-import HistoryIcon from "../assets/icons/HistoryIcon";
+import BulbIcon from "../assets/icons/BulbIcon";
+import CogIcon from "../assets/icons/CogIcon";
+import LiveDataIcon from "../assets/icons/LiveDataIcon";
 import { useAppColors } from "../hooks/colorSchemeHooks";
-import { AddTab } from "./tabs/AddTab";
 import { AdjustTab } from "./tabs/AdjustTab";
-import { HistoryTab } from "./tabs/HistoryTab";
-import { RootStackParamList } from "./types";
+import { DevicesTab } from "./tabs/DevicesTab";
+import { LiveDataTab } from "./tabs/LiveDataTab";
+import { SettingsTab } from "./tabs/SettingsTab";
 
 const getRoutes = (color: string) => [
     {
@@ -25,18 +25,27 @@ const getRoutes = (color: string) => [
         />
     }, 
     {
-        title: "Add",
+        title: "LiveData",
         icon:
-        <AddIcon 
+        <LiveDataIcon 
             color={color}
             height={25}
             width={25}
         />
     },
     {
-        title: "History",
+        title: "Devices",
         icon:
-        <HistoryIcon 
+        <BulbIcon 
+            color={color}
+            height={25}
+            width={25}
+        />
+    },
+    {
+        title: "Settings",
+        icon:
+        <CogIcon 
             color={color}
             height={25}
             width={25}
@@ -51,7 +60,7 @@ type RenderTabBarProps = SceneRendererProps & {
     }>;
 };
   
-type TabsProps = NativeStackScreenProps<RootStackParamList, "Tabs"> & {
+type TabsProps = {
     bleManager: BleManager;
 };
 
@@ -117,21 +126,22 @@ export const TabsView = (props: TabsProps) => {
     const renderScene = ({ route }: { route: { key: string, title: string }} ) => {
         switch (route.key) {
         case "adjust":
-            return <AdjustTab 
-                navigation={props.navigation} 
-                bleManager={props.bleManager} 
+            return <AdjustTab
+                bleManager={props.bleManager}
             />;
-        case "add":
-            return <AddTab 
-                bleManager={props.bleManager} 
+        case "livedata":
+            return <LiveDataTab
+                bleManager={props.bleManager}
             />;
-        case "history":
-            return <HistoryTab />;
+        case "devices":
+            return <DevicesTab />;
+        case "settings":
+            return <SettingsTab />;
         default:
             return null;
         }
     };
-    
+
     return (
         <TabView
             navigationState={state}
@@ -159,11 +169,11 @@ const styles = StyleSheet.create({
     tabItem: {
         flex: 1,
         alignItems: "center",
-        padding: 16,
     },
     iconText: {
         color: "rgb(122, 85, 91)",
         fontFamily: "roboto",
-        textAlign: "center"
+        textAlign: "center",
+        fontSize: 10
     },
 });

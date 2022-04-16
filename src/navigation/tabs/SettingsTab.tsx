@@ -3,7 +3,9 @@ import { Container } from "../../components/Container";
 import { DarModeToggle } from "../../components/DarkModeToggle";
 import { LanguageSelector } from "../../components/LanguageSelector";
 
-export const SettingsScreen = () => {
+
+export const SettingsTab = () => {
+
     return (
         <Container>
             <DarModeToggle />

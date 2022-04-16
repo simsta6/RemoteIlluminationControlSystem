@@ -2,9 +2,6 @@
     "AddTab": {
         "title": "Pridėjimo Skirtukas"
     },
-    "SettingsScreen": {
-        "title": "Nustatymai"
-    },
     "LanguageSelector": {
         "selectYourLanguage": "Pasirinkite Savo Kalbą"
     },
@@ -34,7 +31,8 @@
     },
     "routes": {
         "Adjust": "Keisti",
-        "Add": "Pridėti Prietaisą",
-        "History": "Istorija"
+        "LiveData": "Informacija",
+        "Devices": "Prietaisai",
+        "Settings": "Nustatymai"
     }
 }

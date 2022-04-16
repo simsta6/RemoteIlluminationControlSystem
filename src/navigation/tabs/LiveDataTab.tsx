@@ -13,7 +13,7 @@ interface Props {
     bleManager: BleManager;
 }
 
-export const AddTab = (props: Props) => {
+export const LiveDataTab = (props: Props) => {
     const { t } = useTranslation();
     const { colors } = useAppColors();
     const [bleDevice, actions] = useBleDevice();

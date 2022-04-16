@@ -1,6 +1,7 @@
 import React from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import ColorWheel from "react-native-wheel-color-picker";
+import { useAppColors } from "../hooks/colorSchemeHooks";
 import { Slider as GradientSlider } from "./slider";
 
 // shades color if needed
@@ -27,12 +28,22 @@ const shadeColorIfNeeded = (color: string, percent: number) => {
     return "#" + RR + GG + BB;
 };
 
+const PALETTE = [
+    "#ed1c24",
+    "#1633e6",
+    "#00c85d",
+    "#ffde17",
+    "#98b048",
+    "#3a9cb0",
+];
+
 interface Props {
     color: string;
     setColor: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const ColorPicker = (props: Props) => {
+    const { colors: themeColors } = useAppColors();
     const {color, setColor} = props;
     const [currColor, setCurrColor] = React.useState("#FF0000");
     const [sliderValue, setSliderValue] = React.useState(0);
@@ -77,11 +88,32 @@ export const ColorPicker = (props: Props) => {
                     setSliderValue(value);
                 }}
             />
+            <View style={{ ...styles.swatchesBar, backgroundColor: themeColors.card }}>
+                {PALETTE.map(paletteColor => (
+                    <TouchableOpacity key={paletteColor} onPress={() => setColor(paletteColor)}>
+                        <View  style={{...styles.swatch, backgroundColor: paletteColor}} />
+                    </TouchableOpacity>
+                ))}
+            </View>
         </>
     );
 };
 
 const styles = StyleSheet.create({
+    swatchesBar: {
+        justifyContent: "space-between",
+        flexDirection: "row",
+        alignItems: "center",
+        borderRadius: 15,
+        height: 60,
+        padding: 15,
+        marginTop: 20,
+    },
+    swatch: {
+        width: 30,
+        height: 30,
+        borderRadius: 6,
+    },
     thumbStyle: {
         height: 30,
         width: 30,

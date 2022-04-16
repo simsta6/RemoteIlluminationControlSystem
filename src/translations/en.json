@@ -2,9 +2,6 @@
     "AddTab": {
         "title": "Add Tab"
     },
-    "SettingsScreen": {
-        "title": "Settings"
-    },
     "LanguageSelector": {
         "selectYourLanguage": "Select Your Language"
     },
@@ -34,7 +31,8 @@
     },
     "routes": {
         "Adjust": "Adjust",
-        "Add": "Add Device",
-        "History": "History"
+        "LiveData": "Live Data",
+        "Devices": "Devices",
+        "Settings": "Settings"
     }
 }
