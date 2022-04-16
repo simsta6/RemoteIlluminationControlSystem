@@ -34,7 +34,7 @@ interface Props {
 
 export const ColorPicker = (props: Props) => {
     const {color, setColor} = props;
-    const [currColor, setCurrColor] = React.useState("#FFFFFF");
+    const [currColor, setCurrColor] = React.useState("#FF0000");
     const [sliderValue, setSliderValue] = React.useState(0);
 
     React.useEffect(() => {
@@ -45,6 +45,7 @@ export const ColorPicker = (props: Props) => {
         <>
             <View style={ styles.colorWheelContainerStyle }>
                 <ColorWheel
+                    noSnap={false}
                     color={currColor}
                     onColorChange={setCurrColor}
                     row={false}

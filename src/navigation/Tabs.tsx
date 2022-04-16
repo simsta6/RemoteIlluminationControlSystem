@@ -119,6 +119,7 @@ export const TabsView = (props: TabsProps) => {
         case "adjust":
             return <AdjustTab 
                 navigation={props.navigation} 
+                bleManager={props.bleManager} 
             />;
         case "add":
             return <AddTab 

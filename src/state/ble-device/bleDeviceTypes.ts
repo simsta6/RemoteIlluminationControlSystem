@@ -1,7 +1,7 @@
-import { Device, Subscription } from "react-native-ble-plx";
+import { Subscription } from "react-native-ble-plx";
 
 export interface BleDevice {
-    device?: Device,
+    deviceId?: string,
     subscription?: Subscription,
     isDeviceConnected: boolean,
 }

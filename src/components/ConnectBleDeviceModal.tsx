@@ -1,16 +1,11 @@
-import { useFocusEffect } from "@react-navigation/native";
-import React, { useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { Dimensions, Modal, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
-import { BleManager, Device, Subscription } from "react-native-ble-plx";
-import Toast from "react-native-toast-message";
-import XIcon from "../assets/icons/XIcon";
-import { connectToDevice, disconnectFromDevice, useScannedDevices } from "../ble-api/bleManager";
+import React from "react";
+import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+import { BleManager, Device } from "react-native-ble-plx";
+import { connectToDevice, useScannedDevices } from "../ble-api/bleManager";
 import { useBleDevice } from "../hooks/bleDeviceHook";
 import { useAppColors } from "../hooks/colorSchemeHooks";
-import { Button } from "./Button";
 import DeviceListItem from "./DeviceListItem";
-import { IconButton } from "./IconButton";
+import { Modal } from "./Modal";
 
 const wait = (timeout: number) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -25,77 +20,45 @@ interface Props {
 export const ConnectBleDeviceModal = (props: Props) => {
     const { bleManager, isModalVisible, setIsModalVisible } = props;
     const { colors } = useAppColors();
-    
+
     const [bleDevice, actions] = useBleDevice();
     const [startScan, setStartScan] = React.useState(false);
     const [availableBleDevices, setAvailableBleDevices] = React.useState<Device[]>([]);
 
     useScannedDevices(bleManager, availableBleDevices, setAvailableBleDevices, startScan);
 
-    const connectOnPress = async (device: Device) => {
-        const subscription = await connectToDevice(bleManager, device.id);
-        actions.modify({...bleDevice, isDeviceConnected: true, subscription });
+    const connectOnPress = async (deviceId: string) => {
+        const subscription = await connectToDevice(bleManager, deviceId, actions.modify);
     };
 
-    const disconnectOnPress = (device: Device, subscription: Subscription | undefined) => {
-        disconnectFromDevice(bleManager, device.id, subscription).then(() => 
-            actions.modify({...bleDevice, isDeviceConnected: false})
-        );
-    };
-
-    const onRefresh = React.useCallback(() => {
-        if (startScan) return;
-        let dontSet = false;
-        setStartScan(true);
-        wait(5000).then(() => {
-            !dontSet && setStartScan(false);
-        });
+    React.useEffect(() => {
+        isModalVisible && setStartScan(true);
         return () => {
-            dontSet = true;
+            setStartScan(false);
         };
-    }, []);
-
-    useEffect(() => {
-        isModalVisible && onRefresh();
     }, [isModalVisible]);
 
-    useEffect(() => {
-        !startScan && Toast.hide();
-    }, [startScan]);
-
     return (
-        <Modal 
-            visible={isModalVisible}
-            animationType="slide"
-            transparent={true}
-            onRequestClose={() => setIsModalVisible(false)}
+        <Modal
+            isModalVisible={isModalVisible}
+            setIsModalVisible={setIsModalVisible}
         >
             <View style={styles.centeredView} >
                 <View style={{...styles.modalView, backgroundColor: colors.modal}}>
                     <View style={styles.xIconContainer}>
-                        <IconButton 
-                            buttonStyle={{width: 25, height: 25}}
-                            onPress={() => {
-                                setStartScan(false);
-                                setIsModalVisible(false);
-                            }} 
-                            Icon={() => <XIcon height={20} width={20} color={colors.icon}/>} 
-                        />
+                        <Text style={{...styles.title, color: colors.text}}>{"Connect to device"}</Text>
+                        <ActivityIndicator animating={startScan} size="large" />
                     </View>
-                    
-                    <Button title='stop scan' onPress={() => setStartScan(false)} />
                     <ScrollView style={{maxHeight: 300}}>
-                        {                                                    
+                        {
                             availableBleDevices.map((device, index) => {
                                 return (
-                                    <DeviceListItem 
-                                        key={index.toString()} 
+                                    <DeviceListItem
+                                        key={index.toString()}
                                         bleDevice={device}
-                                        isDeviceConnected={bleDevice.isDeviceConnected}
-                                        subscription={bleDevice.subscription}
-                                        bleManager={bleManager}
                                         connectOnPress={connectOnPress}
-                                        disconnectOnPress={disconnectOnPress}
+                                        isLast={ availableBleDevices.length - 1 === index }
+                                        isConnected={ bleDevice.deviceId === device.id && bleDevice.isDeviceConnected }
                                     />);
                             })
                         }
@@ -107,6 +70,10 @@ export const ConnectBleDeviceModal = (props: Props) => {
 };
 
 const styles = StyleSheet.create({
+    title: {
+        fontSize: 20,
+        fontWeight: "500"
+    },
     centeredView: {
         flex: 1,
         justifyContent: "center",
@@ -115,7 +82,8 @@ const styles = StyleSheet.create({
     modalView: {
         width: Dimensions.get("window").width - 36,
         borderRadius: 20,
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -127,8 +95,8 @@ const styles = StyleSheet.create({
     },
     xIconContainer: {
         flexDirection: "row",
-        justifyContent: "flex-end",
-        marginBottom: 10,
+        justifyContent: "space-between",
+        marginVertical: 10,
         alignItems: "center",
     }
 });

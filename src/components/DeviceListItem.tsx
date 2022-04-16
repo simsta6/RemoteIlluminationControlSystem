@@ -1,41 +1,60 @@
 import React from "react";
-import { Text, View } from "react-native";
-import { BleManager, Device, Subscription } from "react-native-ble-plx";
-import { sendMessage } from "../ble-api/bleManager";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Device } from "react-native-ble-plx";
 import { useAppColors } from "../hooks/colorSchemeHooks";
-import { Button } from "./Button";
 
 
 interface Props {
     bleDevice: Device;
-    bleManager: BleManager;
-    isDeviceConnected: boolean;
-    subscription: Subscription | undefined;
-    connectOnPress: (device: Device) => Promise<void>;
-    disconnectOnPress: (device: Device, subscription: Subscription | undefined) => void;
+    connectOnPress: (bleDeviceId: string) => Promise<void>;
+    isLast: boolean;
+    isConnected: boolean;
 }
 
 export const DeviceListItem = (props: Props) => {
     const { colors } = useAppColors();
-    const { bleDevice, bleManager, isDeviceConnected, subscription, connectOnPress, disconnectOnPress } = props;
+    const { bleDevice, connectOnPress, isLast, isConnected } = props;
 
     return (
-        <View>
-            <Text style={{ color: colors.text }}>{bleDevice?.id}</Text>
-            <Text style={{ color: colors.text }}>{bleDevice?.name}</Text>
-            <Button buttonStyle={{ marginVertical: 1 }} title='connect' disabled={isDeviceConnected} onPress={() => connectOnPress(bleDevice)} />
-            <Button 
-                buttonStyle={{ marginVertical: 1 }} 
-                title='disconnect' 
-                disabled={!isDeviceConnected} 
-                onPress={() => disconnectOnPress(bleDevice, subscription)} 
-            />
-            <Button buttonStyle={{ marginVertical: 1}} title='siusti OK' onPress={async () => {
-                if (!bleDevice) return;
-                sendMessage(bleManager, bleDevice.id, "AT");
-            }} />
-        </View>
+        <>
+            <View style={styles.mainContainer}>
+                <TouchableOpacity onPress={() => connectOnPress(bleDevice.id)}>
+                    <View style={styles.verticalContainer}>
+                        <View style={styles.container}>
+                            <Text style={{ ...styles.deviceName, color: isConnected ? "green" : colors.text }}>{bleDevice.name ?? bleDevice.id}</Text>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </View>
+            {!isLast && <View style={{...styles.horizontalSeparator, backgroundColor: colors.text }}/>}
+        </>
     );
 };
-  
+
+const styles = StyleSheet.create({
+    mainContainer: {
+        marginVertical: 0
+    },
+    container: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    verticalContainer: {
+        flexDirection: "column",
+        justifyContent: "space-between",
+        marginBottom: 10,
+    },
+    horizontalSeparator: {
+        width: "100%",
+        height: 1,
+        opacity: 0.3,
+        marginBottom: 10,
+    },
+    deviceName: {
+        fontWeight: "500",
+        fontSize: 16,
+    }
+});
+
 export default DeviceListItem;

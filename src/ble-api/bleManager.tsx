@@ -2,6 +2,8 @@ import base64 from "base-64";
 import React from "react";
 import { BleManager, Characteristic, Device, Subscription } from "react-native-ble-plx";
 import Toast from "react-native-toast-message";
+import { requestBluetoothPermission, requestBluetoothAdminPermission, requestBluetoothAdvPermission, requestLocationPermission } from "../helpers/permissions";
+import { BleDevice } from "../state/ble-device/bleDeviceTypes";
 
 const showToast = (message: string) => {
     Toast.show({
@@ -28,7 +30,7 @@ export const useScannedDevices = (
             bleManager.stopDeviceScan();
             return;
         }
-        
+
         bleManager.startDeviceScan(null, null, (err, device) => {
 
             showToast("Scanning...");
@@ -80,18 +82,21 @@ export const getPrimaryCharacteristic = async (bleManager: BleManager, deviceId:
     return undefined;
 };
 
-export const connectToDevice = async (bleManager: BleManager, deviceId: string) => {
+const requestPermissions = async () => {
+    await requestBluetoothPermission();
+    await requestBluetoothAdminPermission();
+    await requestBluetoothAdvPermission();
+    await requestLocationPermission();
+};
+
+export const connectToDevice = async (bleManager: BleManager, deviceId: string, addDevice: (device: BleDevice) => void) => {
+    await requestPermissions();
     let subscription: Subscription | undefined;
 
     const connectedDevice = await bleManager
         .isDeviceConnected(deviceId)
         .then(isConnected => {
-            Toast.show({
-                type: "success",
-                text1: "trying to connect",
-                text2: "This is some something 👋"
-            });
-            // console.log();
+            showToast("trying to connect");
             if (!isConnected) {
                 return bleManager
                     .connectToDevice(deviceId)
@@ -105,6 +110,7 @@ export const connectToDevice = async (bleManager: BleManager, deviceId: string) 
         })
         .catch(err => {
             console.log(err);
+            addDevice({ deviceId: "", isDeviceConnected: false, subscription: undefined });
             return undefined;
         });
 
@@ -113,9 +119,9 @@ export const connectToDevice = async (bleManager: BleManager, deviceId: string) 
         .then(isConnected => isConnected ? getPrimaryCharacteristic(bleManager, connectedDevice.id) : undefined)
         .catch(err => {
             console.log(err);
+            addDevice({ deviceId: "", isDeviceConnected: false, subscription: undefined });
             return undefined;
         });
-
 
     if (characteristic) {
         subscription = await connectedDevice
@@ -128,11 +134,13 @@ export const connectToDevice = async (bleManager: BleManager, deviceId: string) 
                             console.log(error);
                         }
                         char?.value && console.log("gautas ats: " + base64.decode(char.value));
+                        addDevice({ deviceId: connectedDevice?.id, isDeviceConnected: !!(connectedDevice?.id && subscription), subscription });
                     });
                 }
             })
             .catch(err => {
                 console.log(err);
+                addDevice({ deviceId: "", isDeviceConnected: false, subscription: undefined });
                 return undefined;
             });
     }
@@ -140,22 +148,26 @@ export const connectToDevice = async (bleManager: BleManager, deviceId: string) 
     return subscription;
 };
 
-export const sendMessage = async (bleManager: BleManager, deviceId: string, message: string) => {
+export const sendMessage = async (bleManager: BleManager, deviceId: string, message: string, addDevice: (device: BleDevice) => void, maxTryCount = 3): Promise<boolean> => {
+    if (maxTryCount === 0) return false;
     if (await bleManager.isDeviceConnected(deviceId)) {
         const characteristic = await getPrimaryCharacteristic(bleManager, deviceId);
-                        
-        if (!characteristic) return;
-        
-        bleManager.writeCharacteristicWithResponseForDevice(deviceId, characteristic.serviceUUID, characteristic.uuid, base64.encode(message))
+        if (!characteristic) return false;
+
+        bleManager.writeCharacteristicWithResponseForDevice(deviceId, characteristic.serviceUUID, characteristic.uuid, base64.encode(message + "\r\n"))
             .then(characteristic => {
                 console.log("issiusta (base64): " + characteristic.value);
                 if (characteristic.value)
                     console.log("issiusta: " + base64.decode(characteristic.value));
             })
             .catch(err => console.log(err));
+
+        return true;
     } else {
         // TODO: handle subscription 
-        await connectToDevice(bleManager, deviceId);
-        sendMessage(bleManager, deviceId, message);
+        await connectToDevice(bleManager, deviceId, addDevice);
+        return sendMessage(bleManager, deviceId, message, addDevice, maxTryCount - 1);
     }
+
+    return false;
 };
