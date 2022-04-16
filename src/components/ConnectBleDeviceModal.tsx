@@ -7,10 +7,6 @@ import { useAppColors } from "../hooks/colorSchemeHooks";
 import DeviceListItem from "./DeviceListItem";
 import { Modal } from "./Modal";
 
-const wait = (timeout: number) => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-};
-
 interface Props {
     bleManager: BleManager;
     isModalVisible: boolean;
@@ -28,7 +24,7 @@ export const ConnectBleDeviceModal = (props: Props) => {
     useScannedDevices(bleManager, availableBleDevices, setAvailableBleDevices, startScan);
 
     const connectOnPress = async (deviceId: string) => {
-        const subscription = await connectToDevice(bleManager, deviceId, actions.modify);
+        await connectToDevice(bleManager, deviceId, actions.modify);
     };
 
     React.useEffect(() => {

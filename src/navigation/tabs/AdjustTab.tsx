@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import { BleManager } from "react-native-ble-plx";
-import { connectToDevice, sendMessage } from "../../ble-api/bleManager";
+import { sendMessage } from "../../ble-api/bleManager";
 import { Button } from "../../components/Button";
 import { ColorPicker } from "../../components/ColorPicker";
 import { ConnectBleDeviceModal } from "../../components/ConnectBleDeviceModal";
@@ -35,6 +35,7 @@ export const AdjustTab = ({ navigation, bleManager }: Props) => {
         const timeOut = setTimeout(async () => {
             if (bleDeviceId) {
                 const messageSent = await sendMessage(bleManager, bleDeviceId, message, actions.modify);
+                !messageSent && setHook && setIsModalVisible(true);
             } else {
                 setHook && setIsModalVisible(true);
             }

@@ -89,7 +89,7 @@ const requestPermissions = async () => {
     await requestLocationPermission();
 };
 
-export const connectToDevice = async (bleManager: BleManager, deviceId: string, addDevice: (device: BleDevice) => void) => {
+export const connectToDevice = async (bleManager: BleManager, deviceId: string, modifyDevice: (device: BleDevice) => void) => {
     await requestPermissions();
     let subscription: Subscription | undefined;
 
@@ -110,7 +110,7 @@ export const connectToDevice = async (bleManager: BleManager, deviceId: string, 
         })
         .catch(err => {
             console.log(err);
-            addDevice({ deviceId: "", isDeviceConnected: false, subscription: undefined });
+            modifyDevice({ deviceId: "", isDeviceConnected: false, subscription: undefined });
             return undefined;
         });
 
@@ -119,7 +119,7 @@ export const connectToDevice = async (bleManager: BleManager, deviceId: string, 
         .then(isConnected => isConnected ? getPrimaryCharacteristic(bleManager, connectedDevice.id) : undefined)
         .catch(err => {
             console.log(err);
-            addDevice({ deviceId: "", isDeviceConnected: false, subscription: undefined });
+            modifyDevice({ deviceId: "", isDeviceConnected: false, subscription: undefined });
             return undefined;
         });
 
@@ -134,13 +134,13 @@ export const connectToDevice = async (bleManager: BleManager, deviceId: string, 
                             console.log(error);
                         }
                         char?.value && console.log("gautas ats: " + base64.decode(char.value));
-                        addDevice({ deviceId: connectedDevice?.id, isDeviceConnected: !!(connectedDevice?.id && subscription), subscription });
+                        modifyDevice({ deviceId: connectedDevice?.id, isDeviceConnected: !!(connectedDevice?.id && subscription), subscription });
                     });
                 }
             })
             .catch(err => {
                 console.log(err);
-                addDevice({ deviceId: "", isDeviceConnected: false, subscription: undefined });
+                modifyDevice({ deviceId: "", isDeviceConnected: false, subscription: undefined });
                 return undefined;
             });
     }
@@ -148,7 +148,7 @@ export const connectToDevice = async (bleManager: BleManager, deviceId: string, 
     return subscription;
 };
 
-export const sendMessage = async (bleManager: BleManager, deviceId: string, message: string, addDevice: (device: BleDevice) => void, maxTryCount = 3): Promise<boolean> => {
+export const sendMessage = async (bleManager: BleManager, deviceId: string, message: string, modifyDevice: (device: BleDevice) => void, maxTryCount = 3): Promise<boolean> => {
     if (maxTryCount === 0) return false;
     if (await bleManager.isDeviceConnected(deviceId)) {
         const characteristic = await getPrimaryCharacteristic(bleManager, deviceId);
@@ -165,8 +165,8 @@ export const sendMessage = async (bleManager: BleManager, deviceId: string, mess
         return true;
     } else {
         // TODO: handle subscription 
-        await connectToDevice(bleManager, deviceId, addDevice);
-        return sendMessage(bleManager, deviceId, message, addDevice, maxTryCount - 1);
+        await connectToDevice(bleManager, deviceId, modifyDevice);
+        return sendMessage(bleManager, deviceId, message, modifyDevice, maxTryCount - 1);
     }
 
     return false;
