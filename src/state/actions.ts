@@ -18,8 +18,9 @@ import {
 export const initialState: BleDeviceState & ThemeState & ConnectDeviceState = {
     devices: [],
     bleDevice: {
-        device: undefined,
+        deviceId: "",
         isDeviceConnected: false,
+        subscription: undefined
     },
     theme: Appearance.getColorScheme()
 };
