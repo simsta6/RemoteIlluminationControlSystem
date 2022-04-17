@@ -7,7 +7,7 @@
         "ios": "react-native run-ios",
         "start": "react-native start",
         "test": "jest",
-        "lint": ""
+        "lint": "eslint src --ext .ts,.tsx"
     },
     "dependencies": {
         "@miblanchard/react-native-slider": "^2.1.0",
