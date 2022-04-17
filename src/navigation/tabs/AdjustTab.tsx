@@ -3,13 +3,29 @@ import { StyleSheet, View } from "react-native";
 import { BleManager } from "react-native-ble-plx";
 import PowerOnIcon from "../../assets/icons/PowerOnIcon";
 import { sendMessage } from "../../ble-api/bleManager";
-import { ColorPicker } from "../../components/ColorPicker";
 import { ConnectBleDeviceModal } from "../../components/ConnectBleDeviceModal";
 import { Container } from "../../components/Container";
 import { DropDownDevicesPicker } from "../../components/DropDownDevicesPicker";
 import { IconButton } from "../../components/IconButton";
+import { NonRGBDeviceCustomizer } from "../../components/NonRGBDeviceCustomizer";
+import { RGBDeviceCustomizer } from "../../components/RGBDeviceCustomizer";
+import { DevicesKeys } from "../../helpers/devicesHelper";
 import { useBleDevice } from "../../hooks/bleDeviceHook";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
+import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
+import { Device } from "../../state/devices/connectedDevicesTypes";
+
+const getCustomizerComponent = (devices: Device[], selectedDevice: string, setMessage: React.Dispatch<React.SetStateAction<string>>) => { 
+    switch (selectedDevice) {
+    case DevicesKeys.RgbDevices:
+        return <RGBDeviceCustomizer setMessage={setMessage} />;
+    case DevicesKeys.AllDevices:
+    case DevicesKeys.NonRgbDevices: 
+        return <NonRGBDeviceCustomizer setMessage={setMessage} />;
+    default:
+        return devices.find(dev => dev.index === selectedDevice)?.bulbType === "RGB" ? <RGBDeviceCustomizer setMessage={setMessage} /> : <NonRGBDeviceCustomizer setMessage={setMessage} />;
+    }
+};
 
 interface Props {
     bleManager: BleManager;
@@ -17,15 +33,12 @@ interface Props {
 
 export const AdjustTab = ({ bleManager }: Props) => {
     const { colors: themeColors } = useAppColors();
-    const [color, setColor] = React.useState("#FF0000");
     const [bleDevice, actions] = useBleDevice();
     const bleDeviceId = bleDevice.deviceId;
-    const [message, setMessage] = React.useState("");
+    const [devices] = useConnectedDevices();
     const [isConnectDevicesModalVisible, setIsConnectDevicesModalVisible] = React.useState(false);
-
-    React.useEffect(() => {
-        setMessage("id2clr" + color.substring(1, 7));
-    }, [color]);
+    const [selectedDevice, setSelectedDevice] = React.useState<string>(DevicesKeys.AllDevices);
+    const [message, setMessage] = React.useState("");
 
     React.useEffect(() => {
         let setHook = true;
@@ -46,10 +59,24 @@ export const AdjustTab = ({ bleManager }: Props) => {
     return (
         <Container>
             <View style={styles.column}>
-                <ColorPicker {...{color, setColor}} />
-                <IconButton Icon={() => <PowerOnIcon color={themeColors.icon} width={40} height={40} />} />
-                <DropDownDevicesPicker />
-                <ConnectBleDeviceModal bleManager={bleManager} setIsModalVisible={setIsConnectDevicesModalVisible} isModalVisible={isConnectDevicesModalVisible} />
+                { getCustomizerComponent(devices, selectedDevice, setMessage) }
+                <IconButton 
+                    Icon={() => 
+                        <PowerOnIcon color={themeColors.icon} 
+                            width={40} 
+                            height={40} 
+                        />
+                    } 
+                />
+                <DropDownDevicesPicker 
+                    selectedDevice={selectedDevice} 
+                    setSelectedDevice={setSelectedDevice} 
+                />
+                <ConnectBleDeviceModal 
+                    bleManager={bleManager} 
+                    setIsModalVisible={setIsConnectDevicesModalVisible} 
+                    isModalVisible={isConnectDevicesModalVisible} 
+                />
             </View>
         </Container>
     );

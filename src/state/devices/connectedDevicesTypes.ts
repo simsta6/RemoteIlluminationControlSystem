@@ -7,7 +7,7 @@ export interface DeviceState {
 }
 
 export interface Device {
-    index: number;
+    index: string;
     number: number;
     color: string;
     bulbType: "RGB" | "Non-RGB";
