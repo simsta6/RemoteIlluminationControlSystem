@@ -31,8 +31,8 @@ export const DropDownDevicesPicker = (props: Props) => {
                 arrowIconStyle={{tintColor: colors.text} as StyleProp<ImageStyle>}
                 tickIconStyle={{tintColor: colors.text} as StyleProp<ImageStyle>}
                 tickIconContainerStyle={{tintColor: colors.text} as StyleProp<ImageStyle>}
-                style={{backgroundColor: colors.background, width: width ?? "100%" }}
-                dropDownContainerStyle={{backgroundColor: colors.background, width: width ?? "100%" }}
+                style={{backgroundColor: colors.background, borderColor: colors.text, width: width ?? "100%" }}
+                dropDownContainerStyle={{backgroundColor: colors.background, borderColor: colors.text, width: width ?? "100%" }}
             />
         </>
     );

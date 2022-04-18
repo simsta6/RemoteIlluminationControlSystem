@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Device } from "react-native-ble-plx";
-import { useAppColors } from "../hooks/colorSchemeHooks";
+import { useAppColors } from "../../hooks/colorSchemeHooks";
 
 
 interface Props {

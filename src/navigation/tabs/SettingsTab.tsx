@@ -2,9 +2,9 @@ import React from "react";
 import { TextInput } from "react-native";
 import { BleManager } from "react-native-ble-plx";
 import { sendMessage } from "../../ble-api/bleManager";
-import { Button } from "../../components/Button";
+import { Button } from "../../components/Buttons/Button";
 import { Container } from "../../components/Container";
-import { DarModeToggle } from "../../components/DarkModeToggle";
+import { DarModeToggle } from "../../components/Buttons/DarkModeToggle";
 import { LanguageSelector } from "../../components/LanguageSelector";
 import { useBleDevice } from "../../hooks/bleDeviceHook";
 

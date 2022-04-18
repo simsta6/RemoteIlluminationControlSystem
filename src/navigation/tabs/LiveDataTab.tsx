@@ -2,7 +2,7 @@ import React from "react";
 import { Dimensions, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Container } from "../../components/Container";
 import { DropDownDevicesPicker } from "../../components/DropDownDevicesPicker";
-import { LiveDataListItem } from "../../components/LiveDataListItem";
+import { LiveDataListItem } from "../../components/ListItems/LiveDataListItem";
 import { isHexColor } from "../../helpers/colorHelper";
 import { getAllDevices, getUnitOfMeasurement } from "../../helpers/devicesHelper";
 import { useAppColors } from "../../hooks/colorSchemeHooks";

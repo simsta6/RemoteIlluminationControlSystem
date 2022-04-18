@@ -8,7 +8,7 @@ import {
     TouchableOpacity, 
     ViewStyle
 } from "react-native";
-import { useAppColors } from "../hooks/colorSchemeHooks";
+import { useAppColors } from "../../hooks/colorSchemeHooks";
 
 interface Props {
     title: string;

@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import ColorWheel from "react-native-wheel-color-picker";
 import { shadeColorIfNeeded } from "../helpers/colorHelper";
 import { useAppColors } from "../hooks/colorSchemeHooks";
-import { GradientSlider } from "./slider";
+import { GradientSlider } from "./Slider";
 
 const PALETTE = [
     "#ed1c24",

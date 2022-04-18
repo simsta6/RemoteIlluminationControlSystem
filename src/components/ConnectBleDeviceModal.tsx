@@ -4,8 +4,8 @@ import { BleManager, Device } from "react-native-ble-plx";
 import { connectToDevice, useScannedDevices } from "../ble-api/bleManager";
 import { useBleDevice } from "../hooks/bleDeviceHook";
 import { useAppColors } from "../hooks/colorSchemeHooks";
-import { Button } from "./Button";
-import DeviceListItem from "./DeviceListItem";
+import { Button } from "./Buttons/Button";
+import DeviceListItem from "./ListItems/DeviceListItem";
 import { Modal } from "./Modal";
 
 interface Props {

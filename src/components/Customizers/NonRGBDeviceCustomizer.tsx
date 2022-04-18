@@ -1,8 +1,8 @@
-import { Slider } from "@miblanchard/react-native-slider";
 import React from "react";
+import { Slider } from "@miblanchard/react-native-slider";
 import { Dimensions, StyleSheet, View } from "react-native";
-import SunIcon from "../assets/icons/SunIcon";
-import { useAppColors } from "../hooks/colorSchemeHooks";
+import SunIcon from "../../assets/icons/SunIcon";
+import { useAppColors } from "../../hooks/colorSchemeHooks";
 
 interface Props {
     setMessage: React.Dispatch<React.SetStateAction<string>>

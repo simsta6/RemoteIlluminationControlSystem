@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { useAppColors } from "../hooks/colorSchemeHooks";
+import { useAppColors } from "../../hooks/colorSchemeHooks";
 
 interface Props {
     isLast: boolean;

@@ -1,9 +1,9 @@
 import React from "react";
-import { useAppColors } from "../hooks/colorSchemeHooks";
-import { useTheme } from "../hooks/themesHooks";
+import { useAppColors } from "../../hooks/colorSchemeHooks";
+import { useTheme } from "../../hooks/themesHooks";
 import { Switch } from "react-native-switch";
-import MoonIcon from "../assets/icons/MoonIcon";
-import SunIcon from "../assets/icons/SunIcon";
+import MoonIcon from "../../assets/icons/MoonIcon";
+import SunIcon from "../../assets/icons/SunIcon";
 import { StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
