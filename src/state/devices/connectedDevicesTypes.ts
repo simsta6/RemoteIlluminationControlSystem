@@ -1,14 +1,6 @@
-import { Subscription } from "react-native-ble-plx";
 
-export interface DeviceState {
-    device: Device,
-    subscription?: Subscription,
-    isDeviceConnected: boolean,
-}
-
-export interface Device {
+interface ReadOnlyDeviceInfo {
     index: string;
-    number: number;
     color: string;
     bulbType: "RGB" | "Non-RGB";
     temperature: string;
@@ -16,6 +8,12 @@ export interface Device {
     voltage: string;
     current: string;
 }
+
+interface CustomDeviceInfo {
+    name?: string;
+}
+
+export type Device = ReadOnlyDeviceInfo & CustomDeviceInfo;
 
 export type ConnectDeviceState = { 
     devices: Device[]

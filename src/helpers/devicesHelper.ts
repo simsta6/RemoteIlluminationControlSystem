@@ -26,7 +26,7 @@ export const getAllItems = (devices: Device[]) => {
         devicesIds.rgbDevices.length ? {label: "RGB Devices", value: DevicesKeys.RgbDevices } : undefined,
         devicesIds.nonRgbDevices.length ? {label: "Non-RGB Devices", value: DevicesKeys.NonRgbDevices } : undefined,
         ...devices.map(dev => ({
-            label: dev.index + dev.number.toString(),
+            label: dev.name,
             value: dev.index,
             parent: dev.bulbType === "RGB" ? DevicesKeys.RgbDevices : DevicesKeys.NonRgbDevices
         }))

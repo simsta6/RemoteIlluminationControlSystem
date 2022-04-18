@@ -40,6 +40,7 @@ export const AdjustTab = ({ bleManager }: Props) => {
     const [selectedDevice, setSelectedDevice] = React.useState<string>(DevicesKeys.AllDevices);
     const [message, setMessage] = React.useState("");
 
+    //Send message after waiting for 200ms when customizer sets it.
     React.useEffect(() => {
         let setHook = true;
         const timeOut = setTimeout(async () => {

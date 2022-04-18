@@ -12,7 +12,7 @@ export const ConnectedDevicesReducer = (state = initialState , action: Connected
     switch (action.type) {
     case ConnectedDevicesActionsTypes.Add: {
         const { deviceState } = <AddDeviceAction>action;
-        return { ...state, devices: state.devices.concat(deviceState) };
+        return { ...state, devices: state.devices.concat({...deviceState, name: deviceState.name ?? "Auto Generated Device Name"}) };
     }
     case ConnectedDevicesActionsTypes.Remove: {
         const { index } = <RemoveDeviceAction>action;
