@@ -21,3 +21,5 @@ export const shadeColorIfNeeded = (color: string, percent: number) => {
 
     return "#" + RR + GG + BB;
 };
+
+export const isHexColor = (hex: string) => typeof hex === "string" && hex.length === 7 && !isNaN(Number("0x" + hex.substring(1)));

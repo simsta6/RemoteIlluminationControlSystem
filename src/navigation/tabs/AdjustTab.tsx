@@ -9,7 +9,7 @@ import { DropDownDevicesPicker } from "../../components/DropDownDevicesPicker";
 import { IconButton } from "../../components/IconButton";
 import { NonRGBDeviceCustomizer } from "../../components/NonRGBDeviceCustomizer";
 import { RGBDeviceCustomizer } from "../../components/RGBDeviceCustomizer";
-import { DevicesKeys } from "../../helpers/devicesHelper";
+import { DevicesKeys, getAllDevicesWithParents } from "../../helpers/devicesHelper";
 import { useBleDevice } from "../../hooks/bleDeviceHook";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
@@ -39,6 +39,8 @@ export const AdjustTab = ({ bleManager }: Props) => {
     const [isConnectDevicesModalVisible, setIsConnectDevicesModalVisible] = React.useState(false);
     const [selectedDevice, setSelectedDevice] = React.useState<string>(DevicesKeys.AllDevices);
     const [message, setMessage] = React.useState("");
+    
+    const allItems = React.useMemo(() => getAllDevicesWithParents(devices), [devices]);
 
     //Send message after waiting for 200ms when customizer sets it.
     React.useEffect(() => {
@@ -64,6 +66,7 @@ export const AdjustTab = ({ bleManager }: Props) => {
                 <DropDownDevicesPicker 
                     selectedDevice={selectedDevice} 
                     setSelectedDevice={setSelectedDevice} 
+                    allDevices={allItems}
                 />
                 { getCustomizerComponent(devices, selectedDevice, setMessage) }
                 <IconButton 

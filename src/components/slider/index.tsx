@@ -137,7 +137,7 @@ const indexOfLowest = (values: Array<number>): number => {
     return lowestIndex;
 };
 
-export class Slider extends PureComponent<SliderProps, SliderState> {
+export class GradientSlider extends PureComponent<SliderProps, SliderState> {
     constructor(props: SliderProps & { colors: string[] }) {
         super(props);
         this._panResponder = PanResponder.create({

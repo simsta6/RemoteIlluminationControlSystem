@@ -130,13 +130,13 @@ export const TabsView = (props: TabsProps) => {
                 bleManager={props.bleManager}
             />;
         case "livedata":
-            return <LiveDataTab
-                bleManager={props.bleManager}
-            />;
+            return <LiveDataTab />;
         case "devices":
             return <DevicesTab />;
         case "settings":
-            return <SettingsTab />;
+            return <SettingsTab 
+                bleManager={props.bleManager}
+            />;
         default:
             return null;
         }

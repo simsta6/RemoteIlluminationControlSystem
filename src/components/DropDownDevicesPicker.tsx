@@ -1,25 +1,22 @@
 import React from "react";
 import { ImageStyle, StyleProp } from "react-native";
 import DropDownPicker, { ItemType } from "react-native-dropdown-picker";
-import { getAllItems } from "../helpers/devicesHelper";
 import { useAppColors } from "../hooks/colorSchemeHooks";
-import { useConnectedDevices } from "../hooks/connectedDevicesHooks";
 
 interface Props {
     selectedDevice: string,
     setSelectedDevice: React.Dispatch<React.SetStateAction<string>>,
+    allDevices: ItemType<string>[];
+    width?: string | number 
 }
 
 export const DropDownDevicesPicker = (props: Props) => {
-    const { selectedDevice, setSelectedDevice } = props;
+    const { selectedDevice, setSelectedDevice, width, allDevices } = props;
     const { colors } = useAppColors();
-    const [devices] = useConnectedDevices();
     const [open, setOpen] = React.useState(false);
     const [items, setItems] = React.useState<ItemType<string>[]>([]);
 
-    const allItems = React.useMemo(() => getAllItems(devices), [devices]);
-
-    React.useEffect(() => setItems(allItems), [allItems]);
+    React.useEffect(() => setItems(allDevices), [allDevices]);
 
     return (
         <>
@@ -30,12 +27,12 @@ export const DropDownDevicesPicker = (props: Props) => {
                 setOpen={setOpen}
                 setValue={setSelectedDevice}
                 setItems={setItems}
-                textStyle={{color: colors.text}}
+                textStyle={{color: colors.text, fontSize: 16}}
                 arrowIconStyle={{tintColor: colors.text} as StyleProp<ImageStyle>}
                 tickIconStyle={{tintColor: colors.text} as StyleProp<ImageStyle>}
                 tickIconContainerStyle={{tintColor: colors.text} as StyleProp<ImageStyle>}
-                style={{backgroundColor: colors.background}}
-                dropDownContainerStyle={{backgroundColor: colors.background}}
+                style={{backgroundColor: colors.background, width: width ?? "100%" }}
+                dropDownContainerStyle={{backgroundColor: colors.background, width: width ?? "100%" }}
             />
         </>
     );
