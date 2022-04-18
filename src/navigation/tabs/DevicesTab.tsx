@@ -40,6 +40,7 @@ export const DevicesTab = () => {
 const styles = StyleSheet.create({
     title: {
         fontSize: 20, 
+        fontWeight: "500",
         paddingBottom: 6,
     },
     listContainer: {

@@ -69,7 +69,7 @@ export const LiveDataTab = () => {
                 <Text 
                     style={{ ...styles.title, color: colors.text }}
                 >
-                    Live Data
+                    All Devices Live Data
                 </Text>
                 <View style={styles.listContainer}>
                     { 
@@ -117,7 +117,8 @@ export const LiveDataTab = () => {
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 20, 
+        fontSize: 20,
+        fontWeight: "500",
         paddingBottom: 6,
     },
     listContainer: {

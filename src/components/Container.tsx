@@ -20,5 +20,6 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         marginHorizontal: 16,
         marginTop: 10,
+        paddingTop: 10,
     },
 });

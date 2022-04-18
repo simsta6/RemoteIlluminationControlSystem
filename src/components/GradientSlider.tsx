@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {PureComponent} from "react";
 import {
     Animated,
@@ -12,9 +13,58 @@ import {
     ViewStyle,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-// styles
-import {defaultStyles as styles} from "./styles";
-import type {Dimensions, SliderProps, SliderState} from "./types";
+
+export type Dimensions = {
+    height: number;
+    width: number;
+};
+
+/**
+ * Callback for slider change events. The second number value will be only if provided an array with two values in `value` prop
+ */
+type SliderOnChangeCallback = (value: number | Array<number>) => void;
+
+export type SliderProps = {
+    animateTransitions?: boolean;
+    animationConfig?: {
+        spring?: Animated.AnimatedProps<ViewStyle>;
+        timing?: Animated.AnimatedProps<ViewStyle>;
+    };
+    animationType: "spring" | "timing";
+    colors: string[],
+    containerStyle?: ViewStyle;
+    debugTouchArea?: boolean;
+    disabled?: boolean;
+    maximumTrackTintColor?: string;
+    maximumValue: number;
+    minimumTrackTintColor?: string;
+    minimumValue: number;
+    onSlidingComplete?: SliderOnChangeCallback;
+    onSlidingStart?: SliderOnChangeCallback;
+    onValueChange?: SliderOnChangeCallback;
+    renderAboveThumbComponent?: (index: number) => React.ReactNode;
+    renderThumbComponent?: () => React.ReactNode;
+    renderTrackMarkComponent?: (index: number) => React.ReactNode;
+    step?: number;
+    thumbImage?: ImageSourcePropType;
+    thumbStyle?: ViewStyle;
+    thumbTintColor?: string;
+    thumbTouchSize?: Dimensions;
+    trackClickable?: boolean;
+    trackMarks?: Array<number>;
+    trackStyle?: ViewStyle;
+    value?: Animated.Value | number | Array<number>;
+    vertical?: boolean;
+};
+
+export type SliderState = {
+    allMeasured: boolean;
+    containerSize: Dimensions;
+    thumbSize: Dimensions;
+    trackMarksValues?: Array<Animated.Value>;
+    values: Array<Animated.Value>;
+};
+
 
 type RectReturn = {
     containsPoint: (nativeX: number, nativeY: number) => boolean;
@@ -820,3 +870,69 @@ export class GradientSlider extends PureComponent<SliderProps, SliderState> {
         );
     }
 }
+
+const TRACK_SIZE = 4;
+const THUMB_SIZE = 20;
+const GREEN = "green";
+const TRANSPARENT = "transparent";
+export const styles: {
+    aboveThumbComponentsContainer: any;
+    container: any;
+    debugThumbTouchArea: {
+        backgroundColor: string;
+        opacity: number;
+        position: "absolute";
+    };
+    renderThumbComponent: {
+        position: "absolute";
+    };
+    thumb: {
+        borderRadius: number;
+        height: number;
+        position: "absolute";
+        width: number;
+    };
+    touchArea: {
+        backgroundColor: string;
+        bottom: number;
+        left: number;
+        position: "absolute";
+        right: number;
+        top: number;
+    };
+    track: {borderRadius: number; height: number};
+} = {
+    aboveThumbComponentsContainer: {
+        flexDirection: "row",
+    },
+    container: {
+        height: 40,
+        justifyContent: "center",
+    },
+    debugThumbTouchArea: {
+        backgroundColor: GREEN,
+        opacity: 0.5,
+        position: "absolute",
+    },
+    renderThumbComponent: {
+        position: "absolute",
+    },
+    thumb: {
+        borderRadius: THUMB_SIZE / 2,
+        height: THUMB_SIZE,
+        position: "absolute",
+        width: THUMB_SIZE,
+    },
+    touchArea: {
+        backgroundColor: TRANSPARENT,
+        bottom: 0,
+        left: 0,
+        position: "absolute",
+        right: 0,
+        top: 0,
+    },
+    track: {
+        borderRadius: TRACK_SIZE / 2,
+        height: TRACK_SIZE,
+    },
+};

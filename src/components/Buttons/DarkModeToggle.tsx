@@ -22,7 +22,7 @@ export const DarModeToggle = () => {
     }, [isEnabled]);
 
     return (            
-        <View style={styles.container}>
+        <>
             <Text style={{...styles.title, color: colors.text}}>{t("DarkModeToggle:darkModeToggle")}</Text>
             <View style={styles.container}>
                 <Switch
@@ -43,7 +43,7 @@ export const DarModeToggle = () => {
                     circleBorderInactiveColor={colors.border}
                 />
             </View>
-        </View>
+        </>
     );
 };
 
