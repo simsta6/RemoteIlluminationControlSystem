@@ -12,16 +12,24 @@ export const ConnectedDevicesReducer = (state = initialState , action: Connected
     switch (action.type) {
     case ConnectedDevicesActionsTypes.Add: {
         const { deviceState } = <AddDeviceAction>action;
-        return { ...state, devices: state.devices.concat({...deviceState, name: deviceState.name ?? "Auto Generated Device Name"}) };
+        return { ...state, 
+            devices: state.devices.concat({
+                ...deviceState, 
+                name: deviceState.name ?? `${deviceState.bulbType} Device ${deviceState.index}`
+            }) 
+        };
     }
     case ConnectedDevicesActionsTypes.Remove: {
         const { index } = <RemoveDeviceAction>action;
-        return { ...state, devices: state.devices.slice(0, index).concat(state.devices.slice(index + 1)) };
+        return { ...state, 
+            devices: state.devices.slice(0, index).concat(state.devices.slice(index + 1)) 
+        };
     }
     case ConnectedDevicesActionsTypes.Modify:{
         const { deviceState, index } = <ModifyDeviceAction>action;
         return { ...state, 
-            devices: state.devices.slice(0, index).concat(deviceState, state.devices.slice(index + 1)) };
+            devices: state.devices.slice(0, index).concat(deviceState, state.devices.slice(index + 1)) 
+        };
     }
     default:
         return state;
