@@ -7,12 +7,12 @@ interface Props {
     itemName: string;
     itemData: string;
     unitOfMeasurement?: string;
-    rightSideIcon?: JSX.Element
+    RightSideIcon?: JSX.Element
 }
 
 export const LiveDataListItem = (props: Props) => {
     const { colors } = useAppColors();
-    const { isLast, itemName, itemData, unitOfMeasurement, rightSideIcon } = props;
+    const { isLast, itemName, itemData, unitOfMeasurement, RightSideIcon } = props;
 
     return (
         <>
@@ -21,7 +21,7 @@ export const LiveDataListItem = (props: Props) => {
                     <Text style={{ ...styles.itemName, color: colors.text }}>{itemName}</Text>
                     <Text style={{ ...styles.itemData, color: colors.text }}>{`${itemData} ${unitOfMeasurement ?? ""}`}</Text>
                 </View>
-                {rightSideIcon ? rightSideIcon : <></>}
+                {RightSideIcon ? RightSideIcon : <></>}
             </View>
             {!isLast && <View style={{...styles.horizontalSeparator, backgroundColor: colors.text }}/>}
         </>

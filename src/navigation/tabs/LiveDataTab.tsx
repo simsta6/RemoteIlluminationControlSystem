@@ -98,7 +98,7 @@ export const LiveDataTab = () => {
                                 {...item} 
                                 isLast={ selectedDeviceDataList.length - 1 === index }
                                 unitOfMeasurement={getUnitOfMeasurement(item.itemName)}
-                                rightSideIcon={isHexColor(item.itemData) ? <View style={{...styles.swatch, backgroundColor: item.itemData}}/> : undefined }
+                                RightSideIcon={isHexColor(item.itemData) ? <View style={{...styles.swatch, backgroundColor: item.itemData}}/> : undefined }
                             />
                         )) 
                     }

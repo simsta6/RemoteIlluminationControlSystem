@@ -3,7 +3,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Device } from "react-native-ble-plx";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 
-
 interface Props {
     bleDevice: Device;
     connectOnPress: (bleDeviceId: string) => Promise<void>;
@@ -11,7 +10,7 @@ interface Props {
     isConnected: boolean;
 }
 
-export const DeviceListItem = (props: Props) => {
+export const ConnectToDeviceListItem = (props: Props) => {
     const { colors } = useAppColors();
     const { bleDevice, connectOnPress, isLast, isConnected } = props;
 
@@ -56,5 +55,3 @@ const styles = StyleSheet.create({
         fontSize: 16,
     }
 });
-
-export default DeviceListItem;

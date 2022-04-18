@@ -47,6 +47,6 @@ const styles = StyleSheet.create({
     buttonText: {
         textTransform: "uppercase",
         textAlign: "center",
-        fontWeight: "500"
+        fontWeight: "500",
     }
 });

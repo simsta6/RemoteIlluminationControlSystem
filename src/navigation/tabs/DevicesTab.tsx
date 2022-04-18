@@ -1,12 +1,18 @@
 import React from "react";
-import { Dimensions, RefreshControl, ScrollView, StyleSheet, Text } from "react-native";
+import { Dimensions, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
+import BulbIcon from "../../assets/icons/BulbIcon";
 import { Container } from "../../components/Container";
+import { DevicesListItem } from "../../components/ListItems/DevicesListItem";
+import { EditDeviceModal } from "../../components/Modals/EditDeviceModal";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
+import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 
 
 export const DevicesTab = () => {
     const { colors } = useAppColors();
     const [isRefreshing, setIsRefreshing] = React.useState(false);
+    const [devices] = useConnectedDevices();
+    const [isModalVisible, setIsModalVisible] = React.useState(false);
 
     const onRefresh = () => {
         console.log("Refreshing");
@@ -32,7 +38,25 @@ export const DevicesTab = () => {
                 >
                     Configure Connected Devices
                 </Text>
+
+                <View style={styles.listContainer}>
+                    { 
+                        devices.map((device, index) => (
+                            <DevicesListItem 
+                                key={index.toString()} 
+                                device={device}
+                                Icon={<BulbIcon color={colors.icon} height={25} width={25} />}
+                                isLast={ devices.length - 1 === index }
+                                setIsModalVisible={setIsModalVisible}
+                            />
+                        )) 
+                    }
+                </View>
             </ScrollView>
+            <EditDeviceModal 
+                isModalVisible={isModalVisible}
+                setIsModalVisible={setIsModalVisible}
+            />
         </Container>
     );
 };

@@ -1,11 +1,11 @@
 import React from "react";
 import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import { BleManager, Device } from "react-native-ble-plx";
-import { connectToDevice, useScannedDevices } from "../ble-api/bleManager";
-import { useBleDevice } from "../hooks/bleDeviceHook";
-import { useAppColors } from "../hooks/colorSchemeHooks";
-import { Button } from "./Buttons/Button";
-import DeviceListItem from "./ListItems/DeviceListItem";
+import { connectToDevice, useScannedDevices } from "../../ble-api/bleManager";
+import { useBleDevice } from "../../hooks/bleDeviceHook";
+import { useAppColors } from "../../hooks/colorSchemeHooks";
+import { Button } from "../Buttons/Button";
+import { ConnectToDeviceListItem } from "../ListItems/ConnectToDeviceListItem";
 import { Modal } from "./Modal";
 
 interface Props {
@@ -56,7 +56,7 @@ export const ConnectBleDeviceModal = (props: Props) => {
                         {
                             availableBleDevices.map((device, index) => {
                                 return (
-                                    <DeviceListItem
+                                    <ConnectToDeviceListItem
                                         key={index.toString()}
                                         bleDevice={device}
                                         connectOnPress={connectOnPress}

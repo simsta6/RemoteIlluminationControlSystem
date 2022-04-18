@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { BleManager } from "react-native-ble-plx";
 import PowerOnIcon from "../../assets/icons/PowerOnIcon";
 import { sendMessage } from "../../ble-api/bleManager";
-import { ConnectBleDeviceModal } from "../../components/ConnectBleDeviceModal";
+import { ConnectBleDeviceModal } from "../../components/Modals/ConnectBleDeviceModal";
 import { Container } from "../../components/Container";
 import { DropDownDevicesPicker } from "../../components/DropDownDevicesPicker";
 import { IconButton } from "../../components/Buttons/IconButton";
