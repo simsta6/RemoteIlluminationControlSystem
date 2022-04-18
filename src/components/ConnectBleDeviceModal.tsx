@@ -25,7 +25,8 @@ export const ConnectBleDeviceModal = (props: Props) => {
     useScannedDevices(bleManager, setAvailableBleDevices, startScan);
 
     const connectOnPress = async (deviceId: string) => {
-        await connectToDevice(bleManager, deviceId, actions.modify);
+        setStartScan(!!await connectToDevice(bleManager, deviceId, actions.modify));
+
     };
 
     const onModalClose = () => {

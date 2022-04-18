@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { BleManager } from "react-native-ble-plx";
 import PowerOnIcon from "../../assets/icons/PowerOnIcon";
 import { sendMessage } from "../../ble-api/bleManager";
@@ -59,6 +59,7 @@ export const AdjustTab = ({ bleManager }: Props) => {
 
     return (
         <Container>
+            <Text style={{...styles.title, color: themeColors.text}}>Customize Your Illumination Devices</Text>
             <View style={styles.column}>
                 <DropDownDevicesPicker 
                     selectedDevice={selectedDevice} 
@@ -86,10 +87,15 @@ export const AdjustTab = ({ bleManager }: Props) => {
 const styles = StyleSheet.create({
     column: {
         height: "100%",
-        paddingBottom: 150,
+        paddingBottom: 210,
         alignItems: "center",
         paddingTop: 16,
         flexDirection: "column",
         justifyContent: "space-between",
-    }
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: "500",
+        marginVertical: 10,
+    },
 });
