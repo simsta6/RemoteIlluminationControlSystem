@@ -1,5 +1,6 @@
-import { Slider } from "@miblanchard/react-native-slider";
 import React from "react";
+import { Dimensions, StyleSheet } from "react-native";
+import { Slider } from "./slider";
 
 interface Props {
     setMessage: React.Dispatch<React.SetStateAction<string>>
@@ -16,7 +17,21 @@ export const NonRGBDeviceCustomizer = (props: Props) => {
     
     return (
         <>
-            <Slider />
+            <Slider 
+                containerStyle={ styles.sliderContainerStyle }
+                colors={[
+                    "#FFFFFF", 
+                    "#000000"
+                ]}
+            />
         </>
     );
 };
+
+
+const styles = StyleSheet.create({
+    sliderContainerStyle: {
+        marginHorizontal: 32,
+        width: Dimensions.get("window").width - 96
+    },
+});

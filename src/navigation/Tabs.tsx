@@ -149,7 +149,7 @@ export const TabsView = (props: TabsProps) => {
             renderTabBar={renderTabBar}
             onIndexChange={handleIndexChange}
             tabBarPosition="bottom"
-            style={{marginTop: insets.top}}
+            style={{marginTop: insets.top, backgroundColor: colors.background}}
         />
     );
 };

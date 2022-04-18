@@ -60,6 +60,10 @@ export const AdjustTab = ({ bleManager }: Props) => {
     return (
         <Container>
             <View style={styles.column}>
+                <DropDownDevicesPicker 
+                    selectedDevice={selectedDevice} 
+                    setSelectedDevice={setSelectedDevice} 
+                />
                 { getCustomizerComponent(devices, selectedDevice, setMessage) }
                 <IconButton 
                     Icon={() => 
@@ -68,10 +72,6 @@ export const AdjustTab = ({ bleManager }: Props) => {
                             height={40} 
                         />
                     } 
-                />
-                <DropDownDevicesPicker 
-                    selectedDevice={selectedDevice} 
-                    setSelectedDevice={setSelectedDevice} 
                 />
                 <ConnectBleDeviceModal 
                     bleManager={bleManager} 

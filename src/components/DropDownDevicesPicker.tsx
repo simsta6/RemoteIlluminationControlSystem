@@ -1,6 +1,8 @@
 import React from "react";
+import { ImageStyle, StyleProp } from "react-native";
 import DropDownPicker, { ItemType } from "react-native-dropdown-picker";
 import { getAllItems } from "../helpers/devicesHelper";
+import { useAppColors } from "../hooks/colorSchemeHooks";
 import { useConnectedDevices } from "../hooks/connectedDevicesHooks";
 
 interface Props {
@@ -10,6 +12,7 @@ interface Props {
 
 export const DropDownDevicesPicker = (props: Props) => {
     const { selectedDevice, setSelectedDevice } = props;
+    const { colors } = useAppColors();
     const [devices] = useConnectedDevices();
     const [open, setOpen] = React.useState(false);
     const [items, setItems] = React.useState<ItemType<string>[]>([]);
@@ -19,22 +22,29 @@ export const DropDownDevicesPicker = (props: Props) => {
     React.useEffect(() => setItems(allItems), [allItems]);
 
     return (
-        <DropDownPicker
-            open={open}
-            value={selectedDevice}
-            items={items}
-            setOpen={setOpen}
-            setValue={setSelectedDevice}
-            setItems={setItems}
-        />
+        <>
+            <DropDownPicker
+                open={open}
+                value={selectedDevice}
+                items={items}
+                setOpen={setOpen}
+                setValue={setSelectedDevice}
+                setItems={setItems}
+                textStyle={{color: colors.text}}
+                arrowIconStyle={{tintColor: colors.text} as StyleProp<ImageStyle>}
+                tickIconStyle={{tintColor: colors.text} as StyleProp<ImageStyle>}
+                tickIconContainerStyle={{tintColor: colors.text} as StyleProp<ImageStyle>}
+                style={{backgroundColor: colors.background}}
+                dropDownContainerStyle={{backgroundColor: colors.background}}
+            />
+        </>
     );
 };
 
-{/* <Button title="Add Devices" onPress={() =>
+{/*             <Button title="Add Devices" onPress={() =>
                 [
                     {
-                        index: "First RGB",
-                        number: 1,
+                        index: "1",
                         color: "#FF0000",
                         bulbType: "RGB" as const,
                         temperature: "13",
@@ -43,8 +53,7 @@ export const DropDownDevicesPicker = (props: Props) => {
                         current: "0.2",
                     },
                     {
-                        index: "Second RGG",
-                        number: 2,
+                        index: "2",
                         color: "#00FF00",
                         bulbType: "RGB" as const,
                         temperature: "11",
@@ -53,8 +62,7 @@ export const DropDownDevicesPicker = (props: Props) => {
                         current: "0.6",
                     },
                     {
-                        index: "Third RGB",
-                        number: 3,
+                        index: "3",
                         color: "#0000FF",
                         bulbType: "RGB" as const,
                         temperature: "12",
@@ -63,8 +71,7 @@ export const DropDownDevicesPicker = (props: Props) => {
                         current: "0.3",
                     },
                     {
-                        index: "First Non-RGB",
-                        number: 4,
+                        index: "4",
                         color: "",
                         bulbType: "Non-RGB" as const,
                         temperature: "60",
@@ -73,8 +80,7 @@ export const DropDownDevicesPicker = (props: Props) => {
                         current: "5",
                     },
                     {
-                        index: "Second Non-RGB",
-                        number: 5,
+                        index: "5",
                         color: "",
                         bulbType: "Non-RGB" as const,
                         temperature: "60",
