@@ -22,7 +22,7 @@ interface Props {
     bleManager: BleManager;
 }
 
-export const Console = (props: Props) => {
+export const Terminal = (props: Props) => {
     const { bleManager } = props;
     const { colors } = useAppColors();
     const scrollViewRef = React.useRef<ScrollView | null>(null);
@@ -63,7 +63,7 @@ export const Console = (props: Props) => {
             <IconButton 
                 Icon={() => isCollapsed ? <DownArrowIcon color={colors.icon} width={15} height={15} /> : <UpArrowIcon color={colors.icon} width={15} height={15} />}
                 textStyle={{...styles.title, color: colors.text}}
-                title="Console"
+                title="Terminal"
                 onPress={() => setIsCollapsed(oldState => !oldState)}
             />
             <Collapsible collapsed={isCollapsed}>
