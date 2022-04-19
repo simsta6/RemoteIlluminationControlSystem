@@ -167,6 +167,4 @@ export const sendMessage = async (bleManager: BleManager, deviceId: string, mess
         await connectToDevice(bleManager, deviceId, modifyDevice);
         return sendMessage(bleManager, deviceId, message, modifyDevice, maxTryCount - 1);
     }
-
-    return false;
 };

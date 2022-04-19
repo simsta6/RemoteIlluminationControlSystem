@@ -3,7 +3,6 @@ import { Dimensions, RefreshControl, ScrollView, StyleSheet, Text, View } from "
 import BulbIcon from "../../assets/icons/BulbIcon";
 import { Container } from "../../components/Container";
 import { DevicesListItem } from "../../components/ListItems/DevicesListItem";
-import { EditDeviceModal } from "../../components/Modals/EditDeviceModal";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 
@@ -12,7 +11,6 @@ export const DevicesTab = () => {
     const { colors } = useAppColors();
     const [isRefreshing, setIsRefreshing] = React.useState(false);
     const [devices] = useConnectedDevices();
-    const [isModalVisible, setIsModalVisible] = React.useState(false);
 
     const onRefresh = () => {
         console.log("Refreshing");
@@ -47,16 +45,12 @@ export const DevicesTab = () => {
                                 device={device}
                                 Icon={<BulbIcon color={colors.icon} height={25} width={25} />}
                                 isLast={ devices.length - 1 === index }
-                                setIsModalVisible={setIsModalVisible}
+                                deviceIndexInArray={index}
                             />
                         )) 
                     }
                 </View>
             </ScrollView>
-            <EditDeviceModal 
-                isModalVisible={isModalVisible}
-                setIsModalVisible={setIsModalVisible}
-            />
         </Container>
     );
 };
