@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { TextInput } from "react-native-paper";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
@@ -14,6 +14,7 @@ interface Props {
 
 export const EditDeviceModal = (props: Props) => {
     const { isModalVisible, setIsModalVisible, deviceIndexInArray } = props;
+    const { width } = useWindowDimensions();
     const { colors } = useAppColors();
     const [devices, actions] = useConnectedDevices();
     const device = devices[deviceIndexInArray];
@@ -39,7 +40,7 @@ export const EditDeviceModal = (props: Props) => {
             onModalClose={onModalClose}
         >
             <View style={styles.centeredView} >
-                <View style={{...styles.modalView, backgroundColor: colors.modal}}>
+                <View style={{...styles.modalView, width: width - 36, backgroundColor: colors.modal}}>
                     <Text style={{...styles.title, color: colors.text}}>Change Device Name</Text>
                     <TextInput
                         style={{
@@ -70,7 +71,6 @@ export const EditDeviceModal = (props: Props) => {
 
 const styles = StyleSheet.create({
     modalView: {
-        width: Dimensions.get("window").width - 36,
         borderRadius: 20,
         paddingHorizontal: 20,
         paddingVertical: 10,

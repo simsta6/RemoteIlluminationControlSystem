@@ -1,6 +1,6 @@
-import React from "react";
 import { Slider } from "@miblanchard/react-native-slider";
-import { Dimensions, StyleSheet, View } from "react-native";
+import React from "react";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
 import SunIcon from "../../assets/icons/SunIcon";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 
@@ -11,6 +11,7 @@ interface Props {
 export const NonRGBDeviceCustomizer = (props: Props) => {
 
     const { colors } = useAppColors();
+    const { width } = useWindowDimensions();
     const { setMessage } = props;
     const [sliderValue, setSliderValue] = React.useState(0);
 
@@ -21,7 +22,7 @@ export const NonRGBDeviceCustomizer = (props: Props) => {
     return (
         <View style={styles.container}>
             <Slider
-                containerStyle={ styles.sliderContainerStyle }
+                containerStyle={{width: width - 61}}
                 minimumValue={0}
                 maximumValue={100}
                 value={ sliderValue }
@@ -58,9 +59,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         alignItems: "center",
         justifyContent: "center"
-    },
-    sliderContainerStyle: {
-        width: Dimensions.get("window").width - 61
     },
     trackStyle: { 
         height: 10, 

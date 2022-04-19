@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
+import { RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { Container } from "../../components/Container";
 import { DropDownDevicesPicker } from "../../components/DropDownDevicesPicker";
 import { LiveDataListItem } from "../../components/ListItems/LiveDataListItem";
@@ -9,6 +9,7 @@ import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 
 export const LiveDataTab = () => {
+    const { height, width } = useWindowDimensions();
     const { colors } = useAppColors();
     const [devices] = useConnectedDevices();
     const allDevices = React.useMemo(() => getAllDevices(devices), [devices]);
@@ -59,7 +60,7 @@ export const LiveDataTab = () => {
     return (
         <Container>
             <ScrollView
-                style={{maxHeight: Dimensions.get("window").height - 130}}
+                style={{maxHeight: height - 130}}
                 refreshControl={
                     <RefreshControl
                         refreshing={isRefreshing}

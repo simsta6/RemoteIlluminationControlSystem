@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
+import { RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import BulbIcon from "../../assets/icons/BulbIcon";
 import { Container } from "../../components/Container";
 import { DevicesListItem } from "../../components/ListItems/DevicesListItem";
@@ -8,6 +8,7 @@ import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 
 
 export const DevicesTab = () => {
+    const { height } = useWindowDimensions();
     const { colors } = useAppColors();
     const [isRefreshing, setIsRefreshing] = React.useState(false);
     const [devices] = useConnectedDevices();
@@ -24,7 +25,7 @@ export const DevicesTab = () => {
     return (
         <Container>
             <ScrollView
-                style={{maxHeight: Dimensions.get("window").height - 90}}
+                style={{maxHeight: height - 90}}
                 refreshControl={
                     <RefreshControl
                         refreshing={isRefreshing}

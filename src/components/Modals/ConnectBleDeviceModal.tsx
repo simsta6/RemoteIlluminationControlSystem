@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { BleManager, Device } from "react-native-ble-plx";
 import { connectToDevice, useScannedDevices } from "../../ble-api/bleManager";
 import { useBleDevice } from "../../hooks/bleDeviceHook";
@@ -16,6 +16,7 @@ interface Props {
 
 export const ConnectBleDeviceModal = (props: Props) => {
     const { bleManager, isModalVisible, setIsModalVisible } = props;
+    const { width } = useWindowDimensions();
     const { colors } = useAppColors();
 
     const [bleDevice, actions] = useBleDevice();
@@ -47,7 +48,7 @@ export const ConnectBleDeviceModal = (props: Props) => {
             onModalClose={onModalClose}
         >
             <View style={styles.centeredView} >
-                <View style={{...styles.modalView, backgroundColor: colors.modal}}>
+                <View style={{...styles.modalView, width: width - 36, backgroundColor: colors.modal}}>
                     <View style={styles.xIconContainer}>
                         <Text style={{...styles.title, color: colors.text}}>{"Connect to device"}</Text>
                         <ActivityIndicator animating={startScan} size="large" />
@@ -84,7 +85,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     modalView: {
-        width: Dimensions.get("window").width - 36,
         borderRadius: 20,
         paddingHorizontal: 20,
         paddingVertical: 10,

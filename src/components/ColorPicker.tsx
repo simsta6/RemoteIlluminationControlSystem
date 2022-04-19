@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import ColorWheel from "react-native-wheel-color-picker";
 import { shadeColorIfNeeded } from "../helpers/colorHelper";
 import { useAppColors } from "../hooks/colorSchemeHooks";
@@ -21,6 +21,7 @@ interface Props {
 
 export const ColorPicker = (props: Props) => {
     const { colors: themeColors } = useAppColors();
+    const { width } = useWindowDimensions();
     const {color, setColor} = props;
     const [currColor, setCurrColor] = React.useState("#FFFFFF");
     const [sliderValue, setSliderValue] = React.useState(0);
@@ -31,7 +32,7 @@ export const ColorPicker = (props: Props) => {
 
     return (
         <View>
-            <View style={ styles.colorWheelContainerStyle }>
+            <View style={{ width: width - 32, height: width - 32 }}>
                 <ColorWheel
                     noSnap={false}
                     color={currColor}
@@ -42,7 +43,7 @@ export const ColorPicker = (props: Props) => {
                 />
             </View>
             <GradientSlider
-                containerStyle={ styles.sliderContainerStyle }
+                containerStyle={{...styles.sliderContainerStyle, width: width - 96 }}
                 minimumValue={0}
                 maximumValue={100}
                 colors={[
@@ -109,10 +110,5 @@ const styles = StyleSheet.create({
     },
     sliderContainerStyle: {
         marginHorizontal: 32,
-        width: Dimensions.get("window").width - 96
     },
-    colorWheelContainerStyle: {
-        width: Dimensions.get("window").width - 32, 
-        height: Dimensions.get("window").width - 32
-    }
 });
