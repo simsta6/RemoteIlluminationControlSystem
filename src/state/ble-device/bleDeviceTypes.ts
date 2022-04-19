@@ -4,6 +4,8 @@ export interface BleDevice {
     deviceId?: string,
     subscription?: Subscription,
     isDeviceConnected: boolean,
+    serviceUUID?: string,
+    uuid?: string,
 }
 
 export type BleDeviceState = { 

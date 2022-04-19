@@ -2,7 +2,7 @@ import { Theme } from "@react-navigation/native";
 
 export const KEY_FOR_STORAGE = "defaultScheme";
 
-interface Colors {
+export interface Colors {
     primary: string;
     background: string;
     card: string;

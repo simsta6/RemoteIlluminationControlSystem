@@ -123,6 +123,15 @@ export const connectToDevice = async (bleManager: BleManager, deviceId: string, 
         });
 
     if (characteristic) {
+
+        modifyDevice({ 
+            deviceId: connectedDevice?.id, 
+            isDeviceConnected: !!(connectedDevice?.id && subscription), 
+            subscription,
+            serviceUUID: characteristic.serviceUUID,
+            uuid: characteristic.uuid,
+        });
+        
         subscription = await connectedDevice
             ?.isConnected()
             .then(isConnected => {
@@ -130,18 +139,32 @@ export const connectToDevice = async (bleManager: BleManager, deviceId: string, 
                     subscription?.remove();
                     return connectedDevice.monitorCharacteristicForService(characteristic.serviceUUID, characteristic.uuid, (error, char) => {
                         if (error) {
+                            if (`${error.name}: ${error.message}`.includes("BleError: Device") && error.message.includes("was disconnected") 
+                            || `${error.name}: ${error.message}`.includes("BleError: Characteristic") && error.message.includes("notify change failed for device")) {
+                                subscription?.remove();
+                                modifyDevice({ deviceId: "", isDeviceConnected: false, subscription: undefined });
+                            }
+                            
                             console.log(error);
                         }
                         char?.value && console.log("gautas ats: " + base64.decode(char.value));
-                        modifyDevice({ deviceId: connectedDevice?.id, isDeviceConnected: !!(connectedDevice?.id && subscription), subscription });
                     });
                 }
             })
             .catch(err => {
-                console.log(err);
+                console.log(err + "143");
+                subscription?.remove();
                 modifyDevice({ deviceId: "", isDeviceConnected: false, subscription: undefined });
                 return undefined;
             });
+
+        modifyDevice({ 
+            deviceId: connectedDevice?.id, 
+            isDeviceConnected: !!(connectedDevice?.id && subscription), 
+            subscription,
+            serviceUUID: characteristic.serviceUUID,
+            uuid: characteristic.uuid,
+        });
     }
 
     return subscription;
