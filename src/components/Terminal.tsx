@@ -18,7 +18,6 @@ const formatMessageWithTime = (message: string) => {
     return `${getCurrentTime()} | ${message}`;
 };
 
-
 interface Props {
     bleManager: BleManager;
 }

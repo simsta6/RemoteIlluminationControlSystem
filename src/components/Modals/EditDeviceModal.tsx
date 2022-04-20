@@ -54,6 +54,7 @@ export const EditDeviceModal = (props: Props) => {
                         activeUnderlineColor={colors.text}
                         onChangeText={setDeviceName}
                         value={deviceName}
+                        theme={{ colors: { text: colors.text } }}
                     />
                     <View style={styles.row}>
                         <Button title={t("save")} 

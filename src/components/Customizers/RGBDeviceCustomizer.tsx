@@ -3,11 +3,12 @@ import { ColorPicker } from "../ColorPicker";
 
 interface Props {
     setMessage: React.Dispatch<React.SetStateAction<string>>
+    sliderValue: number;
 }
 
 export const RGBDeviceCustomizer = (props: Props) => {
 
-    const { setMessage } = props;
+    const { setMessage, sliderValue } = props;
     const [color, setColor] = React.useState("#FFFFFF");
 
     React.useEffect(() => {
@@ -15,8 +16,6 @@ export const RGBDeviceCustomizer = (props: Props) => {
     }, [color]);
     
     return (
-        <>
-            <ColorPicker {...{color, setColor}} />
-        </>
+        <ColorPicker {...{color, setColor, sliderValue }} />
     );
 };
