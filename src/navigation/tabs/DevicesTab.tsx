@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import BulbIcon from "../../assets/icons/BulbIcon";
 import { Container } from "../../components/Container";
@@ -9,6 +10,7 @@ import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 
 export const DevicesTab = () => {
     const { height } = useWindowDimensions();
+    const { t } = useTranslation();
     const { colors } = useAppColors();
     const [isRefreshing, setIsRefreshing] = React.useState(false);
     const [devices] = useConnectedDevices();
@@ -35,7 +37,7 @@ export const DevicesTab = () => {
                 <Text 
                     style={{ ...styles.title, color: colors.text }}
                 >
-                    Configure Connected Devices
+                    {t("DevicesTab:ConfigureDevices")}
                 </Text>
 
                 <View style={styles.listContainer}>

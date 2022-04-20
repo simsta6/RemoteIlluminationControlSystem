@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ActivityIndicator, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { BleManager, Device } from "react-native-ble-plx";
 import { connectToDevice, useScannedDevices } from "../../ble-api/bleManager";
@@ -16,6 +17,7 @@ interface Props {
 
 export const ConnectBleDeviceModal = (props: Props) => {
     const { bleManager, isModalVisible, setIsModalVisible } = props;
+    const { t } = useTranslation();
     const { width } = useWindowDimensions();
     const { colors } = useAppColors();
 
@@ -50,7 +52,7 @@ export const ConnectBleDeviceModal = (props: Props) => {
             <View style={styles.centeredView} >
                 <View style={{...styles.modalView, width: width - 36, backgroundColor: colors.modal}}>
                     <View style={styles.xIconContainer}>
-                        <Text style={{...styles.title, color: colors.text}}>{"Connect to device"}</Text>
+                        <Text style={{...styles.title, color: colors.text}}>{t("ConnectBleDeviceModal:ConnectToDevice")}</Text>
                         <ActivityIndicator animating={startScan} size="large" />
                     </View>
                     <ScrollView style={{maxHeight: 200}}>
@@ -67,7 +69,7 @@ export const ConnectBleDeviceModal = (props: Props) => {
                             })
                         }
                     </ScrollView>
-                    <Button title="Cancel" onPress={onModalClose}/>
+                    <Button title={t("cancel")} onPress={onModalClose}/>
                 </View>
             </View>
         </Modal>

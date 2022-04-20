@@ -12,6 +12,7 @@ import { IconButton } from "./Buttons/IconButton";
 import DownArrowIcon from "../assets/icons/DownArrowIcon";
 import UpArrowIcon from "../assets/icons/UpArrowIcon";
 import { getCurrentTime } from "../helpers/time";
+import { useTranslation } from "react-i18next";
 
 const formatMessageWithTime = (message: string) => {
     return `${getCurrentTime()} | ${message}`;
@@ -24,6 +25,7 @@ interface Props {
 
 export const Terminal = (props: Props) => {
     const { bleManager } = props;
+    const { t } = useTranslation();
     const { colors } = useAppColors();
     const scrollViewRef = React.useRef<ScrollView | null>(null);
     const [bleDevice, actions] = useBleDevice();
@@ -80,9 +82,9 @@ export const Terminal = (props: Props) => {
                         theme={{ colors: { text: colors.text } }}
                         onChangeText={setMessage}
                         value={message}
-                        placeholder={"Message"}
+                        placeholder={t("Terminal:message")}
                     />
-                    {deviceId ? <Button buttonStyle={styles.button} title="send" onPress={() => sendMessage(bleManager, deviceId, message, actions.modify)} /> : null}
+                    {deviceId ? <Button buttonStyle={styles.button} title={t("send")} onPress={() => sendMessage(bleManager, deviceId, message, actions.modify)} /> : null}
                 </View>
                 <ScrollView
                     style={{...styles.consoleOutputList, borderColor: colors.text}}

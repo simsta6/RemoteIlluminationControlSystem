@@ -20,12 +20,12 @@ const getDevicesIds = (devices: Device[]) => devices.reduce((acc, curr) => {
     return acc;
 }, {allDevices: [], rgbDevices: [], nonRgbDevices: []} as AllocatedDevicesIds);
 
-export const getAllDevicesWithParents = (devices: Device[]) => {
+export const getAllDevicesWithParents = (devices: Device[], allDevicesLabel: string, rgbDevicesLabel: string, nonRgbDevicesLabel: string) => {
     const devicesIds: AllocatedDevicesIds = getDevicesIds(devices);
     return [
-        {label: "All Devices", value: DevicesKeys.AllDevices },
-        devicesIds.rgbDevices.length ? {label: "RGB Devices", value: DevicesKeys.RgbDevices } : undefined,
-        devicesIds.nonRgbDevices.length ? {label: "Non-RGB Devices", value: DevicesKeys.NonRgbDevices } : undefined,
+        {label: allDevicesLabel, value: DevicesKeys.AllDevices },
+        devicesIds.rgbDevices.length ? {label: rgbDevicesLabel, value: DevicesKeys.RgbDevices } : undefined,
+        devicesIds.nonRgbDevices.length ? {label: nonRgbDevicesLabel, value: DevicesKeys.NonRgbDevices } : undefined,
         ...devices.map(dev => ({
             label: dev.name,
             value: dev.index,

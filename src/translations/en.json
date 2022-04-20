@@ -34,5 +34,43 @@
         "LiveData": "Live Data",
         "Devices": "Devices",
         "Settings": "Settings"
-    }
+    },
+    "Terminal": {
+        "message": "Message"
+    },
+    "ConnectBleDeviceModal": {
+        "ConnectToDevice": "Message"
+    },
+    "EditDeviceModal": {
+        "ChangeDeviceName": "Change Device Name"
+    },
+    "AdjustTab": {
+        "CustomizeIllDevice": "Customize Your Illumination Devices"
+    },
+    "DevicesTab": {
+        "ConfigureDevices": "Configure Connected Devices"
+    },
+    "LiveDataTab": {
+        "AllDevicesLiveData": "All Devices Live Data",
+        "IndividualDeviceLiveData": "Individual Device Live Data",
+        "totalPowerConsumption": "Total Power Consumption",
+        "rgbCount": "RGB Count",
+        "nonRgbCount": "Non-RGB Count"
+    },
+    "ConnectedDevicesData": {
+        "color": "Color",
+        "bulbType": "Bulb Type",
+        "temperature": "Temperature",
+        "power": "Power",
+        "voltage": "Voltage",
+        "current": "Current"
+    },
+    "deviceHelper": {
+        "allDevices": "All Devices",
+        "rgbDevices": "RGB Devices",
+        "nonRgbDevices": "Non-RGB Devices"
+    },
+    "send": "Send",
+    "save": "Save",
+    "cancel": "Cancel"
 }

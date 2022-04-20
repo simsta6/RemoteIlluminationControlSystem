@@ -14,6 +14,7 @@ import { useBleDevice } from "../../hooks/bleDeviceHook";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 import { Device } from "../../state/devices/connectedDevicesTypes";
+import { useTranslation } from "react-i18next";
 
 const getCustomizerComponent = (devices: Device[], selectedDevice: string, setMessage: React.Dispatch<React.SetStateAction<string>>) => { 
     switch (selectedDevice) {
@@ -33,14 +34,21 @@ interface Props {
 
 export const AdjustTab = ({ bleManager }: Props) => {
     const { colors: themeColors } = useAppColors();
+    const { t } = useTranslation();
     const [bleDevice, actions] = useBleDevice();
     const bleDeviceId = bleDevice.deviceId;
     const [devices] = useConnectedDevices();
     const [isConnectDevicesModalVisible, setIsConnectDevicesModalVisible] = React.useState(false);
     const [selectedDevice, setSelectedDevice] = React.useState<string>(DevicesKeys.AllDevices);
     const [message, setMessage] = React.useState("");
+
+    const allDevicesLabel = t("deviceHelper:allDevices");
+    const rgbDevicesLabel = t("deviceHelper:rgbDevices");
+    const nonRgbDevicesLabel = t("deviceHelper:nonRgbDevices");
     
-    const allItems = React.useMemo(() => getAllDevicesWithParents(devices), [devices]);
+    const allItems = React.useMemo(() => 
+        getAllDevicesWithParents(devices, allDevicesLabel, rgbDevicesLabel, nonRgbDevicesLabel)
+    , [devices, allDevicesLabel, rgbDevicesLabel, nonRgbDevicesLabel]);
 
     //Send message after waiting for 200ms when customizer sets it.
     React.useEffect(() => {
@@ -61,7 +69,7 @@ export const AdjustTab = ({ bleManager }: Props) => {
 
     return (
         <Container>
-            <Text style={{...styles.title, color: themeColors.text}}>Customize Your Illumination Devices</Text>
+            <Text style={{...styles.title, color: themeColors.text}}>{t("AdjustTab:CustomizeIllDevice")}</Text>
             <View style={styles.column}>
                 <DropDownDevicesPicker 
                     selectedDevice={selectedDevice} 

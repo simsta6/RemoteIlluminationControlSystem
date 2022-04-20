@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { TextInput } from "react-native-paper";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
@@ -14,6 +15,7 @@ interface Props {
 
 export const EditDeviceModal = (props: Props) => {
     const { isModalVisible, setIsModalVisible, deviceIndexInArray } = props;
+    const { t } = useTranslation();
     const { width } = useWindowDimensions();
     const { colors } = useAppColors();
     const [devices, actions] = useConnectedDevices();
@@ -41,7 +43,7 @@ export const EditDeviceModal = (props: Props) => {
         >
             <View style={styles.centeredView} >
                 <View style={{...styles.modalView, width: width - 36, backgroundColor: colors.modal}}>
-                    <Text style={{...styles.title, color: colors.text}}>Change Device Name</Text>
+                    <Text style={{...styles.title, color: colors.text}}>{t("EditDeviceModal:ChangeDeviceName")}</Text>
                     <TextInput
                         style={{
                             ...styles.textInput,
@@ -54,11 +56,11 @@ export const EditDeviceModal = (props: Props) => {
                         value={deviceName}
                     />
                     <View style={styles.row}>
-                        <Button title="Save" 
+                        <Button title={t("save")} 
                             buttonStyle={{...styles.button, marginRight: 5 }} 
                             onPress={onSave}
                         />
-                        <Button title="Cancel" 
+                        <Button title={t("cancel")}
                             buttonStyle={{...styles.button, marginLeft: 5 }} 
                             onPress={onCancel}
                         />

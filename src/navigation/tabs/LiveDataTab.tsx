@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { Container } from "../../components/Container";
 import { DropDownDevicesPicker } from "../../components/DropDownDevicesPicker";
@@ -9,7 +10,8 @@ import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 
 export const LiveDataTab = () => {
-    const { height, width } = useWindowDimensions();
+    const { t } = useTranslation();
+    const { height } = useWindowDimensions();
     const { colors } = useAppColors();
     const [devices] = useConnectedDevices();
     const allDevices = React.useMemo(() => getAllDevices(devices), [devices]);
@@ -38,9 +40,9 @@ export const LiveDataTab = () => {
     }, {power: 0, rgbCount: 0, nonRgbCount: 0});
 
     const allDevicesDataList = [
-        {itemName: "Total Power Consumption", itemData: allDevicesData.power, unit: "power"},
-        {itemName: "RGB Count", itemData: allDevicesData.rgbCount},
-        {itemName: "Non-RGB Count", itemData: allDevicesData.nonRgbCount},
+        {itemName: t("LiveDataTab:totalPowerConsumption"), itemData: allDevicesData.power, unit: "power"},
+        {itemName: t("LiveDataTab:rgbCount"), itemData: allDevicesData.rgbCount},
+        {itemName: t("LiveDataTab:nonRgbCount"), itemData: allDevicesData.nonRgbCount},
     ];
 
     const selectedDeviceDataList = selectedDevice && Object.entries(selectedDevice)
@@ -50,7 +52,8 @@ export const LiveDataTab = () => {
         .map(entry => {
             const name = entry[0];
             const obj = {
-                itemName: name[0].toUpperCase() + name.slice(1),
+                //@ts-ignore
+                itemName: t(`ConnectedDevicesData:${name}`) as string,
                 itemData: entry[1],
             };
 
@@ -70,7 +73,7 @@ export const LiveDataTab = () => {
                 <Text 
                     style={{ ...styles.title, color: colors.text }}
                 >
-                    All Devices Live Data
+                    {t("LiveDataTab:AllDevicesLiveData")}
                 </Text>
                 <View style={styles.listContainer}>
                     { 
@@ -89,7 +92,7 @@ export const LiveDataTab = () => {
                 <Text 
                     style={{ ...styles.title, color: colors.text }}
                 >
-                    Individual Device Live Data
+                    {t("LiveDataTab:IndividualDeviceLiveData")}
                 </Text>
                 <View style={{paddingBottom: 6}}>
                     { 
