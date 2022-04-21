@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import ColorWheel from "react-native-wheel-color-picker";
-import { shadeColorIfNeeded } from "../helpers/colorHelper";
 import { useAppColors } from "../hooks/colorSchemeHooks";
 
 const PALETTE = [
@@ -22,20 +21,15 @@ interface Props {
 export const ColorPicker = (props: Props) => {
     const { colors: themeColors } = useAppColors();
     const { width } = useWindowDimensions();
-    const {color, setColor, sliderValue} = props;
-    const [currColor, setCurrColor] = React.useState("#FFFFFF");
-
-    React.useEffect(() => {
-        setColor(shadeColorIfNeeded(currColor, sliderValue));
-    }, [currColor, sliderValue]);
+    const {color, setColor } = props;
 
     return (
         <View style={styles.container}>
             <View style={{ width: width - 32, height: width - 32 }}>
                 <ColorWheel
                     noSnap={false}
-                    color={currColor}
-                    onColorChange={setCurrColor}
+                    color={color}
+                    onColorChange={setColor}
                     row={false}
                     sliderHidden={true}
                     swatches={false}

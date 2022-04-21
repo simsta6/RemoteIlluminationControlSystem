@@ -11,6 +11,7 @@ import { Container } from "../../components/Container";
 import { RGBDeviceCustomizer } from "../../components/Customizers/RGBDeviceCustomizer";
 import { DropDownDevicesPicker } from "../../components/DropDownDevicesPicker";
 import { ConnectBleDeviceModal } from "../../components/Modals/ConnectBleDeviceModal";
+import { shadeColorIfNeeded } from "../../helpers/colorHelper";
 import { DevicesKeys, getAllDevicesWithParents } from "../../helpers/devicesHelper";
 import { useBleDevice } from "../../hooks/bleDeviceHook";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
@@ -59,7 +60,7 @@ export const AdjustTab = ({ bleManager }: Props) => {
         let setHook = true;
         const timeOut = setTimeout(async () => {
             if (bleDeviceId) {
-                const messageSent = await sendMessage(bleManager, bleDeviceId, message, actions.modify);
+                const messageSent = await sendMessage(bleManager, bleDeviceId, "id2clr" + shadeColorIfNeeded(message, sliderValue).substring(1, 7), actions.modify);
                 !messageSent && setHook && setIsConnectDevicesModalVisible(true);
             } else {
                 setHook && setIsConnectDevicesModalVisible(true);

@@ -12,7 +12,7 @@ export const RGBDeviceCustomizer = (props: Props) => {
     const [color, setColor] = React.useState("#FFFFFF");
 
     React.useEffect(() => {
-        setMessage("id2clr" + color.substring(1, 7));
+        setMessage(color);
     }, [color]);
     
     return (
