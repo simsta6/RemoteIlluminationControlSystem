@@ -7,13 +7,13 @@ export const shadeColorIfNeeded = (color: string, percent: number) => {
 
     // Firstly calculates how much percent current color is darker than white color
     // If it's darker then generates new color
-    R = R * 100 / 255 - 100 > percent ? R : Math.floor(R * (100 - percent) / 100);
-    G = G * 100 / 255 - 100 > percent ? G : Math.floor(G * (100 - percent) / 100);
-    B = B * 100 / 255 - 100 > percent ? B : Math.floor(B * (100 - percent) / 100);
+    R = R * 100 / 255 - 100 > percent ? R : Math.floor(R * percent / 100);
+    G = G * 100 / 255 - 100 > percent ? G : Math.floor(G * percent / 100);
+    B = B * 100 / 255 - 100 > percent ? B : Math.floor(B * percent / 100);
 
-    R = (R < 255) ? R : 255;  
-    G = (G < 255) ? G : 255;  
-    B = (B < 255) ? B : 255;  
+    R = (R < 255) ? R : 255;
+    G = (G < 255) ? G : 255;
+    B = (B < 255) ? B : 255;
 
     const RR = ((R.toString(16).length == 1) ? "0" + R.toString(16) : R.toString(16));
     const GG = ((G.toString(16).length == 1) ? "0" + G.toString(16) : G.toString(16));

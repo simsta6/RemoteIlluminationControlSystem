@@ -1,76 +1,57 @@
-import { Slider } from "@miblanchard/react-native-slider";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
-import { BleManager } from "react-native-ble-plx";
 import PowerOnIcon from "../../assets/icons/PowerOnIcon";
-import SunIcon from "../../assets/icons/SunIcon";
-import { sendMessage } from "../../ble-api/bleManager";
+import { BleDeviceClient } from "../../ble-api/deviceAPI";
 import { IconButton } from "../../components/Buttons/IconButton";
 import { Container } from "../../components/Container";
-import { RGBDeviceCustomizer } from "../../components/Customizers/RGBDeviceCustomizer";
+import { DeviceCustomizer } from "../../components/Customizers/DeviceCustomizer";
 import { DropDownDevicesPicker } from "../../components/DropDownDevicesPicker";
 import { ConnectBleDeviceModal } from "../../components/Modals/ConnectBleDeviceModal";
-import { shadeColorIfNeeded } from "../../helpers/colorHelper";
-import { DevicesKeys, getAllDevicesWithParents } from "../../helpers/devicesHelper";
+import { DevicesKeys, getAllDevicesWithParents, getDevicesIdBySelectedDevice } from "../../helpers/devicesHelper";
 import { useBleDevice } from "../../hooks/bleDeviceHook";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 import { Device } from "../../state/devices/connectedDevicesTypes";
 
-const getCustomizerComponent = (devices: Device[], selectedDevice: string, setMessage: React.Dispatch<React.SetStateAction<string>>, sliderValue: number) => { 
-    switch (selectedDevice) {
-    case DevicesKeys.RgbDevices:
-        return <RGBDeviceCustomizer setMessage={setMessage} sliderValue={sliderValue} />;
-    case DevicesKeys.AllDevices:
-    case DevicesKeys.NonRgbDevices: 
-        return <></>;
-    default:
-        return devices.find(dev => dev.index === selectedDevice)
-            ?.bulbType === "RGB" ? <RGBDeviceCustomizer setMessage={setMessage} sliderValue={sliderValue} /> : <></>;
+const onPowerPress = (devices: Device[], selectedDevice: string, isTurnedOn: boolean, bleDeviceClient: BleDeviceClient): boolean => {
+    if (selectedDevice === DevicesKeys.AllDevices) {
+        isTurnedOn ? bleDeviceClient.turnOffAllDevices() : bleDeviceClient.turnOnAllDevices();
     }
+
+    const ids = getDevicesIdBySelectedDevice(devices, selectedDevice);
+    isTurnedOn ? bleDeviceClient.turnOnSpecificDevice(ids) : bleDeviceClient.turnOffSpecificDevice(ids);
+
+    return !isTurnedOn;
 };
 
 interface Props {
-    bleManager: BleManager;
+    bleDeviceClient: BleDeviceClient;
 }
 
-export const AdjustTab = ({ bleManager }: Props) => {
+export const AdjustTab = ({ bleDeviceClient }: Props) => {
     const { colors: themeColors } = useAppColors();
     const { t } = useTranslation();
     const { width } = useWindowDimensions();
-    const [bleDevice, actions] = useBleDevice();
-    const bleDeviceId = bleDevice.deviceId;
+    const [bleDevice] = useBleDevice();
     const [devices] = useConnectedDevices();
     const [isConnectDevicesModalVisible, setIsConnectDevicesModalVisible] = React.useState(false);
     const [selectedDevice, setSelectedDevice] = React.useState<string>(DevicesKeys.AllDevices);
-    const [message, setMessage] = React.useState("");
-    const [sliderValue, setSliderValue] = React.useState(0);
-
+    const [isTurnedOn, setIsTurnedOn] = React.useState(false);
+    
     const allDevicesLabel = t("deviceHelper:allDevices");
     const rgbDevicesLabel = t("deviceHelper:rgbDevices");
     const nonRgbDevicesLabel = t("deviceHelper:nonRgbDevices");
-    
+
+    // React.useEffect(() => {
+    //     bleDevice.messages.forEach(msg => )
+    // }, [bleDevice.messages]);
+
     const allItems = React.useMemo(() => 
         getAllDevicesWithParents(devices, allDevicesLabel, rgbDevicesLabel, nonRgbDevicesLabel)
     , [devices, allDevicesLabel, rgbDevicesLabel, nonRgbDevicesLabel]);
 
     //Send message after waiting for 200ms when customizer sets it.
-    React.useEffect(() => {
-        let setHook = true;
-        const timeOut = setTimeout(async () => {
-            if (bleDeviceId) {
-                const messageSent = await sendMessage(bleManager, bleDeviceId, "id2clr" + shadeColorIfNeeded(message, sliderValue).substring(1, 7), actions.modify);
-                !messageSent && setHook && setIsConnectDevicesModalVisible(true);
-            } else {
-                setHook && setIsConnectDevicesModalVisible(true);
-            }
-        }, 200);
-        return () => {
-            clearTimeout(timeOut);
-            setHook = false;
-        };
-    }, [message]);
 
     return (
         <Container>
@@ -85,6 +66,7 @@ export const AdjustTab = ({ bleManager }: Props) => {
                     />
                     <IconButton 
                         buttonStyle={{width: 40}}
+                        onPress={() => setIsTurnedOn(onPowerPress(devices, selectedDevice, isTurnedOn, bleDeviceClient))}
                         Icon={() => 
                             <PowerOnIcon color={themeColors.icon} 
                                 width={40} 
@@ -93,36 +75,12 @@ export const AdjustTab = ({ bleManager }: Props) => {
                         } 
                     />
                 </View>
-                <Slider
-                    containerStyle={{width: "100%", marginTop: 6}}
-                    minimumValue={0}
-                    maximumValue={100}
-                    value={ sliderValue }
-                    trackStyle={ styles.trackStyle }
-                    minimumTrackTintColor={ themeColors.text }
-                    maximumTrackTintColor={ themeColors.card }
-                    renderThumbComponent={() => 
-                        <View style={{...styles.thumbContainer, backgroundColor: themeColors.background, borderColor: themeColors.border}}>
-                            <SunIcon color={themeColors.icon} height={30} width={30}/>
-                        </View>
-                    }
-                    thumbTouchSize={{ 
-                        width: 50, 
-                        height: 50,
-                    }}
-                    onValueChange={v => {
-                        const value = v instanceof Array ? v[0] : v;
-                        setSliderValue(value);
-                    }}
-                />
-                <View style={{marginVertical: 10, width: "100%"}}>
-                    { getCustomizerComponent(devices, selectedDevice, setMessage, sliderValue) }
-                </View>
+                <DeviceCustomizer {...{ setIsConnectDevicesModalVisible, bleDeviceClient: bleDeviceClient, selectedDevice }}/>
             </View>
-            <ConnectBleDeviceModal 
-                bleManager={bleManager} 
-                setIsModalVisible={setIsConnectDevicesModalVisible} 
-                isModalVisible={isConnectDevicesModalVisible} 
+            <ConnectBleDeviceModal
+                bleDeviceClient={bleDeviceClient}
+                setIsModalVisible={setIsConnectDevicesModalVisible}
+                isModalVisible={isConnectDevicesModalVisible}
             />
         </Container>
     );
@@ -147,17 +105,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingHorizontal: 20,
         marginBottom: 18,
-    },
-    thumbContainer: {
-        height: 35,
-        width: 35,
-        borderRadius: 100,
-        borderWidth: 1,
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    trackStyle: { 
-        height: 10, 
-        borderRadius: 10,
     },
 });

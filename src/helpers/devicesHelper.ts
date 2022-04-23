@@ -8,10 +8,29 @@ interface AllocatedDevicesIds {
     nonRgbDevices: string[]
 }
 
-export const DevicesKeys = {
-    AllDevices: "AllDevices",
-    RgbDevices: "RgbDevices",
-    NonRgbDevices: "NonRgbDevices",
+export enum DevicesKeys {
+    AllDevices = "AllDevices",
+    RgbDevices = "RgbDevices",
+    NonRgbDevices = "NonRgbDevices",
+}
+
+export const getDevicesIdBySelectedDevice = (devices: Device[], selectedDevice: string): string[] => {
+    switch(selectedDevice) {
+    case DevicesKeys.AllDevices: {
+        const ids = getDevicesIds(devices).allDevices;
+        return ids;
+    }
+    case DevicesKeys.RgbDevices: {
+        const ids = getDevicesIds(devices).rgbDevices;
+        return ids;
+    }
+    case DevicesKeys.NonRgbDevices: {
+        const ids = getDevicesIds(devices).nonRgbDevices;
+        return ids;
+    }
+    default:
+        return [selectedDevice];
+    }
 };
 
 const getDevicesIds = (devices: Device[]) => devices.reduce((acc, curr) => {

@@ -1,4 +1,4 @@
-import { BleDevice, BleDeviceActionsTypes, BleDeviceState, RemoveBleDeviceAction, ModifyBleDeviceAction } from "./ble-device/bleDeviceTypes";
+import { BleDevice, BleDeviceActionsTypes, BleDeviceState, RemoveBleDeviceAction, ModifyBleDeviceAction, SendRequestAction, ReadResponseAction, UpdateResponseAction } from "./ble-device/bleDeviceTypes";
 import { Appearance } from "react-native";
 import { 
     Device, 
@@ -7,6 +7,7 @@ import {
     ModifyDeviceAction, 
     RemoveDeviceAction, 
     ConnectDeviceState,
+    ChangeDeviceColorAction,
 } from "./devices/connectedDevicesTypes";
 import { 
     ThemeActionTypes, 
@@ -20,7 +21,7 @@ export const initialState: BleDeviceState & ThemeState & ConnectDeviceState = {
     bleDevice: {
         deviceId: "",
         isDeviceConnected: false,
-        subscription: undefined
+        messages: [],
     },
     theme: Appearance.getColorScheme()
 };
@@ -34,6 +35,11 @@ export const ConnectDevicesActions = {
         type: ConnectedDevicesActionsTypes.Modify,
         deviceState,
         index
+    }),
+    ChangeColor: (deviceIndex: string, color: string): ChangeDeviceColorAction => ({
+        type: ConnectedDevicesActionsTypes.ChangeDeviceColor,
+        deviceIndex,
+        color,
     }),
     RemoveDevice: (index: number): RemoveDeviceAction => ({
         type: ConnectedDevicesActionsTypes.Remove,
@@ -55,7 +61,28 @@ export const BleDeviceActions = {
         type: BleDeviceActionsTypes.Modify,
         bleDevice,
     }),
+    SendRequest: (command: string): SendRequestAction => ({
+        type: BleDeviceActionsTypes.SendRequest,
+        command,
+    }),
+    ReadResponse: (command: string): ReadResponseAction => ({
+        type: BleDeviceActionsTypes.ReadResponse,
+        command
+    }),
+    UpdateResponse: (command: string, response: string[]): UpdateResponseAction => ({
+        type: BleDeviceActionsTypes.UpdateResponse,
+        command,
+        response,
+    }),
     RemoveBleDevice: (): RemoveBleDeviceAction => ({
         type: BleDeviceActionsTypes.Remove,
     }),
 };
+
+export type BleDeviceActionTypes = {
+    readonly remove: () => void;
+    readonly sendRequest: (command: string) => void;
+    readonly readResponse: (command: string) => void;
+    readonly updateResponse: (command: string, response: string[]) => void;
+    readonly modify: (device: BleDevice) => void;
+}

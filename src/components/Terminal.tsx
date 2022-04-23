@@ -3,7 +3,6 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { BleManager, Subscription } from "react-native-ble-plx";
 import { TextInput } from "react-native-paper";
-import { sendMessage } from "../ble-api/bleManager";
 import { useBleDevice } from "../hooks/bleDeviceHook";
 import { useAppColors } from "../hooks/colorSchemeHooks";
 import { Button } from "./Buttons/Button";
@@ -36,25 +35,25 @@ export const Terminal = (props: Props) => {
     React.useEffect(() => {
         let subscription: Subscription | undefined;
 
-        if (deviceId && serviceUUID && uuid && isDeviceConnected) {
-            subscription = bleManager.monitorCharacteristicForDevice(deviceId, serviceUUID, uuid, (error, char) => {
-                if (error) {    
-                    if (error.message.includes("is not connected") && isDeviceConnected) return;
+        // if (deviceId && serviceUUID && uuid && isDeviceConnected) {
+        //     subscription = bleManager.monitorCharacteristicForDevice(deviceId, serviceUUID, uuid, (error, char) => {
+        //         if (error) {    
+        //             if (error.message.includes("is not connected") && isDeviceConnected) return;
         
-                    setConsoleOutputMessages(arr => {
-                        arr.length > 200 && arr.shift();
-                        return [...arr, formatMessageWithTime(error.message)];
-                    });
-                }
-                const receivedMessage = char?.value;
-                if (receivedMessage) {
-                    setConsoleOutputMessages(arr => {
-                        arr.length > 200 && arr.shift();
-                        return [...arr, formatMessageWithTime(base64.decode(receivedMessage))];
-                    });
-                }
-            });
-        }
+        //             setConsoleOutputMessages(arr => {
+        //                 arr.length > 200 && arr.shift();
+        //                 return [...arr, formatMessageWithTime(error.message)];
+        //             });
+        //         }
+        //         const receivedMessage = char?.value;
+        //         if (receivedMessage) {
+        //             setConsoleOutputMessages(arr => {
+        //                 arr.length > 200 && arr.shift();
+        //                 return [...arr, formatMessageWithTime(base64.decode(receivedMessage))];
+        //             });
+        //         }
+        //     });
+        // }
         
         return subscription?.remove;
     }, [deviceId, serviceUUID, uuid, isDeviceConnected]);
@@ -83,7 +82,7 @@ export const Terminal = (props: Props) => {
                         value={message}
                         placeholder={t("Terminal:message")}
                     />
-                    {deviceId ? <Button buttonStyle={styles.button} title={t("send")} onPress={() => sendMessage(bleManager, deviceId, message, actions.modify)} /> : null}
+                    {/* {deviceId ? <Button buttonStyle={styles.button} title={t("send")} onPress={() => sendMessageWithOutResponse(bleManager, deviceId, message, actions.modify)} /> : null} */}
                 </View>
                 <ScrollView
                     style={{...styles.consoleOutputList, borderColor: colors.text}}

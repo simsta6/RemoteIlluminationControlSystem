@@ -4,7 +4,7 @@ import ColorWheel from "react-native-wheel-color-picker";
 import { useAppColors } from "../hooks/colorSchemeHooks";
 
 const PALETTE = [
-    "#ed1c24",
+    "#ff0000",
     "#1633e6",
     "#00c85d",
     "#ffde17",
@@ -12,16 +12,15 @@ const PALETTE = [
     "#3a9cb0",
 ];
 
-interface Props {
+export interface ColorPickerProps {
     color: string;
     setColor: React.Dispatch<React.SetStateAction<string>>;
-    sliderValue: number;
 }
 
-export const ColorPicker = (props: Props) => {
+export const ColorPicker = (props: ColorPickerProps) => {
     const { colors: themeColors } = useAppColors();
     const { width } = useWindowDimensions();
-    const {color, setColor } = props;
+    const { color, setColor } = props;
 
     return (
         <View style={styles.container}>

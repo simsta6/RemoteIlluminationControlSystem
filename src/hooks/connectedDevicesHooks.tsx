@@ -10,11 +10,13 @@ export const useConnectedDevices = () => {
     return [
         devices,
         {
-            add: (device: Device) => 
+            add: (device: Device) =>
                 dispatch(ConnectDevicesActions.AddDevice(device)),
-            remove: (index: number) => 
+            remove: (index: number) =>
                 dispatch(ConnectDevicesActions.RemoveDevice(index)),
-            modify: (device: Device, index: number) => 
+            changeColor: (deviceIndex: string, color: string) =>
+                dispatch(ConnectDevicesActions.ChangeColor(deviceIndex, color)),
+            modify: (device: Device, index: number) =>
                 dispatch(ConnectDevicesActions.ModifyDevice(device, index))
         }
     ] as const;

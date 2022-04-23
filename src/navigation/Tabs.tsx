@@ -1,13 +1,13 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
-import { BleManager } from "react-native-ble-plx";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NavigationState, SceneRendererProps, TabView } from "react-native-tab-view";
 import AdjustIcon from "../assets/icons/AdjustIcon";
 import BulbIcon from "../assets/icons/BulbIcon";
 import CogIcon from "../assets/icons/CogIcon";
 import LiveDataIcon from "../assets/icons/LiveDataIcon";
+import { BleDeviceClient } from "../ble-api/deviceAPI";
 import { useAppColors } from "../hooks/colorSchemeHooks";
 import { AdjustTab } from "./tabs/AdjustTab";
 import { DevicesTab } from "./tabs/DevicesTab";
@@ -59,9 +59,9 @@ type RenderTabBarProps = SceneRendererProps & {
         title: string;
     }>;
 };
-  
+
 type TabsProps = {
-    bleManager: BleManager;
+    bleDeviceClient: BleDeviceClient;
 };
 
 export const TabsView = (props: TabsProps) => {
@@ -127,15 +127,17 @@ export const TabsView = (props: TabsProps) => {
         switch (route.key) {
         case "adjust":
             return <AdjustTab
-                bleManager={props.bleManager}
+                bleDeviceClient={props.bleDeviceClient}
             />;
         case "livedata":
-            return <LiveDataTab />;
+            return <LiveDataTab
+                bleDeviceClient={props.bleDeviceClient}
+            />;
         case "devices":
             return <DevicesTab />;
         case "settings":
-            return <SettingsTab 
-                bleManager={props.bleManager}
+            return <SettingsTab
+                bleManager={props.bleDeviceClient.bleManager}
             />;
         default:
             return null;

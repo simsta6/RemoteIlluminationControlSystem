@@ -1,8 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
-import { BleManager, Device } from "react-native-ble-plx";
-import { connectToDevice, useScannedDevices } from "../../ble-api/bleManager";
+import { Device } from "react-native-ble-plx";
+import { useScannedDevices } from "../../ble-api/bleManager";
+import { BleDeviceClient } from "../../ble-api/deviceAPI";
 import { useBleDevice } from "../../hooks/bleDeviceHook";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { Button } from "../Buttons/Button";
@@ -10,26 +11,25 @@ import { ConnectToDeviceListItem } from "../ListItems/ConnectToDeviceListItem";
 import { Modal } from "./Modal";
 
 interface Props {
-    bleManager: BleManager;
+    bleDeviceClient: BleDeviceClient;
     isModalVisible: boolean;
     setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ConnectBleDeviceModal = (props: Props) => {
-    const { bleManager, isModalVisible, setIsModalVisible } = props;
+    const { bleDeviceClient, isModalVisible, setIsModalVisible } = props;
     const { t } = useTranslation();
     const { width } = useWindowDimensions();
     const { colors } = useAppColors();
 
-    const [bleDevice, actions] = useBleDevice();
+    const [bleDevice] = useBleDevice();
     const [startScan, setStartScan] = React.useState(false);
     const [availableBleDevices, setAvailableBleDevices] = React.useState<Device[]>([]);
 
-    useScannedDevices(bleManager, setAvailableBleDevices, startScan);
+    useScannedDevices(bleDeviceClient.bleManager, setAvailableBleDevices, startScan);
 
     const connectOnPress = async (deviceId: string) => {
-        setStartScan(!!await connectToDevice(bleManager, deviceId, actions.modify));
-
+        setStartScan(!(await bleDeviceClient.connectToDevice(deviceId)));
     };
 
     const onModalClose = () => {

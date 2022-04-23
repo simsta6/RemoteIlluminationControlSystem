@@ -72,3 +72,10 @@ export async function requestBluetoothPermission() {
         return false;
     }
 }
+
+export const requestPermissions = async () => {
+    await requestBluetoothPermission();
+    await requestBluetoothAdminPermission();
+    await requestBluetoothAdvPermission();
+    await requestLocationPermission();
+};
