@@ -36,41 +36,41 @@
         "Settings": "Nustatymai"
     },
     "Terminal": {
-        "message": "Message"
+        "message": "Pranešimas"
     },
     "ConnectBleDeviceModal": {
-        "ConnectToDevice": "Message"
+        "ConnectToDevice": "Pranešimas"
     },
     "EditDeviceModal": {
-        "ChangeDeviceName": "Change Device Name"
+        "ChangeDeviceName": "Pakeisti įrenginio vardą"
     },
     "AdjustTab": {
-        "CustomizeIllDevice": "Customize Your Illumination Devices"
+        "CustomizeIllDevice": "Valdyti šviestuvus"
     },
     "DevicesTab": {
-        "ConfigureDevices": "Configure Connected Devices"
+        "ConfigureDevices": "Valdyti prijungtus įrenginius"
     },
     "LiveDataTab": {
-        "AllDevicesLiveData": "All Devices Live Data",
-        "IndividualDeviceLiveData": "Individual Device Live Data",
-        "totalPowerConsumption": "Total Power Consumption",
-        "rgbCount": "RGB Count",
-        "nonRgbCount": "Non-RGB Count"
+        "AllDevicesLiveData": "Įrenginių informacija",
+        "IndividualDeviceLiveData": "Įrenginio informacija",
+        "totalPowerConsumption": "Iš viso naudojama energijos",
+        "rgbCount": "RGB lempų skaičius",
+        "nonRgbCount": "Non-RGB lempų skaičius"
     },
     "ConnectedDevicesData": {
-        "color": "Color",
-        "bulbType": "Bulb Type",
-        "temperature": "Temperature",
-        "power": "Power",
-        "voltage": "Voltage",
-        "current": "Current"
+        "color": "Spalva",
+        "bulbType": "Lemputės tipas",
+        "temperature": "Temperatūra",
+        "power": "Galia",
+        "voltage": "Įtampa",
+        "current": "Srovė"
     },
     "deviceHelper": {
-        "allDevices": "All Devices",
-        "rgbDevices": "RGB Devices",
-        "nonRgbDevices": "Non-RGB Devices"
+        "allDevices": "Visi įrenginiai",
+        "rgbDevices": "RGB įrenginiai",
+        "nonRgbDevices": "non-RGB įrenginiai"
     },
-    "send": "Send",
-    "save": "Save",
-    "cancel": "Cancel"
+    "send": "Siųsti",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti"
 }
