@@ -24,6 +24,7 @@ export const ConnectedDevicesActionsTypes = {
     Remove: "RemoveDevice",
     Modify: "ModifyDevice",
     ChangeDeviceColor: "ChangeDeviceColor",
+    RemoveAll: "RemoveAllDevices"
 } as const;
 
 export type AddDeviceAction = {
@@ -43,10 +44,16 @@ export type ModifyDeviceAction = {
     deviceState: Device;
 }
 
+export type RemoveAllDevicesAction = {
+    type: typeof ConnectedDevicesActionsTypes.RemoveAll;
+}
+
 export type RemoveDeviceAction = {
     type: typeof ConnectedDevicesActionsTypes.Remove;
     index: number;
 }
 
-export type ConnectedDevicesActions = AddDeviceAction | ModifyDeviceAction | RemoveDeviceAction | ChangeDeviceColorAction;
+export type ConnectedDevicesActions = (
+    AddDeviceAction | ModifyDeviceAction | RemoveDeviceAction | ChangeDeviceColorAction | RemoveAllDevicesAction
+);
 

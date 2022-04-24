@@ -1,23 +1,49 @@
 import React from "react";
-import { BleManager } from "react-native-ble-plx";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
+import { BleDeviceClient } from "../../ble-api/deviceAPI";
+import { Button } from "../../components/Buttons/Button";
 import { DarModeToggle } from "../../components/Buttons/DarkModeToggle";
-import { Terminal } from "../../components/Terminal";
 import { Container } from "../../components/Container";
 import { LanguageSelector } from "../../components/LanguageSelector";
+import { Terminal } from "../../components/Terminal";
+import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 
 interface Props {
-    bleManager: BleManager;
+    bleDeviceClient: BleDeviceClient;
 }
 
 export const SettingsTab = (props: Props) => {
-    const { bleManager } = props;
+    const { bleDeviceClient } = props;
+    const [, actions] = useConnectedDevices();
+    const { t } = useTranslation();
+    const { height } = useWindowDimensions();
 
+    const onResetDevices = () => {
+        actions.removeAll();
+        bleDeviceClient.requestStats();
+    };
 
     return (
         <Container>
-            <DarModeToggle />
-            <LanguageSelector />
-            <Terminal bleManager={bleManager}/>
+            <View style={{...styles.flexEnd, height: height - 70 }}>
+                <View style={styles.closeItems}>
+                    <DarModeToggle />
+                    <LanguageSelector />
+                    <Terminal bleDeviceClient={bleDeviceClient}/>
+                </View>
+            
+                <Button title={t("SettingsTab:ResetDevicesSettings")} onPress={onResetDevices}/>
+            </View>
         </Container>
     );
 };
+
+const styles = StyleSheet.create({
+    closeItems: {
+        justifyContent: "flex-start"
+    },
+    flexEnd: {
+        justifyContent: "space-between",
+    },
+});

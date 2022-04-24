@@ -66,7 +66,7 @@ export class BleDeviceClient {
         return connectedDevice ? true : false;
     }
 
-    private async sendMessage(message: string, needResponse = true): Promise<boolean> {
+    public async sendMessage(message: string, needResponse = true): Promise<boolean> {
         const characteristicsUUID = this._characteristicUUID;
         const serviceUUID = this._serviceUUID;
         const bleDeviceId = this._bleDeviceId;
@@ -104,13 +104,10 @@ export class BleDeviceClient {
         return message;
     }
 
-    public async sendMessageToGetModuleColor(moduleId: string): Promise<string> {
+    public async sendMessageToGetModuleColor(moduleId: string): Promise<boolean> {
         const message = generateMessage(BLE_DEVICE_COMMANDS.ReadModule, moduleId, ReadModuleParameter.GetRgbColor);
         const isSuccessful = await this.sendMessage(message);
-        if (isSuccessful) {
-            console.log("Success");
-        }
-        return message;
+        return isSuccessful;
     }
 
     public async changeDeviceColorOrBrightness(moduleIdOrIds: string[], colors: { [x: string]: string; }): Promise<boolean> {
@@ -146,6 +143,13 @@ export class BleDeviceClient {
     public async turnOffAllDevices(): Promise<boolean> {
         const message = generateMessage(BLE_DEVICE_COMMANDS.TurnOffAllModules);
         return await this.sendMessage(message, false);
+    }
+
+    public async testDeviceByBlinking(moduleId: string, initColor: string): Promise<boolean> {
+        await this.sendMessage(generateMessage(BLE_DEVICE_COMMANDS.ChangeColorOrBrightness, moduleId, "050505"), false);
+        await new Promise(r => setTimeout(r, 500));
+        const result =  await this.sendMessage(generateMessage(BLE_DEVICE_COMMANDS.ChangeColorOrBrightness, moduleId, initColor.substring(1, 7)), false);
+        return result;
     }
 
     private async listenToMessages(deviceId: string) {

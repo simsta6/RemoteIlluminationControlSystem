@@ -9,7 +9,6 @@ import { useBleDevice } from "../../hooks/bleDeviceHook";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 import { Device } from "../../state/devices/connectedDevicesTypes";
-import { Button } from "../Buttons/Button";
 import { ColorPicker, ColorPickerProps } from "../ColorPicker";
 
 const isColorPickerNeeded = (devices: Device[], selectedDevice: string): boolean => { 
@@ -84,7 +83,7 @@ export const DeviceCustomizer = (props: Props) => {
         <>
             <Slider
                 containerStyle={{width: "100%", marginTop: 6}}
-                minimumValue={0}
+                minimumValue={2}
                 maximumValue={100}
                 value={ sliderValue }
                 trackStyle={ styles.trackStyle }
@@ -105,9 +104,6 @@ export const DeviceCustomizer = (props: Props) => {
                 }}
             />
             {getColorPickerIfNeeded(devices, selectedDevice, {...{color, setColor}})}
-            <Button title="remove devices" onPress={() => {
-                devices.forEach((_, index) => devicesActions.remove(index));
-            }} />
         </>
     );
 };

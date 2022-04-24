@@ -50,6 +50,9 @@
     "DevicesTab": {
         "ConfigureDevices": "Valdyti prijungtus įrenginius"
     },
+    "SettingsTab": {
+        "ResetDevicesSettings": "Nustatyti Modulius Iš Naujo"
+    },
     "LiveDataTab": {
         "AllDevicesLiveData": "Įrenginių informacija",
         "IndividualDeviceLiveData": "Įrenginio informacija",

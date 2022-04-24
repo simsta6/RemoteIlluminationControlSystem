@@ -51,6 +51,9 @@ export const ConnectedDevicesReducer = (state = initialState , action: Connected
             devices: state.devices.slice(0, index).concat(state.devices.slice(index + 1)) 
         };
     }
+    case ConnectedDevicesActionsTypes.RemoveAll: {
+        return { ...state, devices: [] };
+    }
     case ConnectedDevicesActionsTypes.Modify:{
         const { deviceState, index } = <ModifyDeviceAction>action;
         return { ...state, 

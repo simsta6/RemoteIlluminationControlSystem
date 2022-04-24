@@ -45,7 +45,7 @@ export const DevicesTab = (props: Props) => {
                 >
                     {t("DevicesTab:ConfigureDevices")}
                 </Text>
-
+                {/* isTurnedOn ? bleDeviceClient.turnOnSpecificDevice(ids) : bleDeviceClient.turnOffSpecificDevice(ids); */}
                 <View style={styles.listContainer}>
                     { 
                         devices.map((device, index) => (
@@ -55,6 +55,7 @@ export const DevicesTab = (props: Props) => {
                                 Icon={<BulbIcon color={colors.icon} height={25} width={25} />}
                                 isLast={ devices.length - 1 === index }
                                 deviceIndexInArray={index}
+                                bleDeviceClient={bleDeviceClient}
                             />
                         )) 
                     }

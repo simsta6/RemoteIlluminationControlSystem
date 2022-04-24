@@ -50,6 +50,9 @@
     "DevicesTab": {
         "ConfigureDevices": "Configure Connected Devices"
     },
+    "SettingsTab": {
+        "ResetDevicesSettings": "Reset Devices Settings"
+    },
     "LiveDataTab": {
         "AllDevicesLiveData": "All Devices Live Data",
         "IndividualDeviceLiveData": "Individual Device Live Data",

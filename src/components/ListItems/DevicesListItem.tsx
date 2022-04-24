@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import ThreeVerticalDotsIcon from "../../assets/icons/ThreeVerticalDotsIcon";
+import { BleDeviceClient } from "../../ble-api/deviceAPI";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { Device } from "../../state/devices/connectedDevicesTypes";
 import { IconButton } from "../Buttons/IconButton";
@@ -11,11 +12,12 @@ interface Props {
     deviceIndexInArray: number;
     Icon: JSX.Element;
     isLast: boolean;
+    bleDeviceClient: BleDeviceClient;
 }
 
 export const DevicesListItem = (props: Props) => {
     const { colors } = useAppColors();
-    const { device, Icon, isLast, deviceIndexInArray } = props;
+    const { device, Icon, isLast, deviceIndexInArray, bleDeviceClient } = props;
     const [isModalVisible, setIsModalVisible] = React.useState(false);
 
     return (
@@ -25,7 +27,10 @@ export const DevicesListItem = (props: Props) => {
                     <IconButton 
                         Icon={() => Icon} 
                         // TODO:
-                        onPress={() => console.log("Lempa yra ijungiama, isjungiama, ijungama")}
+                        onPress={() => {
+                            console.log(device.color);
+                            bleDeviceClient.testDeviceByBlinking(device.index, device.color);
+                        }}
                     />
                     <Text 
                         style={{ 

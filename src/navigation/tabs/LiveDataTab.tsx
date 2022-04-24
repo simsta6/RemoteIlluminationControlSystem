@@ -36,13 +36,13 @@ export const LiveDataTab = (props: Props) => {
         devices.find(dev => dev.index === selectedDeviceId),
     [selectedDeviceId, devices]);
 
-    const allDevicesData = devices.reduce((acc, curr) => {
+    const allDevicesData = React.useMemo(() => devices.reduce((acc, curr) => {
         return { ...acc,
             power: acc.power + parseInt(curr.power), 
             rgbCount: acc.rgbCount + (curr.bulbType === "RGB" ? 1 : 0),
             nonRgbCount: acc.nonRgbCount + (curr.bulbType === "Non-RGB" ? 1 : 0),
         };
-    }, {power: 0, rgbCount: 0, nonRgbCount: 0});
+    }, {power: 0, rgbCount: 0, nonRgbCount: 0}), []);
 
     const allDevicesDataList = [
         {itemName: t("LiveDataTab:totalPowerConsumption"), itemData: allDevicesData.power, unit: "power"},

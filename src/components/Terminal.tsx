@@ -1,32 +1,39 @@
 import base64 from "base-64";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { BleManager, Subscription } from "react-native-ble-plx";
+import { Subscription } from "react-native-ble-plx";
+import Collapsible from "react-native-collapsible";
 import { TextInput } from "react-native-paper";
+import DownArrowIcon from "../assets/icons/DownArrowIcon";
+import UpArrowIcon from "../assets/icons/UpArrowIcon";
+import { BleDeviceClient } from "../ble-api/deviceAPI";
+import { getCurrentTime } from "../helpers/time";
 import { useBleDevice } from "../hooks/bleDeviceHook";
 import { useAppColors } from "../hooks/colorSchemeHooks";
 import { Button } from "./Buttons/Button";
-import Collapsible from "react-native-collapsible";
 import { IconButton } from "./Buttons/IconButton";
-import DownArrowIcon from "../assets/icons/DownArrowIcon";
-import UpArrowIcon from "../assets/icons/UpArrowIcon";
-import { getCurrentTime } from "../helpers/time";
-import { useTranslation } from "react-i18next";
 
 const formatMessageWithTime = (message: string) => {
     return `${getCurrentTime()} | ${message}`;
 };
 
+const getPlaceholderTextColor = (rgbaColor: string) => {
+    const arr = rgbaColor.split("");
+    arr[arr.length - 2] = "0.3";
+    return arr.join("");
+};
+
 interface Props {
-    bleManager: BleManager;
+    bleDeviceClient: BleDeviceClient;
 }
 
 export const Terminal = (props: Props) => {
-    const { bleManager } = props;
+    const { bleDeviceClient } = props;
     const { t } = useTranslation();
     const { colors } = useAppColors();
     const scrollViewRef = React.useRef<ScrollView | null>(null);
-    const [bleDevice, actions] = useBleDevice();
+    const [bleDevice] = useBleDevice();
     const [message, setMessage] = React.useState("");
     const [isCollapsed, setIsCollapsed] = React.useState(true);
     const [consoleOutputMessages, setConsoleOutputMessages] = React.useState<string[]>([]);
@@ -35,25 +42,25 @@ export const Terminal = (props: Props) => {
     React.useEffect(() => {
         let subscription: Subscription | undefined;
 
-        // if (deviceId && serviceUUID && uuid && isDeviceConnected) {
-        //     subscription = bleManager.monitorCharacteristicForDevice(deviceId, serviceUUID, uuid, (error, char) => {
-        //         if (error) {    
-        //             if (error.message.includes("is not connected") && isDeviceConnected) return;
+        if (deviceId && serviceUUID && uuid && isDeviceConnected) {
+            subscription = bleDeviceClient.bleManager.monitorCharacteristicForDevice(deviceId, serviceUUID, uuid, (error, char) => {
+                if (error) {    
+                    if (error.message.includes("is not connected") && isDeviceConnected) return;
         
-        //             setConsoleOutputMessages(arr => {
-        //                 arr.length > 200 && arr.shift();
-        //                 return [...arr, formatMessageWithTime(error.message)];
-        //             });
-        //         }
-        //         const receivedMessage = char?.value;
-        //         if (receivedMessage) {
-        //             setConsoleOutputMessages(arr => {
-        //                 arr.length > 200 && arr.shift();
-        //                 return [...arr, formatMessageWithTime(base64.decode(receivedMessage))];
-        //             });
-        //         }
-        //     });
-        // }
+                    setConsoleOutputMessages(arr => {
+                        arr.length > 200 && arr.shift();
+                        return [...arr, formatMessageWithTime(error.message)];
+                    });
+                }
+                const receivedMessage = char?.value;
+                if (receivedMessage) {
+                    setConsoleOutputMessages(arr => {
+                        arr.length > 200 && arr.shift();
+                        return [...arr, formatMessageWithTime(base64.decode(receivedMessage).replace(/(\r\n|\n|\r)/gm,""))];
+                    });
+                }
+            });
+        }
         
         return subscription?.remove;
     }, [deviceId, serviceUUID, uuid, isDeviceConnected]);
@@ -76,13 +83,17 @@ export const Terminal = (props: Props) => {
                         }}
                         underlineColor={colors.text}
                         activeUnderlineColor={colors.text}
-                        placeholderTextColor={colors.text}
+                        placeholderTextColor={getPlaceholderTextColor(colors.text)}
                         theme={{ colors: { text: colors.text } }}
                         onChangeText={setMessage}
                         value={message}
                         placeholder={t("Terminal:message")}
                     />
-                    {/* {deviceId ? <Button buttonStyle={styles.button} title={t("send")} onPress={() => sendMessageWithOutResponse(bleManager, deviceId, message, actions.modify)} /> : null} */}
+                    <Button 
+                        buttonStyle={styles.button} 
+                        title={t("send")} 
+                        onPress={() => bleDeviceClient.sendMessage(message, false)} 
+                    />
                 </View>
                 <ScrollView
                     style={{...styles.consoleOutputList, borderColor: colors.text}}
@@ -92,9 +103,11 @@ export const Terminal = (props: Props) => {
                 >
                     {
                         consoleOutputMessages.map((message, index) => (
-                            <Text key={index.toString()} style={{ ...styles.consoleMessage, color: colors.text }}>
-                                {message}
-                            </Text>
+                            <View key={index.toString()} style={styles.consoleMessageContainer}>
+                                <Text style={{ color: colors.text }}>
+                                    {message}
+                                </Text>
+                            </View>
                         ))
                     }
                 </ScrollView>
@@ -119,8 +132,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "500"
     },
-    consoleMessage: {
-        height: 18,
+    consoleMessageContainer: {
+        alignSelf: "flex-start"
     },
     textInput: {
         flex: 3,

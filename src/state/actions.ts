@@ -8,6 +8,7 @@ import {
     RemoveDeviceAction, 
     ConnectDeviceState,
     ChangeDeviceColorAction,
+    RemoveAllDevicesAction,
 } from "./devices/connectedDevicesTypes";
 import { 
     ThemeActionTypes, 
@@ -44,6 +45,9 @@ export const ConnectDevicesActions = {
     RemoveDevice: (index: number): RemoveDeviceAction => ({
         type: ConnectedDevicesActionsTypes.Remove,
         index
+    }),
+    RemoveAllDevices: (): RemoveAllDevicesAction => ({
+        type: ConnectedDevicesActionsTypes.RemoveAll,
     }),
 };
 

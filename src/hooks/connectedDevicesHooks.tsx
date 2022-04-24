@@ -14,6 +14,8 @@ export const useConnectedDevices = () => {
                 dispatch(ConnectDevicesActions.AddDevice(device)),
             remove: (index: number) =>
                 dispatch(ConnectDevicesActions.RemoveDevice(index)),
+            removeAll: () =>
+                dispatch(ConnectDevicesActions.RemoveAllDevices()),
             changeColor: (deviceIndex: string, color: string) =>
                 dispatch(ConnectDevicesActions.ChangeColor(deviceIndex, color)),
             modify: (device: Device, index: number) =>

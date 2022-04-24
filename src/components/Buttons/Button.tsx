@@ -40,6 +40,7 @@ export const Button = (props: Props) => {
 const styles = StyleSheet.create({
     button: {
         alignItems: "center",
+        margin: 4,
         padding: 8,  
         borderRadius: 2,
         marginVertical: 5,
