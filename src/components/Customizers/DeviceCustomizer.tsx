@@ -24,8 +24,6 @@ const isColorPickerNeeded = (devices: Device[], selectedDevice: string): boolean
 };
 
 const getColorPickerIfNeeded = (devices: Device[], selectedDevice: string, colorPickerProps: ColorPickerProps) => {
-    console.log("SelectedDevice: " + selectedDevice);
-    console.log("Color: " + colorPickerProps.color);
     return isColorPickerNeeded(devices, selectedDevice) ? (
         <View style={{marginVertical: 10, width: "100%"}}>
             <ColorPicker {...colorPickerProps} />
@@ -106,9 +104,7 @@ export const DeviceCustomizer = (props: Props) => {
                     setSliderValue(value);
                 }}
             />
-            <Button title="Test" onPress={() => console.log(bleDeviceClient.requestStats())}></Button>
             {getColorPickerIfNeeded(devices, selectedDevice, {...{color, setColor}})}
-            <Button title="show messages" onPress={() => bleDevice.messages.forEach(a=>console.log(a))} />
             <Button title="remove devices" onPress={() => {
                 devices.forEach((_, index) => devicesActions.remove(index));
             }} />

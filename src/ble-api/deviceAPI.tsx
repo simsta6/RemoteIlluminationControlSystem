@@ -1,6 +1,5 @@
 import base64 from "base-64";
 import { BleManager, Subscription } from "react-native-ble-plx";
-import { shadeColorIfNeeded } from "../helpers/colorHelper";
 import { BleDeviceActionTypes } from "../state/actions";
 import { BleDevice } from "../state/ble-device/bleDeviceTypes";
 import { Device } from "../state/devices/connectedDevicesTypes";
@@ -23,6 +22,7 @@ export class BleDeviceClient {
         this._subscription = undefined;
         this._serviceUUID = serviceUUID;
         this._characteristicUUID = characteristicUUID;
+        bleDeviceId && this.connectToDevice(bleDeviceId);
     }
 
     public readResponse(command: string, bleDevice: BleDevice) {
@@ -45,11 +45,7 @@ export class BleDeviceClient {
                 });
             })
             .catch(err => {
-                if (err.message.includes("is already connected"))
-                    return undefined;
-
                 console.log(err + "52");
-                this._actions.remove();
                 return undefined;
             });
 
@@ -64,9 +60,7 @@ export class BleDeviceClient {
         return connectedDevice ? true : false;
     }
 
-    private async sendMessage(message: string, needResponse = true, maxTryCount = 3): Promise<boolean> {
-        if (maxTryCount === 0) return false;
-
+    private async sendMessage(message: string, needResponse = true): Promise<boolean> {
         const characteristicsUUID = this._characteristicUUID;
         const serviceUUID = this._serviceUUID;
         const bleDeviceId = this._bleDeviceId;
@@ -82,13 +76,10 @@ export class BleDeviceClient {
                     }
                 })
                 .catch(err => console.log(err + "83"));
-        } else {
-            console.log("Retrying to reconnect");
-            await this.connectToDevice(bleDeviceId);
-            return await this.sendMessage(message, needResponse, maxTryCount - 1);
+            return true;
         }
-
-        return true;
+            
+        return false;
     }
 
     public get bleManager() {
@@ -196,7 +187,6 @@ export class BleDeviceClient {
                                         }
                                         );
                                     } else {
-                                        console.log("likes atsakymas: " + response);
                                         this._actions.updateResponse(command, response);
                                     }
                                 }
@@ -220,8 +210,6 @@ export class BleDeviceClient {
 
         for (const service of services) {
             const characteristics = await bleManager.characteristicsForDevice(deviceId, service.uuid);
-
-            characteristics.forEach(c => console.log({ isWritableWithResponse: c.isWritableWithResponse, serviceUUID: c.serviceUUID, uuid: c.uuid }));
 
             for (const characteristic of characteristics) {
                 if (characteristic.isWritableWithResponse) {

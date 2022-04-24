@@ -9,7 +9,6 @@ import { DeviceCustomizer } from "../../components/Customizers/DeviceCustomizer"
 import { DropDownDevicesPicker } from "../../components/DropDownDevicesPicker";
 import { ConnectBleDeviceModal } from "../../components/Modals/ConnectBleDeviceModal";
 import { DevicesKeys, getAllDevicesWithParents, getDevicesIdBySelectedDevice } from "../../helpers/devicesHelper";
-import { useBleDevice } from "../../hooks/bleDeviceHook";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 import { Device } from "../../state/devices/connectedDevicesTypes";
@@ -33,7 +32,6 @@ export const AdjustTab = ({ bleDeviceClient }: Props) => {
     const { colors: themeColors } = useAppColors();
     const { t } = useTranslation();
     const { width } = useWindowDimensions();
-    const [bleDevice] = useBleDevice();
     const [devices] = useConnectedDevices();
     const [isConnectDevicesModalVisible, setIsConnectDevicesModalVisible] = React.useState(false);
     const [selectedDevice, setSelectedDevice] = React.useState<string>(DevicesKeys.AllDevices);

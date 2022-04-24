@@ -15,7 +15,6 @@ import { hideNavigationBar } from "react-native-navigation-bar-color";
 import Toast from "react-native-toast-message";
 import { useBleDeviceClient } from "./ble-api/bleManager";
 import { AppDarkTheme, AppLightTheme } from "./constants/themes";
-import { requestPermissions } from "./helpers/permissions";
 import { useTheme } from "./hooks/themesHooks";
 import { TabsView } from "./navigation/Tabs";
 
@@ -24,7 +23,6 @@ LogBox.ignoreLogs(["new NativeEventEmitter"]); // Ignore log notification by mes
 const App = () => {
     const [ scheme ] = useTheme();
     const bleDeviceClient = useBleDeviceClient();
-    requestPermissions();
 
     React.useEffect(() => { 
         hideNavigationBar();

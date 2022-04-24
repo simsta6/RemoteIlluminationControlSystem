@@ -26,7 +26,7 @@ export const ConnectBleDeviceModal = (props: Props) => {
     const [startScan, setStartScan] = React.useState(false);
     const [availableBleDevices, setAvailableBleDevices] = React.useState<Device[]>([]);
 
-    useScannedDevices(bleDeviceClient.bleManager, setAvailableBleDevices, startScan);
+    const { isScanStarted } = useScannedDevices(bleDeviceClient.bleManager, setAvailableBleDevices, startScan);
 
     const connectOnPress = async (deviceId: string) => {
         setStartScan(!(await bleDeviceClient.connectToDevice(deviceId)));
@@ -53,7 +53,7 @@ export const ConnectBleDeviceModal = (props: Props) => {
                 <View style={{...styles.modalView, width: width - 36, backgroundColor: colors.modal}}>
                     <View style={styles.xIconContainer}>
                         <Text style={{...styles.title, color: colors.text}}>{t("ConnectBleDeviceModal:ConnectToDevice")}</Text>
-                        <ActivityIndicator animating={startScan} size="large" />
+                        <ActivityIndicator animating={isScanStarted} size="large" />
                     </View>
                     <ScrollView style={{maxHeight: 200}}>
                         {

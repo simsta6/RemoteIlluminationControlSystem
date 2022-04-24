@@ -74,8 +74,10 @@ export async function requestBluetoothPermission() {
 }
 
 export const requestPermissions = async () => {
-    await requestBluetoothPermission();
-    await requestBluetoothAdminPermission();
-    await requestBluetoothAdvPermission();
-    await requestLocationPermission();
+    const blePerm = await requestBluetoothPermission();
+    const bleAdminPerm = await requestBluetoothAdminPermission();
+    const bleAdvPerm = await requestBluetoothAdvPermission();
+    const locationPerm = await requestLocationPermission();
+
+    return blePerm && bleAdminPerm && bleAdvPerm && locationPerm;
 };
