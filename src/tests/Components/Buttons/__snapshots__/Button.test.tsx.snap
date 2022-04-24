@@ -43,3 +43,47 @@ exports[`<Button> First Test 1`] = `
   </Text>
 </View>
 `;
+
+exports[`<Button> Match snapshot 1`] = `
+<View
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "white",
+      "borderRadius": 2,
+      "margin": 4,
+      "marginVertical": 5,
+      "opacity": 1,
+      "padding": 8,
+    }
+  }
+  testID="ButtonTouchableOpacity"
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "color": "purple",
+          "fontWeight": "500",
+          "textAlign": "center",
+          "textTransform": "uppercase",
+        },
+        undefined,
+      ]
+    }
+    testID="ButtonText"
+  >
+    ButtonTestText
+  </Text>
+</View>
+`;

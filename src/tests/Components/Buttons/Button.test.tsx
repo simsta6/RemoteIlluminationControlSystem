@@ -17,10 +17,20 @@ describe("<Button>", () => {
         }));
     });
 
+    test("Match snapshot", () => {
+        const mockFn = jest.fn();
+
+        const { toJSON } = render(
+            <Button title="ButtonTestText" onPress={mockFn}></Button>
+        );
+
+        expect(toJSON()).toMatchSnapshot();
+    });
+
     test("First Test", () => {
         const mockFn = jest.fn();
 
-        const { getByTestId, getByText, toJSON } = render(
+        const { getByTestId, getByText } = render(
             <Button title="ButtonTestText" onPress={mockFn}></Button>
         );
 
@@ -28,6 +38,5 @@ describe("<Button>", () => {
 
         expect(mockFn).toBeCalled;
         expect(getByText("ButtonTestText")).toBeTruthy;
-        expect(toJSON()).toMatchSnapshot();
     });
 });
