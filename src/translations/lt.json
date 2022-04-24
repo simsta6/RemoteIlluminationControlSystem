@@ -39,7 +39,7 @@
         "message": "Pranešimas"
     },
     "ConnectBleDeviceModal": {
-        "ConnectToDevice": "Pranešimas"
+        "ConnectToDevice": "Prisijungti Prie Prietaiso"
     },
     "EditDeviceModal": {
         "ChangeDeviceName": "Pakeisti įrenginio vardą"

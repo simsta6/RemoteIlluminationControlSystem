@@ -134,7 +134,9 @@ export const TabsView = (props: TabsProps) => {
                 bleDeviceClient={props.bleDeviceClient}
             />;
         case "devices":
-            return <DevicesTab />;
+            return <DevicesTab
+                bleDeviceClient={props.bleDeviceClient}
+            />;
         case "settings":
             return <SettingsTab
                 bleManager={props.bleDeviceClient.bleManager}

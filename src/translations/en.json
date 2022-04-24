@@ -39,7 +39,7 @@
         "message": "Message"
     },
     "ConnectBleDeviceModal": {
-        "ConnectToDevice": "Message"
+        "ConnectToDevice": "Connect To Device"
     },
     "EditDeviceModal": {
         "ChangeDeviceName": "Change Device Name"

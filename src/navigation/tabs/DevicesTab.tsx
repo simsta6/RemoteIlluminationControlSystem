@@ -2,13 +2,18 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import BulbIcon from "../../assets/icons/BulbIcon";
+import { BleDeviceClient } from "../../ble-api/deviceAPI";
 import { Container } from "../../components/Container";
 import { DevicesListItem } from "../../components/ListItems/DevicesListItem";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 
+interface Props {
+    bleDeviceClient: BleDeviceClient;
+}
 
-export const DevicesTab = () => {
+export const DevicesTab = (props: Props) => {
+    const { bleDeviceClient } = props;
     const { height } = useWindowDimensions();
     const { t } = useTranslation();
     const { colors } = useAppColors();
@@ -18,6 +23,7 @@ export const DevicesTab = () => {
     const onRefresh = () => {
         console.log("Refreshing");
         setIsRefreshing(true);
+        bleDeviceClient.requestStats();
         setTimeout(() => {
             setIsRefreshing(false);
             console.log("Refreshing is done");

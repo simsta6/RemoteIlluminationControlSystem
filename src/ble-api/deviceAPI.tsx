@@ -13,6 +13,8 @@ export class BleDeviceClient {
     private _serviceUUID: string | undefined;
     private _characteristicUUID: string | undefined;
     private _addDevice: (device: Device) => void;
+    
+    public didDeviceTriedToConnectOnStartup: boolean ;
 
     constructor(bleManager: BleManager, bleDeviceId: string | undefined, serviceUUID: string, characteristicUUID: string, actions: BleDeviceActionTypes, addDevice: (device: Device) => void) {
         this._bleManager = bleManager;
@@ -22,7 +24,11 @@ export class BleDeviceClient {
         this._subscription = undefined;
         this._serviceUUID = serviceUUID;
         this._characteristicUUID = characteristicUUID;
-        bleDeviceId && this.connectToDevice(bleDeviceId);
+
+        this.didDeviceTriedToConnectOnStartup = false;
+        bleDeviceId && this.connectToDevice(bleDeviceId).then(() => {
+            this.didDeviceTriedToConnectOnStartup = true;
+        });
     }
 
     public readResponse(command: string, bleDevice: BleDevice) {
@@ -45,7 +51,7 @@ export class BleDeviceClient {
                 });
             })
             .catch(err => {
-                console.log(err + "52");
+                console.log(err);
                 return undefined;
             });
 
@@ -66,17 +72,19 @@ export class BleDeviceClient {
         const bleDeviceId = this._bleDeviceId;
         if (!characteristicsUUID || !serviceUUID || !bleDeviceId) return false;
 
-        if (await this._bleManager.isDeviceConnected(bleDeviceId)) {
+        if (await this._bleManager.isDeviceConnected(bleDeviceId) && this._subscription) {
             await this._bleManager.writeCharacteristicWithResponseForDevice(bleDeviceId, serviceUUID, characteristicsUUID, base64.encode(message + "\r\n"))
                 .then((char) => {
                     if (char.value) {
                         const command = base64.decode(char.value);
-                        needResponse && console.log("Komanda: " + command);
                         needResponse && this._actions.sendRequest(command);
                     }
                 })
-                .catch(err => console.log(err + "83"));
-            return true;
+                .catch(err => {
+                    console.log(err);
+                    return false;
+                });
+            return this.didDeviceTriedToConnectOnStartup; // to prevent sending message if this client did not tried to connect to device 
         }
             
         return false;
@@ -132,12 +140,12 @@ export class BleDeviceClient {
 
     public async turnOnAllDevices(): Promise<boolean> {
         const message = generateMessage(BLE_DEVICE_COMMANDS.TurnOnAllModules);
-        return !!(await this.sendMessage(message, false));
+        return await this.sendMessage(message, false);
     }
 
     public async turnOffAllDevices(): Promise<boolean> {
         const message = generateMessage(BLE_DEVICE_COMMANDS.TurnOffAllModules);
-        return !!(await this.sendMessage(message, false));
+        return await this.sendMessage(message, false);
     }
 
     private async listenToMessages(deviceId: string) {
@@ -157,7 +165,7 @@ export class BleDeviceClient {
                                     return;
                                 }
 
-                                console.log(error + "168");
+                                console.log(error);
                                 return;
                             }
                             if (char?.value) {
@@ -166,8 +174,7 @@ export class BleDeviceClient {
                                 if (responseArray.length > 1) {
                                     const command = responseArray[0];
                                     const response = responseArray.slice(1);
-                                    if (command.includes("STATS")) {
-                                        // ID3,FFFFFF,5,5054,43,0
+                                    if (command.includes(BLE_DEVICE_COMMANDS.GetStats)) {
                                         const values = response.join(",").split(",");
                                         const index = values[0].slice(2);
                                         const color = "#" + values[1];
@@ -191,14 +198,14 @@ export class BleDeviceClient {
                                     }
                                 }
 
-                                console.log("gautas ats: " + response);
+                                console.log(response);
 
                             }
-                        }, "1");
+                        });
                     }
                 })
                 .catch(err => {
-                    console.log(err + " 179");
+                    console.log(err);
                     this._actions.remove();
                     return undefined;
                 });

@@ -25,12 +25,10 @@ export const LiveDataTab = (props: Props) => {
     const [isRefreshing, setIsRefreshing] = React.useState(false);
 
     const onRefresh = () => {
-        console.log("Refreshing");
         setIsRefreshing(true);
         bleDeviceClient.requestStats();
         setTimeout(() => {
             setIsRefreshing(false);
-            console.log("Refreshing is done");
         }, 1000);
     };
 
