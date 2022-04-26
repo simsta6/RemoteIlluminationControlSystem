@@ -10,6 +10,7 @@ interface Props {
 const DownArrowIcon = ({ height, width, color }: Props) => {
     return (
         <Svg 
+            testID="DownArrowIcon"
             x="0"
             y="0"
             viewBox="0 0 55.751 55.751"

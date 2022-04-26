@@ -10,6 +10,7 @@ interface Props {
 const MoonIcon = ({ height, width, color }: Props) => {
     return (
         <Svg 
+            testID="MoonIcon"
             x="0"
             y="0"
             viewBox="0 0 512 512"

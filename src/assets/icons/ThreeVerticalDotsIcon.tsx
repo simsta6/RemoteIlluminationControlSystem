@@ -10,6 +10,7 @@ interface Props {
 const ThreeVerticalDotsIcon = ({ height, width, color }: Props) => {
     return (
         <Svg 
+            testID="ThreeVerticalDotsIcon"
             viewBox="0 0 16 16"
             height={height}
             width={width}

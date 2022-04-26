@@ -17,6 +17,7 @@ const getText = (
     return (
         <Text 
             style={[{...styles.buttonText, color: disabled ? colors.disabledText : colors.text}, textStyle]}
+            testID={"IconButtonText"}
         >
             { title }
         </Text>
@@ -40,6 +41,8 @@ export const IconButton = (props: Props) => {
         <TouchableOpacity 
             onPress={onPress}
             style={buttonStyle}
+            testID={"TouchableOpacityIconButton"}
+            disabled={disabled}
         >
             <View style={styles.row}>
                 {title && getText(title, disabled, colors, textStyle)}

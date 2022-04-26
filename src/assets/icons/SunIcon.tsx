@@ -10,6 +10,7 @@ interface Props {
 const SunIcon = ({ height, width, color }: Props) => {
     return (
         <Svg 
+            testID="SunIcon"
             x="0"
             y="0"
             viewBox="0 0 512 512"

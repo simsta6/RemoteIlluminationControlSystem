@@ -10,6 +10,7 @@ interface Props {
 const PowerOnIcon = ({ height, width, color }: Props) => {
     return (
         <Svg 
+            testID="PowerOnIcon"
             x="0"
             y="0"
             viewBox="0 0 553.859 553.859"

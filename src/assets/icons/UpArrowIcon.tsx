@@ -10,6 +10,7 @@ interface Props {
 const UpArrowIcon = ({ height, width, color }: Props) => {
     return (
         <Svg 
+            testID="UpArrowIcon"
             x="0"
             y="0"
             viewBox="0 0 487 487"

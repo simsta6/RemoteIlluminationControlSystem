@@ -10,6 +10,7 @@ interface Props {
 const BulbIcon = ({ height, width, color }: Props) => {
     return (
         <Svg 
+            testID="BulbIcon"
             height={height}
             width={width}
             x="0"

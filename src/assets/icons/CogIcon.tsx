@@ -10,6 +10,7 @@ interface Props {
 const CogIcon = ({ height, width, color }: Props) => {
     return (
         <Svg 
+            testID="CogIcon"
             height={height}
             width={width}
             viewBox="0 0 20 20"

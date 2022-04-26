@@ -1,13 +1,12 @@
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-import { Button } from "../../../components/Buttons/Button";
-import * as hooks from "../../../hooks/colorSchemeHooks";
+import { Text } from "react-native";
+import { IconButton } from "../../../components/Buttons/IconButton";
 import { Colors } from "../../../constants/themes";
+import * as hooks from "../../../hooks/colorSchemeHooks";
 
-describe("<Button />", () => {
+describe("<IconButton />", () => {
     const colors = {
-        disabledButton: "black",
-        button: "white",
         disabledText: "orange",
         text: "purple",
     };
@@ -16,36 +15,35 @@ describe("<Button />", () => {
         jest.spyOn(hooks, "useAppColors").mockImplementation(() => ({ colors: colors as Colors }));
     });
 
-    test("Default Button should match snapshot", () => {
+    test("Default IconButton should match snapshot", () => {
         const { toJSON } = render(
-            <Button title="ButtonTestText" />
+            <IconButton Icon={() => <Text>TestIcon</Text>} />
         );
 
         expect(toJSON()).toMatchSnapshot();
     });
 
-    test("Disabled Button should be in rendered correctly", () => {
+    test("Disabled IconButton should be in rendered correctly", () => {
         const { getByTestId, getByText } = render(
-            <Button title="ButtonTestText" disabled />
+            <IconButton Icon={() => <Text>TestIcon</Text>} title={"TestTitle"} disabled/>
         );
 
-        const touchableOpacity = getByTestId("ButtonTouchableOpacity");
-        const text = getByTestId("ButtonText");
+        const touchableOpacity = getByTestId("TouchableOpacityIconButton");
+        const text = getByTestId("IconButtonText");
 
         expect(touchableOpacity.props.accessibilityState.disabled).toBe(true);
-        expect(touchableOpacity.props.style.backgroundColor).toBe(colors.disabledButton);
         expect(text.props.style[0].color).toBe(colors.disabledText);
-        expect(getByText("ButtonTestText")).toBeTruthy;
+        expect(getByText("TestTitle")).toBeTruthy;
     });
 
     test("onPress function should be called once when button is pressed", () => {
         const mockFn = jest.fn();
 
         const { getByTestId } = render(
-            <Button title="ButtonTestText" onPress={mockFn} />
+            <IconButton Icon={() => <Text>TestIcon</Text>} onPress={mockFn} />
         );
 
-        fireEvent.press(getByTestId("ButtonTouchableOpacity"));
+        fireEvent.press(getByTestId("TouchableOpacityIconButton"));
 
         expect(mockFn).toBeCalledTimes(1);
     });
@@ -54,29 +52,29 @@ describe("<Button />", () => {
         const mockFn = jest.fn();
 
         const { getByTestId } = render(
-            <Button title="ButtonTestText" disabled onPress={mockFn} />
+            <IconButton Icon={() => <Text>TestIcon</Text>} disabled onPress={mockFn} />
         );
 
-        fireEvent.press(getByTestId("ButtonTouchableOpacity"));
+        fireEvent.press(getByTestId("TouchableOpacityIconButton"));
 
         expect(mockFn).toBeCalledTimes(0);
     });
 
     test("Button text should be the same as given", () => {
         const { getByText } = render(
-            <Button title="ButtonTestText" />
+            <IconButton Icon={() => <Text>TestIcon</Text>} title="IconButtonTestText" />
         );
 
-        expect(getByText("ButtonTestText").props.children).toBe("ButtonTestText");
+        expect(getByText("IconButtonTestText").props.children).toBe("IconButtonTestText");
     });
 
     test("Given styles should be present", () => {
         const { getByTestId } = render(
-            <Button title="ButtonTestText" buttonStyle={{ height: 100, width: 100 }} textStyle={{ height: 100, width: 100 }} />
+            <IconButton title={"TestTitle"} buttonStyle={{ height: 100, width: 100 }} textStyle={{ height: 100, width: 100 }} Icon={() => <Text>TestIcon</Text>} />
         );
 
-        const text = getByTestId("ButtonText");
-        const touchableOpacity = getByTestId("ButtonTouchableOpacity");
+        const text = getByTestId("IconButtonText");
+        const touchableOpacity = getByTestId("TouchableOpacityIconButton");
 
         expect(text.props.style[1].height).toBe(100);
         expect(text.props.style[1].width).toBe(100);

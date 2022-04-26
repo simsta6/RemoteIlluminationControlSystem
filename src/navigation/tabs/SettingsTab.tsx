@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
 import { BleDeviceClient } from "../../ble-api/deviceAPI";
 import { Button } from "../../components/Buttons/Button";
-import { DarModeToggle } from "../../components/Buttons/DarkModeToggle";
+import { DarkModeToggle } from "../../components/Buttons/DarkModeToggle";
 import { Container } from "../../components/Container";
 import { LanguageSelector } from "../../components/LanguageSelector";
 import { Terminal } from "../../components/Terminal";
@@ -28,7 +28,7 @@ export const SettingsTab = (props: Props) => {
         <Container>
             <View style={{...styles.flexEnd, height: height - 70 }}>
                 <View style={styles.closeItems}>
-                    <DarModeToggle />
+                    <DarkModeToggle />
                     <LanguageSelector />
                     <Terminal bleDeviceClient={bleDeviceClient}/>
                 </View>

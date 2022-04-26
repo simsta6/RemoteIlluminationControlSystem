@@ -10,6 +10,7 @@ interface Props {
 const HistoryIcon = ({ color, height, width }: Props) => {
     return (
         <Svg
+            testID="HistoryIcon"
             x="0"
             y="0"
             viewBox="0 0 24 24"

@@ -10,6 +10,7 @@ interface Props {
 const XIcon = ({ height, width, color }: Props) => {
     return (
         <Svg 
+            testID="XIcon"
             viewBox="0 0 16 16"
             height={height}
             width={width}

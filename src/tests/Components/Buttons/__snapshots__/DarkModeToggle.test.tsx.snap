@@ -1,0 +1,140 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DarkModeToggle/> Default DarkModeToggle should match snapshot 1`] = `
+Array [
+  <Text
+    style={
+      Object {
+        "color": "purple",
+        "fontSize": 20,
+        "fontWeight": "500",
+      }
+    }
+  >
+    DarkModeToggle:darkModeToggle
+  </Text>,
+  <View
+    style={
+      Object {
+        "paddingTop": 10,
+      }
+    }
+    testID="Container"
+  >
+    <View
+      accessibilityState={
+        Object {
+          "disabled": false,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": "rgba(255, 255, 255, 1)",
+          "borderRadius": 30,
+          "height": 30,
+          "width": 60,
+        }
+      }
+      testID="Switch"
+    >
+      <View
+        collapsable={false}
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "left": 15,
+            "width": 60,
+          }
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "color": "white",
+              },
+              Object {
+                "paddingRight": 5,
+              },
+              undefined,
+            ]
+          }
+        >
+          
+        </Text>
+        <View
+          collapsable={false}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 0, 0, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderRadius": 15,
+              "borderWidth": 1,
+              "height": 30,
+              "justifyContent": "center",
+              "width": 30,
+            }
+          }
+        >
+          <RNSVGSvgView
+            align="xMidYMid"
+            bbHeight={25}
+            bbWidth={25}
+            focusable={false}
+            height={25}
+            meetOrSlice={0}
+            minX={0}
+            minY={0}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "borderWidth": 0,
+                },
+                Object {
+                  "flex": 0,
+                  "height": 25,
+                  "width": 25,
+                },
+              ]
+            }
+            testID="MoonIcon"
+            vbHeight={512}
+            vbWidth={512}
+            width={25}
+            x="0"
+            y="0"
+          >
+            <RNSVGGroup>
+              <RNSVGPath
+                d="M275.4 500.7c-135 0-244.7-109.8-244.7-244.7 0-134.9 109.8-244.7 244.7-244.7 8.2 0 16.4.4 24.6 1.2 7.2.7 13.5 5.2 16.5 11.7s2.4 14.2-1.6 20.2c-23 33.8-35.2 73.3-35.2 114.2 0 105 78.7 192.2 183.2 202.6 7.2.7 13.5 5.2 16.5 11.7 3.1 6.5 2.4 14.2-1.6 20.2-45.8 67.4-121.4 107.6-202.4 107.6zm-12.5-448C156.4 59.2 71.7 147.9 71.7 256c0 112.3 91.4 203.7 203.7 203.7 56.4 0 109.6-23.4 147.8-63.7-46.2-11.7-88.1-36.8-120.8-72.6-41.1-45.2-63.8-103.6-63.8-164.6.1-37.1 8.4-73.2 24.3-106.1z"
+                fill={4294944000}
+                propList={
+                  Array [
+                    "fill",
+                  ]
+                }
+              />
+            </RNSVGGroup>
+          </RNSVGSvgView>
+        </View>
+      </View>
+    </View>
+  </View>,
+]
+`;

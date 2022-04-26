@@ -7,7 +7,7 @@ import SunIcon from "../../assets/icons/SunIcon";
 import { StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
-export const DarModeToggle = () => {
+export const DarkModeToggle = () => {
     const { t } = useTranslation();
     const { colors } = useAppColors();
     const [scheme, actions] = useTheme();
@@ -24,12 +24,13 @@ export const DarModeToggle = () => {
     return (            
         <>
             <Text style={{...styles.title, color: colors.text}}>{t("DarkModeToggle:darkModeToggle")}</Text>
-            <View style={styles.container}>
+            <View style={styles.container} testID={"Container"}>
                 <Switch
                     renderInsideCircle={() => scheme === "dark" ? 
                         <MoonIcon height={25} width={25} color={colors.icon} /> : 
                         <SunIcon height={25} width={25} color={colors.icon} />
                     }
+                    testID={"Switch"}
                     backgroundActive={colors.card}
                     backgroundInactive={colors.card}
                     circleActiveColor={colors.background}

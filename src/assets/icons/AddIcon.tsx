@@ -10,6 +10,7 @@ interface Props {
 const AddIcon = ({ color, height, width }: Props) => {
     return (
         <Svg
+            testID="AddIcon"
             x="0"
             y="0"
             viewBox="0 0 60.364 60.364"

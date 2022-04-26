@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Button> First Test 1`] = `
+exports[`<Button /> Default Button should match snapshot 1`] = `
 <View
   accessible={true}
   collapsable={false}
-  focusable={true}
+  focusable={false}
   onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
@@ -44,11 +44,11 @@ exports[`<Button> First Test 1`] = `
 </View>
 `;
 
-exports[`<Button> Match snapshot 1`] = `
+exports[`<Button> Default Button should match snapshot 1`] = `
 <View
   accessible={true}
   collapsable={false}
-  focusable={true}
+  focusable={false}
   onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}

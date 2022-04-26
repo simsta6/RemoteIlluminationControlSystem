@@ -4,5 +4,8 @@ module.exports = {
         production: {
             plugins: ["react-native-paper/babel"],
         },
+        test: {
+            plugins: ["@babel/plugin-transform-modules-commonjs"]
+        }
     },
 };

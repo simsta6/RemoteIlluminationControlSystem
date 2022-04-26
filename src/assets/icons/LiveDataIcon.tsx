@@ -10,6 +10,7 @@ interface Props {
 const LiveDataIcon = ({ height, width, color }: Props) => {
     return (
         <Svg 
+            testID="LiveDataIcon"
             height={height}
             width={width}
             x="0"

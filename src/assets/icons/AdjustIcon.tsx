@@ -10,6 +10,7 @@ interface Props {
 const AdjustIcon = ({ color, height, width }: Props) => {
     return (
         <Svg
+            testID="AdjustIcon"
             x="0"
             y="0"
             viewBox="0 0 511.999 511.999"
