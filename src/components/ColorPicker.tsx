@@ -36,7 +36,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
             </View>
             <View style={{ ...styles.swatchesBar, backgroundColor: themeColors.card }}>
                 {PALETTE.map(paletteColor => (
-                    <TouchableOpacity key={paletteColor} onPress={() => setColor(paletteColor)}>
+                    <TouchableOpacity testID={paletteColor} key={paletteColor} onPress={() => setColor(paletteColor)}>
                         <View  style={{...styles.swatch, backgroundColor: paletteColor}} />
                     </TouchableOpacity>
                 ))}

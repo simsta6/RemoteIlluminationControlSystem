@@ -14,6 +14,7 @@
         "@react-native-async-storage/async-storage": "^1.17.0",
         "@react-navigation/native": "^6.0.10",
         "@reduxjs/toolkit": "^1.8.0",
+        "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react-native": "^9.1.0",
         "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
         "base-64": "^1.0.0",
@@ -71,7 +72,8 @@
     "jest": {
         "preset": "react-native",
         "setupFilesAfterEnv": [
-            "@testing-library/jest-native/extend-expect"
+            "@testing-library/jest-native/extend-expect",
+            "@testing-library/jest-native"
         ],
         "transformIgnorePatterns": [
             "node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"

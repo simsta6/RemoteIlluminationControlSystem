@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConnectToDeviceListItem /> Default ConnectToDeviceListItem should match snapshot 1`] = `
+Array [
+  <View
+    style={
+      Object {
+        "marginVertical": 0,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+      testID="TouchableOpacity"
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "column",
+            "justifyContent": "space-between",
+            "marginBottom": 10,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "purple",
+                "fontSize": 16,
+                "fontWeight": "500",
+              }
+            }
+          >
+            bleDeviceId
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Object {
+        "backgroundColor": "purple",
+        "height": 1,
+        "marginBottom": 10,
+        "opacity": 0.3,
+        "width": "100%",
+      }
+    }
+    testID="horizontalSeparator"
+  />,
+]
+`;

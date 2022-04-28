@@ -1,0 +1,425 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DeviceCustomizer /> Default DeviceCustomizer should match snapshot 1`] = `
+Array [
+  <View
+    animationType="timing"
+    onLayout={[Function]}
+    onValueChange={[Function]}
+    step={0}
+    style={
+      Array [
+        Object {
+          "height": 40,
+          "justifyContent": "center",
+        },
+        Object {},
+        Object {
+          "marginTop": 6,
+          "width": "100%",
+        },
+      ]
+    }
+    thumbTouchSize={
+      Object {
+        "height": 50,
+        "width": 50,
+      }
+    }
+    trackClickable={true}
+    trackMarks={Array []}
+    value={100}
+  >
+    <View
+      onLayout={[Function]}
+      renderToHardwareTextureAndroid={true}
+      style={
+        Array [
+          Object {
+            "borderRadius": 2,
+            "height": 4,
+          },
+          Object {
+            "backgroundColor": "white",
+          },
+          Object {
+            "borderRadius": 10,
+            "height": 10,
+          },
+        ]
+      }
+    />
+    <View
+      collapsable={false}
+      renderToHardwareTextureAndroid={true}
+      style={
+        Object {
+          "backgroundColor": "purple",
+          "borderRadius": 10,
+          "height": 10,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "width": 0,
+        }
+      }
+    />
+    <View
+      collapsable={false}
+      onLayout={[Function]}
+      style={
+        Object {
+          "opacity": 0,
+          "position": "absolute",
+          "transform": Array [
+            Object {
+              "translateX": 0,
+            },
+            Object {
+              "translateY": 0,
+            },
+          ],
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "red",
+            "borderColor": "black",
+            "borderRadius": 100,
+            "borderWidth": 1,
+            "height": 35,
+            "justifyContent": "center",
+            "width": 35,
+          }
+        }
+      >
+        <RNSVGSvgView
+          align="xMidYMid"
+          bbHeight={30}
+          bbWidth={30}
+          focusable={false}
+          height={30}
+          meetOrSlice={0}
+          minX={0}
+          minY={0}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              Object {
+                "flex": 0,
+                "height": 30,
+                "width": 30,
+              },
+            ]
+          }
+          testID="SunIcon"
+          vbHeight={512}
+          vbWidth={512}
+          width={30}
+          x="0"
+          y="0"
+        >
+          <RNSVGGroup>
+            <RNSVGPath
+              d="M256 105.5c-83.9 0-152.2 68.3-152.2 152.2 0 83.9 68.3 152.2 152.2 152.2 83.9 0 152.2-68.3 152.2-152.2 0-84-68.3-152.2-152.2-152.2zm0 263.5c-61.4 0-111.4-50-111.4-111.4 0-61.4 50-111.4 111.4-111.4 61.4 0 111.4 50 111.4 111.4 0 61.4-50 111.4-111.4 111.4zM256 74.8c11.3 0 20.4-9.1 20.4-20.4v-23c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v23c0 11.3 9.1 20.4 20.4 20.4zM256 437.2c-11.3 0-20.4 9.1-20.4 20.4v22.9c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4v-22.9c0-11.2-9.1-20.4-20.4-20.4zM480.6 235.6h-23c-11.3 0-20.4 9.1-20.4 20.4 0 11.3 9.1 20.4 20.4 20.4h23c11.3 0 20.4-9.1 20.4-20.4 0-11.3-9.1-20.4-20.4-20.4zM54.4 235.6h-23c-11.3 0-20.4 9.1-20.4 20.4 0 11.3 9.1 20.4 20.4 20.4h22.9c11.3 0 20.4-9.1 20.4-20.4.1-11.3-9.1-20.4-20.3-20.4zM400.4 82.8L384.1 99c-8 8-8 20.9 0 28.9s20.9 8 28.9 0l16.2-16.2c8-8 8-20.9 0-28.9s-20.9-8-28.8 0zM99 384.1l-16.2 16.2c-8 8-8 20.9 0 28.9s20.9 8 28.9 0l16.2-16.2c8-8 8-20.9 0-28.9s-20.9-7.9-28.9 0zM413 384.1c-8-8-20.9-8-28.9 0s-8 20.9 0 28.9l16.2 16.2c8 8 20.9 8 28.9 0s8-20.9 0-28.9L413 384.1zM99 127.9c8 8 20.9 8 28.9 0s8-20.9 0-28.9l-16.2-16.2c-8-8-20.9-8-28.9 0s-8 20.9 0 28.9L99 127.9z"
+              fill={4294944000}
+              propList={
+                Array [
+                  "fill",
+                ]
+              }
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+    </View>
+    <View
+      onMoveShouldSetResponder={[Function]}
+      onMoveShouldSetResponderCapture={[Function]}
+      onResponderEnd={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderReject={[Function]}
+      onResponderRelease={[Function]}
+      onResponderStart={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      onStartShouldSetResponderCapture={[Function]}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "marginBottom": -20,
+            "marginLeft": -20,
+            "marginRight": -20,
+            "marginTop": -20,
+          },
+        ]
+      }
+    />
+  </View>,
+  <View
+    style={
+      Object {
+        "marginVertical": 10,
+        "width": "100%",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "marginVertical": 10,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "height": 718,
+            "width": 718,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "column",
+                "justifyContent": "space-between",
+                "overflow": "visible",
+              },
+              Object {},
+              undefined,
+            ]
+          }
+        >
+          <View
+            onLayout={[Function]}
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "justifyContent": "center",
+                  "minHeight": 200,
+                  "minWidth": 200,
+                  "overflow": "visible",
+                  "position": "relative",
+                  "width": "100%",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "white",
+            "borderRadius": 15,
+            "flexDirection": "row",
+            "height": 60,
+            "justifyContent": "space-between",
+            "marginTop": 10,
+            "padding": 15,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+          testID="#ff0000"
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#ff0000",
+                "borderRadius": 6,
+                "height": 30,
+                "width": 30,
+              }
+            }
+          />
+        </View>
+        <View
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+          testID="#1633e6"
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#1633e6",
+                "borderRadius": 6,
+                "height": 30,
+                "width": 30,
+              }
+            }
+          />
+        </View>
+        <View
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+          testID="#00c85d"
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#00c85d",
+                "borderRadius": 6,
+                "height": 30,
+                "width": 30,
+              }
+            }
+          />
+        </View>
+        <View
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+          testID="#ffde17"
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#ffde17",
+                "borderRadius": 6,
+                "height": 30,
+                "width": 30,
+              }
+            }
+          />
+        </View>
+        <View
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+          testID="#98b048"
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#98b048",
+                "borderRadius": 6,
+                "height": 30,
+                "width": 30,
+              }
+            }
+          />
+        </View>
+        <View
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+          testID="#3a9cb0"
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#3a9cb0",
+                "borderRadius": 6,
+                "height": 30,
+                "width": 30,
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </View>,
+]
+`;

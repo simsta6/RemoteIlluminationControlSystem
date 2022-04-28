@@ -13,8 +13,8 @@ export class BleDeviceClient {
     private _serviceUUID: string | undefined;
     private _characteristicUUID: string | undefined;
     private _addDevice: (device: Device) => void;
-    
-    public didDeviceTriedToConnectOnStartup: boolean ;
+
+    public _didDeviceTriedToConnectOnStartup: boolean;
 
     constructor(bleManager: BleManager, bleDeviceId: string | undefined, serviceUUID: string, characteristicUUID: string, actions: BleDeviceActionTypes, addDevice: (device: Device) => void) {
         this._bleManager = bleManager;
@@ -25,9 +25,9 @@ export class BleDeviceClient {
         this._serviceUUID = serviceUUID;
         this._characteristicUUID = characteristicUUID;
 
-        this.didDeviceTriedToConnectOnStartup = false;
+        this._didDeviceTriedToConnectOnStartup = false;
         bleDeviceId && this.connectToDevice(bleDeviceId).then(() => {
-            this.didDeviceTriedToConnectOnStartup = true;
+            this._didDeviceTriedToConnectOnStartup = true;
         });
     }
 
@@ -36,7 +36,6 @@ export class BleDeviceClient {
         this._actions.readResponse(command);
         return response;
     }
-
 
     public async connectToDevice(deviceId: string): Promise<boolean> {
         const connectedDevice = !(await this._bleManager.isDeviceConnected(deviceId)) && await this._bleManager
@@ -84,7 +83,7 @@ export class BleDeviceClient {
                     console.log(err);
                     return false;
                 });
-            return this.didDeviceTriedToConnectOnStartup; // to prevent sending message if this client did not tried to connect to device 
+            return this._didDeviceTriedToConnectOnStartup; // to prevent sending message if this client did not tried to connect to device 
         }
             
         return false;
@@ -92,6 +91,10 @@ export class BleDeviceClient {
 
     public get bleManager() {
         return this._bleManager;
+    }
+
+    public get didDeviceTriedToConnectOnStartup() {
+        return this._didDeviceTriedToConnectOnStartup;
     }
 
     public get bleDeviceId() {

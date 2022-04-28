@@ -17,7 +17,7 @@ export const ConnectToDeviceListItem = (props: Props) => {
     return (
         <>
             <View style={styles.mainContainer}>
-                <TouchableOpacity onPress={() => connectOnPress(bleDevice.id)}>
+                <TouchableOpacity testID="TouchableOpacity" onPress={() => connectOnPress(bleDevice.id)}>
                     <View style={styles.verticalContainer}>
                         <View style={styles.container}>
                             <Text style={{ ...styles.deviceName, color: isConnected ? "green" : colors.text }}>{bleDevice.name ?? bleDevice.id}</Text>
@@ -25,7 +25,7 @@ export const ConnectToDeviceListItem = (props: Props) => {
                     </View>
                 </TouchableOpacity>
             </View>
-            {!isLast && <View style={{...styles.horizontalSeparator, backgroundColor: colors.text }}/>}
+            {!isLast && <View testID="horizontalSeparator" style={{...styles.horizontalSeparator, backgroundColor: colors.text }}/>}
         </>
     );
 };
