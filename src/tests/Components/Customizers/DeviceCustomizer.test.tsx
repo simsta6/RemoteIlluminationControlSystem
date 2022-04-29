@@ -58,7 +58,6 @@ describe("<DeviceCustomizer />", () => {
     const mockedBleDeviceClient = BleDeviceClient.prototype;
 
     beforeEach(() => {
-        jest.setTimeout(100 * 1000);
         mockChangeDeviceColorOrBrightness = jest
             .spyOn(BleDeviceClient.prototype, "changeDeviceColorOrBrightness")
             .mockImplementation(() => Promise.resolve(true));
@@ -107,25 +106,6 @@ describe("<DeviceCustomizer />", () => {
         expect(toJSON()).toMatchSnapshot();
     });
 
-    test("should call changeDeviceColorOrBrightness twice when color was changed ", async () => {
-        const props = {
-            setIsConnectDevicesModalVisible: mockSetIsConnectDevicesModalVisible as () => (unknown) as React.Dispatch<React.SetStateAction<boolean>>,
-            bleDeviceClient: mockedBleDeviceClient,
-            selectedDevice: "1",
-        };
-        const root = await waitFor(() => { 
-            return render(<DeviceCustomizer {...props} />);
-        });
-
-        const redSwatch = root.getByTestId("#ff0000");
-        fireEvent.press(redSwatch);
-
-        await waitFor(() => {
-            expect(mockChangeDeviceColorOrBrightness).toHaveBeenLastCalledWith(["1"], {"1": "#ff0000"});
-            expect(mockChangeDeviceColorOrBrightness).toHaveBeenCalledTimes(2);
-        });   
-    });
-
     test("swatches should be missing if selected device is Non-RGB", async () => {
         const props = {
             setIsConnectDevicesModalVisible: mockSetIsConnectDevicesModalVisible as () => (unknown) as React.Dispatch<React.SetStateAction<boolean>>,
@@ -136,9 +116,7 @@ describe("<DeviceCustomizer />", () => {
             return render(<DeviceCustomizer {...props} />);
         });
 
-        await waitFor(() => {
-            expect(root.queryByTestId("#ff0000")).not.toBeInTheDocument();
-        });
+        expect(root.queryAllByTestId("#ff0000")).toHaveLength(0);
     });
 
     test("swatches should be missing when group of devices is selected", async () => {
@@ -151,41 +129,53 @@ describe("<DeviceCustomizer />", () => {
             return render(<DeviceCustomizer {...props} />);
         });
 
-        await waitFor(() => {
-            expect(root.queryByTestId("#ff0000")).not.toBeInTheDocument();
-        });
+        expect(root.queryAllByTestId("#ff0000")).toHaveLength(0);
     });
 
-    test("should call changeDeviceColorOrBrightness 4 times when group of devices is selected", async () => {
+    test("swatches should be present if selected device is RGB", async () => {
         const props = {
             setIsConnectDevicesModalVisible: mockSetIsConnectDevicesModalVisible as () => (unknown) as React.Dispatch<React.SetStateAction<boolean>>,
             bleDeviceClient: mockedBleDeviceClient,
-            selectedDevice: "AllDevices",
+            selectedDevice: "1",
         };
-
-        await waitFor(() => { 
+        const root = await waitFor(() => { 
             return render(<DeviceCustomizer {...props} />);
         });
 
-        await waitFor(() => {
+        expect(root.queryAllByTestId("#ff0000")).toHaveLength(1);
+    });
+
+    test("should call changeDeviceColorOrBrightness when color is changed", async () => {
+        const props = {
+            setIsConnectDevicesModalVisible: mockSetIsConnectDevicesModalVisible as () => (unknown) as React.Dispatch<React.SetStateAction<boolean>>,
+            bleDeviceClient: mockedBleDeviceClient,
+            selectedDevice: "1",
+        };
+
+        const deviceCustomizer = <DeviceCustomizer {...props} />;
+
+        const root = await waitFor(() => render(deviceCustomizer));
+        
+        await waitFor(async () => {
+            expect(mockChangeDeviceColorOrBrightness).toHaveBeenLastCalledWith(["1"], {"1": "#ffff00"});
             expect(mockChangeDeviceColorOrBrightness).toHaveBeenCalledTimes(4);
-        });   
-    });
-
-    test("should call changeDeviceColorOrBrightness with multiple ids when group of ddevices is selected", async () => {
-        const props = {
-            setIsConnectDevicesModalVisible: mockSetIsConnectDevicesModalVisible as () => (unknown) as React.Dispatch<React.SetStateAction<boolean>>,
-            bleDeviceClient: mockedBleDeviceClient,
-            selectedDevice: "AllDevices",
-        };
-
-        await waitFor(() => { 
-            return render(<DeviceCustomizer {...props} />);
         });
 
-        await waitFor(() => {
-            expect(mockChangeDeviceColorOrBrightness).toHaveBeenLastCalledWith(["1", "2"], {"1": "#ffff00", "2": "#ffff00"});
-        });    
+        const redSwatch = await waitFor(() => root.getByTestId("#ff0000"));
+        await fireEvent.press(redSwatch);
+
+        await waitFor(async () => {
+            expect(mockChangeDeviceColorOrBrightness).toHaveBeenLastCalledWith(["1"], {"1": "#ff0000"});
+            expect(mockChangeDeviceColorOrBrightness).toHaveBeenCalledTimes(5);
+        });
+
+        const blueSwatch = await waitFor(() => root.getByTestId("#00c85d"));
+        await fireEvent.press(blueSwatch);
+
+        await waitFor(async () => {
+            expect(mockChangeDeviceColorOrBrightness).toHaveBeenLastCalledWith(["1"], {"1": "#00c65c"});
+            expect(mockChangeDeviceColorOrBrightness).toHaveBeenCalledTimes(6);
+        });
     });
 
 });
