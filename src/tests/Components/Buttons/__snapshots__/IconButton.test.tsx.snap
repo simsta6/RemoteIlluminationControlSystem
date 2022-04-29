@@ -33,37 +33,3 @@ exports[`<IconButton /> Default IconButton should match snapshot 1`] = `
   </View>
 </View>
 `;
-
-exports[`<IconButton> Default IconButton should match snapshot 1`] = `
-<View
-  accessible={true}
-  collapsable={false}
-  focusable={false}
-  onClick={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
-  style={
-    Object {
-      "opacity": 1,
-    }
-  }
-  testID="TouchableOpacityIconButton"
->
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "flexDirection": "row",
-      }
-    }
-  >
-    <Text>
-      TestIcon
-    </Text>
-  </View>
-</View>
-`;

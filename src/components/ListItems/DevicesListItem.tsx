@@ -26,7 +26,6 @@ export const DevicesListItem = (props: Props) => {
                 <View style={styles.closeItems}>
                     <IconButton 
                         Icon={() => Icon} 
-                        // TODO:
                         onPress={() => {
                             console.log(device.color);
                             bleDeviceClient.testDeviceByBlinking(device.index, device.color);
