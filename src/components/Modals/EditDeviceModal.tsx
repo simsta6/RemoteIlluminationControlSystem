@@ -41,7 +41,7 @@ export const EditDeviceModal = (props: Props) => {
             isModalVisible={isModalVisible}
             onModalClose={onModalClose}
         >
-            <View style={styles.centeredView} >
+            <View style={styles.centeredView} testID={"ModalCenteredView"} >
                 <View style={{...styles.modalView, width: width - 36, backgroundColor: colors.modal}}>
                     <Text style={{...styles.title, color: colors.text}}>{t("EditDeviceModal:ChangeDeviceName")}</Text>
                     <TextInput

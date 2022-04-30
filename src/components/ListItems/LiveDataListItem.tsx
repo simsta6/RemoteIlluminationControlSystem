@@ -23,7 +23,7 @@ export const LiveDataListItem = (props: Props) => {
                 </View>
                 {RightSideIcon ? RightSideIcon : <></>}
             </View>
-            {!isLast && <View style={{...styles.horizontalSeparator, backgroundColor: colors.text }}/>}
+            {!isLast && <View testID={"horizontalSeparator"} style={{...styles.horizontalSeparator, backgroundColor: colors.text }}/>}
         </>
     );
 };

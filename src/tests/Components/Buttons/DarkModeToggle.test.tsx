@@ -4,11 +4,8 @@ import { DarkModeToggle } from "../../../components/Buttons/DarkModeToggle";
 import { Colors } from "../../../constants/themes";
 import * as colorSchemeHooks from "../../../hooks/colorSchemeHooks";
 import * as themesHooks from "../../../hooks/themesHooks";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
-import enzyme from "enzyme";
 
 describe("<DarkModeToggle/>", () => {
-    enzyme.configure({ adapter: new Adapter() });
     const colors = {
         icon: "orange",
         text: "purple",

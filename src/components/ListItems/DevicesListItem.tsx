@@ -27,7 +27,6 @@ export const DevicesListItem = (props: Props) => {
                     <IconButton 
                         Icon={() => Icon} 
                         onPress={() => {
-                            console.log(device.color);
                             bleDeviceClient.testDeviceByBlinking(device.index, device.color);
                         }}
                     />
@@ -52,7 +51,7 @@ export const DevicesListItem = (props: Props) => {
                     />
                 </View>
             </View>
-            {!isLast && <View style={{...styles.horizontalSeparator, backgroundColor: colors.text }}/>}
+            {!isLast && <View testID="horizontalSeparator" style={{...styles.horizontalSeparator, backgroundColor: colors.text }}/>}
             <EditDeviceModal 
                 isModalVisible={isModalVisible}
                 setIsModalVisible={setIsModalVisible}
