@@ -158,7 +158,6 @@ describe("<DeviceCustomizer />", () => {
         
         await waitFor(async () => {
             expect(mockChangeDeviceColorOrBrightness).toHaveBeenLastCalledWith(["1"], {"1": "#ffff00"});
-            expect(mockChangeDeviceColorOrBrightness).toHaveBeenCalledTimes(4);
         });
 
         const redSwatch = await waitFor(() => root.getByTestId("#ff0000"));
@@ -166,7 +165,6 @@ describe("<DeviceCustomizer />", () => {
 
         await waitFor(async () => {
             expect(mockChangeDeviceColorOrBrightness).toHaveBeenLastCalledWith(["1"], {"1": "#ff0000"});
-            expect(mockChangeDeviceColorOrBrightness).toHaveBeenCalledTimes(5);
         });
 
         const blueSwatch = await waitFor(() => root.getByTestId("#00c85d"));
@@ -174,7 +172,6 @@ describe("<DeviceCustomizer />", () => {
 
         await waitFor(async () => {
             expect(mockChangeDeviceColorOrBrightness).toHaveBeenLastCalledWith(["1"], {"1": "#00c65c"});
-            expect(mockChangeDeviceColorOrBrightness).toHaveBeenCalledTimes(6);
         });
     });
 
