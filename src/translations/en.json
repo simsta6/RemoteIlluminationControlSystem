@@ -44,6 +44,9 @@
     "EditDeviceModal": {
         "ChangeDeviceName": "Change Device Name"
     },
+    "EditLightSensorModal": {
+        "ChangeLightSensorThreshold": "Change Light Sensor Threshold"
+    },
     "AdjustTab": {
         "CustomizeIllDevice": "Customize Your Illumination Devices"
     },

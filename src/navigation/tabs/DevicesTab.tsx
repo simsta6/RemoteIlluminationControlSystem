@@ -2,11 +2,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import BulbIcon from "../../assets/icons/BulbIcon";
+import ChipIcon from "../../assets/icons/ChipIcon";
 import { BleDeviceClient } from "../../ble-api/deviceAPI";
 import { Container } from "../../components/Container";
 import { DevicesListItem } from "../../components/ListItems/DevicesListItem";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
 import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
+import { Device } from "../../state/devices/connectedDevicesTypes";
 
 interface Props {
     bleDeviceClient: BleDeviceClient;
@@ -30,6 +32,10 @@ export const DevicesTab = (props: Props) => {
         }, 1000);
     };
 
+    const deviceIconOnPress = (device: Device) => {
+        bleDeviceClient.testDeviceByBlinking(device.index, device.color);
+    };
+
     return (
         <Container>
             <ScrollView
@@ -45,17 +51,20 @@ export const DevicesTab = (props: Props) => {
                 >
                     {t("DevicesTab:ConfigureDevices")}
                 </Text>
-                {/* isTurnedOn ? bleDeviceClient.turnOnSpecificDevice(ids) : bleDeviceClient.turnOffSpecificDevice(ids); */}
                 <View style={styles.listContainer}>
+                    <DevicesListItem 
+                        deviceName="Light Sensor" 
+                        Icon={<ChipIcon color={colors.icon} height={25} width={25} />} 
+                    />
                     { 
                         devices.map((device, index) => (
                             <DevicesListItem 
                                 key={index.toString()} 
-                                device={device}
+                                deviceName={device.name ?? ""}
                                 Icon={<BulbIcon color={colors.icon} height={25} width={25} />}
                                 isLast={ devices.length - 1 === index }
                                 deviceIndexInArray={index}
-                                bleDeviceClient={bleDeviceClient}
+                                iconOnPress={() => deviceIconOnPress(device)}
                             />
                         )) 
                     }

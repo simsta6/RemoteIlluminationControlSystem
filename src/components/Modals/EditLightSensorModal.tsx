@@ -1,31 +1,30 @@
+import { Slider } from "@miblanchard/react-native-slider";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
-import { TextInput } from "react-native-paper";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
-import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
+import { getSvjValue, useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 import { Button } from "../Buttons/Button";
 
 interface Props {
     setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-    deviceIndexInArray: number;
 }
 
-export const EditDeviceModal = (props: Props) => {
-    const { setIsModalVisible, deviceIndexInArray } = props;
+export const EditLightSensorModal = (props: Props) => {
+    const { setIsModalVisible } = props;
     const { t } = useTranslation();
     const { colors } = useAppColors();
-    const [devices, actions] = useConnectedDevices();
-    const device = devices[deviceIndexInArray];
-    const [deviceName, setDeviceName] = React.useState(device.name);
+    const [, actions] = useConnectedDevices();
+    const oldSvjValue = getSvjValue();
+    const [sliderValue, setSliderValue] = React.useState(oldSvjValue);
 
     const onSave = () => {
-        actions.modify({...device, name: deviceName}, deviceIndexInArray);
+        actions.changeSvj(sliderValue * 4095 / 100);
         setIsModalVisible(false);
     };
 
     const onCancel = () => {
-        setDeviceName(device.name);
+        setSliderValue(oldSvjValue);
         setIsModalVisible(false);
     };
 
@@ -37,18 +36,23 @@ export const EditDeviceModal = (props: Props) => {
 
     return (
         <>
-            <Text style={{...styles.title, color: colors.text}}>{t("EditDeviceModal:ChangeDeviceName")}</Text>
-            <TextInput
-                style={{
-                    ...styles.textInput,
-                    backgroundColor: colors.background,
-                    color: colors.text,
+            <Text style={{...styles.title, color: colors.text}}>{t("EditLightSensorModal:ChangeLightSensorThreshold")}</Text>
+            <Slider
+                containerStyle={{width: "100%", marginTop: 6}}
+                minimumValue={1}
+                maximumValue={100}
+                value={ sliderValue }
+                trackStyle={ styles.trackStyle }
+                minimumTrackTintColor={ colors.card }
+                maximumTrackTintColor={ colors.card }
+                thumbTouchSize={{
+                    width: 50,
+                    height: 50,
                 }}
-                underlineColor={colors.text}
-                activeUnderlineColor={colors.text}
-                onChangeText={setDeviceName}
-                value={deviceName}
-                theme={{ colors: { text: colors.text } }}
+                onValueChange={v => {
+                    const value = v instanceof Array ? v[0] : v;
+                    setSliderValue(value);
+                }}
             />
             <View style={styles.row}>
                 <Button title={t("save")} 
@@ -65,6 +69,10 @@ export const EditDeviceModal = (props: Props) => {
 };
 
 const styles = StyleSheet.create({
+    trackStyle: { 
+        height: 10, 
+        borderRadius: 10,
+    },
     modalView: {
         borderRadius: 20,
         paddingHorizontal: 20,

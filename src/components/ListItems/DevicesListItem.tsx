@@ -1,24 +1,25 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import ThreeVerticalDotsIcon from "../../assets/icons/ThreeVerticalDotsIcon";
-import { BleDeviceClient } from "../../ble-api/deviceAPI";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
-import { Device } from "../../state/devices/connectedDevicesTypes";
 import { IconButton } from "../Buttons/IconButton";
 import { EditDeviceModal } from "../Modals/EditDeviceModal";
+import { EditLightSensorModal } from "../Modals/EditLightSensorModal";
+import { Modal } from "../Modals/Modal";
 
 interface Props {
-    device: Device;
-    deviceIndexInArray: number;
+    deviceName: string;
+    deviceIndexInArray?: number;
     Icon: JSX.Element;
-    isLast: boolean;
-    bleDeviceClient: BleDeviceClient;
+    isLast?: boolean;
+    iconOnPress?: () => void;
 }
 
 export const DevicesListItem = (props: Props) => {
     const { colors } = useAppColors();
-    const { device, Icon, isLast, deviceIndexInArray, bleDeviceClient } = props;
     const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const { deviceName, Icon, isLast, iconOnPress, deviceIndexInArray } = props;
+    const { width } = useWindowDimensions();
 
     return (
         <>
@@ -26,9 +27,7 @@ export const DevicesListItem = (props: Props) => {
                 <View style={styles.closeItems}>
                     <IconButton 
                         Icon={() => Icon} 
-                        onPress={() => {
-                            bleDeviceClient.testDeviceByBlinking(device.index, device.color);
-                        }}
+                        onPress={iconOnPress}
                     />
                     <Text 
                         style={{ 
@@ -36,7 +35,7 @@ export const DevicesListItem = (props: Props) => {
                             color: colors.text 
                         }}
                     >
-                        {device.name}
+                        {deviceName}
                     </Text>
                 </View>
                 <View 
@@ -52,16 +51,45 @@ export const DevicesListItem = (props: Props) => {
                 </View>
             </View>
             {!isLast && <View testID="horizontalSeparator" style={{...styles.horizontalSeparator, backgroundColor: colors.text }}/>}
-            <EditDeviceModal 
+            <Modal
                 isModalVisible={isModalVisible}
-                setIsModalVisible={setIsModalVisible}
-                deviceIndexInArray={deviceIndexInArray}
-            />
+                onModalClose={() => setIsModalVisible(false)}
+            >
+                <View style={styles.centeredView} testID={"ModalCenteredView"} >
+                    <View style={{...styles.modalView, width: width - 36, backgroundColor: colors.modal}}>
+                        {
+                            deviceIndexInArray ? (
+                                <EditDeviceModal 
+                                    setIsModalVisible={setIsModalVisible}
+                                    deviceIndexInArray={deviceIndexInArray}
+                                />
+                            ) : (
+                                <EditLightSensorModal 
+                                    setIsModalVisible={setIsModalVisible}
+                                />
+                            )
+                        }
+                    </View>
+                </View>
+            </Modal>
         </>
     );
 };
 
 const styles = StyleSheet.create({
+    modalView: {
+        borderRadius: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
     row: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -87,5 +115,10 @@ const styles = StyleSheet.create({
     },
     threeDotsContainer: {
         marginRight: 10,
-    }
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
 });

@@ -44,6 +44,9 @@
     "EditDeviceModal": {
         "ChangeDeviceName": "Pakeisti įrenginio vardą"
     },
+    "EditLightSensorModal": {
+        "ChangeLightSensorThreshold": "Pakeisti Šviesos Jutiklio Reikšmę"
+    },
     "AdjustTab": {
         "CustomizeIllDevice": "Valdyti šviestuvus"
     },
