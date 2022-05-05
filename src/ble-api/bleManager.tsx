@@ -20,6 +20,8 @@ const startBleScan = (
     startScan: boolean,
     setIsScanStarted: React.Dispatch<React.SetStateAction<boolean>>,
     setAvailableBleDevices: React.Dispatch<React.SetStateAction<Device[]>>,
+    knownDeviceId: string | undefined,
+    setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     if (!startScan) {
         bleManager.stopDeviceScan();
@@ -28,14 +30,24 @@ const startBleScan = (
         return;
     }
 
-    bleManager.startDeviceScan(null, null, (err, device) => {            
+    bleManager.startDeviceScan(null, null, async (err, device) => {            
         if (err) { 
             if (err.message.includes("BluetoothLE is powered off")) {
-                return BluetoothStateManager.requestToEnable().then(() => startBleScan(bleManager, startScan, setIsScanStarted, setAvailableBleDevices));
+                return BluetoothStateManager.requestToEnable().then(() => startBleScan(bleManager, startScan, setIsScanStarted, setAvailableBleDevices, knownDeviceId, setIsModalVisible));
             } 
             console.log(err);
             return;
         }
+
+        if (knownDeviceId) {
+            const isDeviceConnected = await bleManager.isDeviceConnected(knownDeviceId);
+            if (isDeviceConnected) {
+                setIsScanStarted(false);
+                setIsModalVisible(false);
+                return;
+            }
+        }
+
         setIsScanStarted(true);
 
         if (device && device.name === "TTBG") {
@@ -47,7 +59,9 @@ const startBleScan = (
 export const useScannedDevices = (
     bleManager: BleManager,
     setAvailableBleDevices: React.Dispatch<React.SetStateAction<Device[]>>, 
-    startScan: boolean
+    startScan: boolean,
+    knownDeviceId: string | undefined,
+    setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     const [isScanStarted, setIsScanStarted] = React.useState(false);
     const [isPermissionsGranted, setIsPermissionsGranted] = React.useState(false);
@@ -64,7 +78,7 @@ export const useScannedDevices = (
 
     React.useEffect(() => {
         if (isPermissionsGranted) 
-            startBleScan(bleManager, startScan, setIsScanStarted, setAvailableBleDevices);
+            startBleScan(bleManager, startScan, setIsScanStarted, setAvailableBleDevices, knownDeviceId, setIsModalVisible);
     }, [bleManager, startScan, isPermissionsGranted]);
 
     return { isScanStarted };

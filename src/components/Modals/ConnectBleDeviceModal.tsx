@@ -26,7 +26,7 @@ export const ConnectBleDeviceModal = (props: Props) => {
     const [startScan, setStartScan] = React.useState(false);
     const [availableBleDevices, setAvailableBleDevices] = React.useState<Device[]>([]);
 
-    const { isScanStarted } = useScannedDevices(bleDeviceClient.bleManager, setAvailableBleDevices, startScan);
+    const { isScanStarted } = useScannedDevices(bleDeviceClient.bleManager, setAvailableBleDevices, startScan, bleDeviceClient.bleDeviceId, setIsModalVisible);
 
     const connectOnPress = async (deviceId: string) => {
         setStartScan(!(await bleDeviceClient.connectToDevice(deviceId)));

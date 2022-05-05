@@ -41,15 +41,9 @@ export const AdjustTab = ({ bleDeviceClient }: Props) => {
     const rgbDevicesLabel = t("deviceHelper:rgbDevices");
     const nonRgbDevicesLabel = t("deviceHelper:nonRgbDevices");
 
-    // React.useEffect(() => {
-    //     bleDevice.messages.forEach(msg => )
-    // }, [bleDevice.messages]);
-
     const allItems = React.useMemo(() => 
         getAllDevicesWithParents(devices, allDevicesLabel, rgbDevicesLabel, nonRgbDevicesLabel)
     , [devices, allDevicesLabel, rgbDevicesLabel, nonRgbDevicesLabel]);
-
-    //Send message after waiting for 200ms when customizer sets it.
 
     return (
         <Container>

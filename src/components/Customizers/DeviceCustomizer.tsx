@@ -68,9 +68,9 @@ export const DeviceCustomizer = (props: Props) => {
 
                 const messageSent = await bleDeviceClient.changeDeviceColorOrBrightness(ids, Object.assign({}, ...colors ));
                 messageSent && devicesActions.changeColor(selectedDevice, color);
-                !messageSent && bleDeviceClient.didDeviceTriedToConnectOnStartup && setHook && setIsConnectDevicesModalVisible(true);
+                !messageSent && !bleDeviceClient.didDeviceTriedToConnectOnStartup && setHook && setIsConnectDevicesModalVisible(true);
             } else {
-                setHook && bleDeviceClient.didDeviceTriedToConnectOnStartup && setIsConnectDevicesModalVisible(true);
+                setHook && !bleDeviceClient.didDeviceTriedToConnectOnStartup && setIsConnectDevicesModalVisible(true);
             }
         }, 200);
         return () => {

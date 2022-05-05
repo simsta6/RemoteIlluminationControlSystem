@@ -1,9 +1,10 @@
 import base64 from "base-64";
-import { BleManager, Subscription } from "react-native-ble-plx";
+import { BleManager, Device as PlxDevice, Subscription } from "react-native-ble-plx";
 import { BleDeviceActionTypes } from "../state/actions";
 import { BleDevice } from "../state/ble-device/bleDeviceTypes";
 import { Device } from "../state/devices/connectedDevicesTypes";
 import { BLE_DEVICE_COMMANDS, generateMessage, ReadModuleParameter, TurnOnOrOffParameter } from "./messageGenerator";
+import BluetoothStateManager from "react-native-bluetooth-state-manager";
 
 export class BleDeviceClient {
     private _bleManager: BleManager;
@@ -13,6 +14,7 @@ export class BleDeviceClient {
     private _serviceUUID: string | undefined;
     private _characteristicUUID: string | undefined;
     private _addDevice: (device: Device) => void;
+    private _tryingToConnect: boolean;
 
     public _didDeviceTriedToConnectOnStartup: boolean;
 
@@ -25,6 +27,7 @@ export class BleDeviceClient {
         this._serviceUUID = serviceUUID;
         this._characteristicUUID = characteristicUUID;
 
+        this._tryingToConnect = false;
         this._didDeviceTriedToConnectOnStartup = false;
         bleDeviceId && this.connectToDevice(bleDeviceId).then(() => {
             this._didDeviceTriedToConnectOnStartup = true;
@@ -38,21 +41,31 @@ export class BleDeviceClient {
     }
 
     public async connectToDevice(deviceId: string): Promise<boolean> {
-        const connectedDevice = !(await this._bleManager.isDeviceConnected(deviceId)) && await this._bleManager
-            .connectToDevice(deviceId)
-            .then(cDevice => {
-                return cDevice.discoverAllServicesAndCharacteristics().then(async (deviceWithChar) => {
-                    console.log("connected");
-                    this._bleDeviceId = deviceWithChar.id;
-                    await this.setPrimaryCharacteristic(this._bleManager, deviceWithChar.id);
-                    await this.listenToMessages(deviceWithChar.id);
-                    return deviceWithChar;
+        let connectedDevice: PlxDevice | undefined = undefined;
+        const bleState = await BluetoothStateManager.getState();
+        if (bleState === "PoweredOff") {
+            await  BluetoothStateManager.requestToEnable();
+        }
+
+        if (!await this._bleManager.isDeviceConnected(deviceId) && !this._tryingToConnect) {
+            this._tryingToConnect = true;
+            connectedDevice = await this._bleManager
+                .connectToDevice(deviceId)
+                .then(cDevice => {
+                    return cDevice.discoverAllServicesAndCharacteristics().then(async (deviceWithChar) => {
+                        console.log("connected");
+                        this._bleDeviceId = deviceWithChar.id;
+                        await this.setPrimaryCharacteristic(this._bleManager, deviceWithChar.id);
+                        await this.listenToMessages(deviceWithChar.id);
+                        this._tryingToConnect = false;
+                        return deviceWithChar;
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                    return undefined;
                 });
-            })
-            .catch(err => {
-                console.log(err);
-                return undefined;
-            });
+        }
 
         connectedDevice && this._actions.modify({
             deviceId: connectedDevice.id,
@@ -65,7 +78,7 @@ export class BleDeviceClient {
         return connectedDevice ? true : false;
     }
 
-    public async sendMessage(message: string, needResponse = true): Promise<boolean> {
+    public async sendMessage(message: string, needResponse = true, timesToTry = 1): Promise<boolean> {
         const characteristicsUUID = this._characteristicUUID;
         const serviceUUID = this._serviceUUID;
         const bleDeviceId = this._bleDeviceId;
@@ -84,9 +97,12 @@ export class BleDeviceClient {
                     return false;
                 });
             return this._didDeviceTriedToConnectOnStartup; // to prevent sending message if this client did not tried to connect to device 
+        } else {
+            if (timesToTry < 1) return false;
+            await this.connectToDevice(bleDeviceId);
+            const res = await this.sendMessage(message, needResponse, timesToTry - 1);
+            return res;
         }
-            
-        return false;
     }
 
     public get bleManager() {
@@ -168,7 +184,6 @@ export class BleDeviceClient {
                             if (error) {
                                 if (`${error.name}: ${error.message}`.includes("BleError: Device") && error.message.includes("was disconnected")
                                     || `${error.name}: ${error.message}`.includes("BleError: Characteristic") && error.message.includes("notify change failed for device")) {
-                                    this._actions.remove();
                                     return;
                                 }
 
@@ -213,7 +228,6 @@ export class BleDeviceClient {
                 })
                 .catch(err => {
                     console.log(err);
-                    this._actions.remove();
                     return undefined;
                 });
         }
