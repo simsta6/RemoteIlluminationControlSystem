@@ -211,7 +211,7 @@ export class BleDeviceClient {
                                     if (command.includes(BLE_DEVICE_COMMANDS.GetStats)) {
                                         const values = response.join(",").split(",");
                                         if (values[0].includes("SVJ")) {
-                                            this._devicesAdditionActions.changeSvj(parseInt(values[1], 16));
+                                            this._devicesAdditionActions.changeSvj(parseInt(values[2], 16));
                                         } else {
                                             const index = values[0].slice(2);
                                             const color = "#" + values[1];
