@@ -8,6 +8,7 @@ export enum BLE_DEVICE_COMMANDS {
     ReadModule = "ST", // 1 - rgb color, 2 - mA, 3 - mV, 4 - temperature, 5 type (1 - RGB, 0 - nonRGB)
     // 1 or 0 at the end
     TurnOnOrOffModule = "ONF",
+    ChangeLightSensorValue = "LX"
 }
 
 export enum TurnOnOrOffParameter {
@@ -31,6 +32,8 @@ export const generateMessage = (command: BLE_DEVICE_COMMANDS, id?: string, param
     case BLE_DEVICE_COMMANDS.ReadModule:
     case BLE_DEVICE_COMMANDS.TurnOnOrOffModule:
         return `ID${id}${command}${parameter}`;
+    case BLE_DEVICE_COMMANDS.ChangeLightSensorValue: 
+        return `${command}${parameter}`;
     case BLE_DEVICE_COMMANDS.GetActiveModulesList:
     case BLE_DEVICE_COMMANDS.GetStats:
     case BLE_DEVICE_COMMANDS.TurnOffAllModules:

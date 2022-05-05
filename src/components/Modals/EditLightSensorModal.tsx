@@ -8,10 +8,11 @@ import { Button } from "../Buttons/Button";
 
 interface Props {
     setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+    onModalSave?: (newValue: number) => void;
 }
 
 export const EditLightSensorModal = (props: Props) => {
-    const { setIsModalVisible } = props;
+    const { setIsModalVisible, onModalSave } = props;
     const { t } = useTranslation();
     const { colors } = useAppColors();
     const [, actions] = useConnectedDevices();
@@ -19,7 +20,9 @@ export const EditLightSensorModal = (props: Props) => {
     const [sliderValue, setSliderValue] = React.useState(oldSvjValue);
 
     const onSave = () => {
-        actions.changeSvj(sliderValue * 4095 / 100);
+        const svjValue = sliderValue * 4095 / 100;
+        actions.changeSvj(svjValue);
+        onModalSave && onModalSave(svjValue);
         setIsModalVisible(false);
     };
 

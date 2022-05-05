@@ -36,6 +36,10 @@ export const DevicesTab = (props: Props) => {
         bleDeviceClient.testDeviceByBlinking(device.index, device.color);
     };
 
+    const onModalSave = (newValue: number) => {
+        bleDeviceClient.changeLightSensorValue(newValue);
+    };
+
     return (
         <Container>
             <ScrollView
@@ -55,6 +59,7 @@ export const DevicesTab = (props: Props) => {
                     <DevicesListItem 
                         deviceName="Light Sensor" 
                         Icon={<ChipIcon color={colors.icon} height={25} width={25} />} 
+                        onModalSave={onModalSave}
                     />
                     { 
                         devices.map((device, index) => (

@@ -13,12 +13,13 @@ interface Props {
     Icon: JSX.Element;
     isLast?: boolean;
     iconOnPress?: () => void;
+    onModalSave?: (newValue: number) => void;
 }
 
 export const DevicesListItem = (props: Props) => {
     const { colors } = useAppColors();
     const [isModalVisible, setIsModalVisible] = React.useState(false);
-    const { deviceName, Icon, isLast, iconOnPress, deviceIndexInArray } = props;
+    const { deviceName, Icon, isLast, iconOnPress, deviceIndexInArray, onModalSave } = props;
     const { width } = useWindowDimensions();
 
     return (
@@ -66,6 +67,7 @@ export const DevicesListItem = (props: Props) => {
                             ) : (
                                 <EditLightSensorModal 
                                     setIsModalVisible={setIsModalVisible}
+                                    onModalSave={onModalSave}
                                 />
                             )
                         }

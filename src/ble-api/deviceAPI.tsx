@@ -176,6 +176,13 @@ export class BleDeviceClient {
         return result;
     }
 
+    public async changeLightSensorValue(newValue: number): Promise<boolean> {
+        const message = generateMessage(BLE_DEVICE_COMMANDS.ChangeLightSensorValue, undefined, Math.round(newValue).toString(16));
+        console.log(message);
+        console.log(newValue);
+        return await this.sendMessage(message, false);
+    }
+
     private async listenToMessages(deviceId: string) {
         this._subscription?.remove();
         const characteristicsUUID = this._characteristicUUID;
