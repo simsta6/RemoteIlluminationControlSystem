@@ -9,6 +9,7 @@ import {
     ConnectDeviceState,
     ChangeDeviceColorAction,
     RemoveAllDevicesAction,
+    ChangeSVJDeviceAction,
 } from "./devices/connectedDevicesTypes";
 import { 
     ThemeActionTypes, 
@@ -19,6 +20,7 @@ import {
 
 export const initialState: BleDeviceState & ThemeState & ConnectDeviceState = {
     devices: [],
+    svjValue: 0,
     bleDevice: {
         deviceId: "",
         isDeviceConnected: false,
@@ -28,6 +30,10 @@ export const initialState: BleDeviceState & ThemeState & ConnectDeviceState = {
 };
 
 export const ConnectDevicesActions = {
+    ChangeSVJ: (newValue: number): ChangeSVJDeviceAction => ({
+        type: ConnectedDevicesActionsTypes.ChangeSVJ,
+        newValue
+    }),
     AddDevice: (deviceState: Device): AddDeviceAction => ({
         type: ConnectedDevicesActionsTypes.Add,
         deviceState

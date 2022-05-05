@@ -9,8 +9,9 @@ import { BleDeviceClient } from "./deviceAPI";
 export const useBleDeviceClient = () => {
     const [bleDevice, actions] = useBleDevice();
     const [, devicesActions] = useConnectedDevices();
+
     const bleDeviceClient = React.useMemo(() => 
-        new BleDeviceClient(new BleManager(), bleDevice.deviceId, bleDevice.serviceUUID ?? "", bleDevice.uuid ?? "", actions, devicesActions.add), 
+        new BleDeviceClient(new BleManager(), bleDevice.deviceId, bleDevice.serviceUUID ?? "", bleDevice.uuid ?? "", actions, devicesActions), 
     []);
     return bleDeviceClient;
 };

@@ -10,6 +10,8 @@ export const useConnectedDevices = () => {
     return [
         devices,
         {
+            changeSvj: (newValue: number) => 
+                dispatch(ConnectDevicesActions.ChangeSVJ(newValue)),
             add: (device: Device) =>
                 dispatch(ConnectDevicesActions.AddDevice(device)),
             remove: (index: number) =>
@@ -22,4 +24,10 @@ export const useConnectedDevices = () => {
                 dispatch(ConnectDevicesActions.ModifyDevice(device, index))
         }
     ] as const;
+};
+
+export const getSvjValue = () => {
+    const { svjValue } = useSelector((state: IRootState) => state.devicesReducer);
+
+    return svjValue;
 };

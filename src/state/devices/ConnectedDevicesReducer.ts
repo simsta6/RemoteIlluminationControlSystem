@@ -2,6 +2,7 @@ import { initialState } from "../actions";
 import {
     AddDeviceAction,
     ChangeDeviceColorAction,
+    ChangeSVJDeviceAction,
     ConnectedDevicesActions,
     ConnectedDevicesActionsTypes,
     Device,
@@ -12,15 +13,22 @@ import { State } from "../types";
 
 export const ConnectedDevicesReducer = (state = initialState , action: ConnectedDevicesActions): State  => {
     switch (action.type) {
+    case ConnectedDevicesActionsTypes.ChangeSVJ: {
+        const { newValue } = <ChangeSVJDeviceAction>action;
+        return { ...state, 
+            svjValue:  parseInt((newValue * 100 / 4095).toFixed(0))
+        };
+    }
     case ConnectedDevicesActionsTypes.Add: {
         const { deviceState } = <AddDeviceAction>action;
         const devices = state.devices;
         const oldDeviceIndex = devices.findIndex(dev => dev.index === deviceState.index);
         if (oldDeviceIndex > -1) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { name, index, power, ...rest  } = devices[oldDeviceIndex];
-            const newPower = (parseFloat(rest.voltage) * parseFloat(rest.current)).toString();
-            const newDevice: Device = { name, index, ...rest, power: newPower };
+            const { name, index } = devices[oldDeviceIndex];
+            const { bulbType, color, current, voltage, temperature } = deviceState;
+            const newPower = (parseFloat(voltage) * parseFloat(current)).toString().slice(0, 5);
+            const newDevice: Device = { name, index, temperature, bulbType, color, current, voltage, power: newPower };
             devices[oldDeviceIndex] = newDevice;
             return { ...state, devices };
         } else {

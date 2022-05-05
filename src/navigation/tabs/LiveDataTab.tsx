@@ -8,7 +8,7 @@ import { LiveDataListItem } from "../../components/ListItems/LiveDataListItem";
 import { isHexColor } from "../../helpers/colorHelper";
 import { getAllDevices, getUnitOfMeasurement } from "../../helpers/devicesHelper";
 import { useAppColors } from "../../hooks/colorSchemeHooks";
-import { useConnectedDevices } from "../../hooks/connectedDevicesHooks";
+import { getSvjValue, useConnectedDevices } from "../../hooks/connectedDevicesHooks";
 
 interface Props {
     bleDeviceClient: BleDeviceClient;
@@ -36,20 +36,6 @@ export const LiveDataTab = (props: Props) => {
         devices.find(dev => dev.index === selectedDeviceId),
     [selectedDeviceId, devices]);
 
-    const allDevicesData = React.useMemo(() => devices.reduce((acc, curr) => {
-        return { ...acc,
-            power: acc.power + parseInt(curr.power), 
-            rgbCount: acc.rgbCount + (curr.bulbType === "RGB" ? 1 : 0),
-            nonRgbCount: acc.nonRgbCount + (curr.bulbType === "Non-RGB" ? 1 : 0),
-        };
-    }, {power: 0, rgbCount: 0, nonRgbCount: 0}), []);
-
-    const allDevicesDataList = [
-        {itemName: t("LiveDataTab:totalPowerConsumption"), itemData: allDevicesData.power, unit: "power"},
-        {itemName: t("LiveDataTab:rgbCount"), itemData: allDevicesData.rgbCount},
-        {itemName: t("LiveDataTab:nonRgbCount"), itemData: allDevicesData.nonRgbCount},
-    ];
-
     const selectedDeviceDataList = selectedDevice && Object.entries(selectedDevice)
         .filter(entry => entry[0].toUpperCase() !== "NAME")
         .filter(entry => entry[0].toUpperCase() !== "INDEX")
@@ -57,13 +43,28 @@ export const LiveDataTab = (props: Props) => {
         .map(entry => {
             const name = entry[0];
             const obj = {
-                //@ts-ignore
+            //@ts-ignore
                 itemName: t(`ConnectedDevicesData:${name}`) as string,
                 itemData: entry[1],
             };
 
             return obj;
         });
+
+    const allDevicesData = React.useMemo(() => devices.reduce((acc, curr) => {
+        return { ...acc,
+            power: acc.power + parseFloat(curr.power), 
+            rgbCount: acc.rgbCount + (curr.bulbType === "RGB" ? 1 : 0),
+            nonRgbCount: acc.nonRgbCount + (curr.bulbType === "Non-RGB" ? 1 : 0),
+        };
+    }, {power: 0, rgbCount: 0, nonRgbCount: 0}), [selectedDeviceDataList]);
+
+    const allDevicesDataList = [
+        {itemName: t("LiveDataTab:totalPowerConsumption"), itemData: allDevicesData.power.toFixed(3), unit: "power"},
+        {itemName: t("LiveDataTab:rgbCount"), itemData: allDevicesData.rgbCount},
+        {itemName: t("LiveDataTab:nonRgbCount"), itemData: allDevicesData.nonRgbCount},
+        {itemName: t("LiveDataTab:LightSensorThresHold"), itemData: getSvjValue(), unit: "%"},
+    ];
 
     return (
         <Container>

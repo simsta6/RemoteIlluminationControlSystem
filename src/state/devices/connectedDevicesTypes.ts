@@ -16,16 +16,23 @@ interface CustomDeviceInfo {
 export type Device = ReadOnlyDeviceInfo & CustomDeviceInfo;
 
 export type ConnectDeviceState = { 
-    devices: Device[]
+    svjValue: number;
+    devices: Device[];
 }
 
 export const ConnectedDevicesActionsTypes = {
+    ChangeSVJ: "ChangeSVJ",
     Add: "AddDevice",
     Remove: "RemoveDevice",
     Modify: "ModifyDevice",
     ChangeDeviceColor: "ChangeDeviceColor",
     RemoveAll: "RemoveAllDevices"
 } as const;
+
+export type ChangeSVJDeviceAction = {
+    type: typeof ConnectedDevicesActionsTypes.ChangeSVJ;
+    newValue: number;
+}
 
 export type AddDeviceAction = {
     type: typeof ConnectedDevicesActionsTypes.Add;
@@ -54,6 +61,6 @@ export type RemoveDeviceAction = {
 }
 
 export type ConnectedDevicesActions = (
-    AddDeviceAction | ModifyDeviceAction | RemoveDeviceAction | ChangeDeviceColorAction | RemoveAllDevicesAction
+    ChangeSVJDeviceAction | AddDeviceAction | ModifyDeviceAction | RemoveDeviceAction | ChangeDeviceColorAction | RemoveAllDevicesAction
 );
 

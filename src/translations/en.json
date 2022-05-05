@@ -57,6 +57,7 @@
         "AllDevicesLiveData": "All Devices Live Data",
         "IndividualDeviceLiveData": "Individual Device Live Data",
         "totalPowerConsumption": "Total Power Consumption",
+        "LightSensorThresHold": "Light Sensor Threshold",
         "rgbCount": "RGB Count",
         "nonRgbCount": "Non-RGB Count"
     },

@@ -6,6 +6,11 @@ import { Device } from "../state/devices/connectedDevicesTypes";
 import { BLE_DEVICE_COMMANDS, generateMessage, ReadModuleParameter, TurnOnOrOffParameter } from "./messageGenerator";
 import BluetoothStateManager from "react-native-bluetooth-state-manager";
 
+type DevicesAdditionActionsType = {
+    changeSvj: (newValue: number) => void;
+    add: (device: Device) => void;
+}
+
 export class BleDeviceClient {
     private _bleManager: BleManager;
     private _bleDeviceId: string | undefined;
@@ -13,16 +18,16 @@ export class BleDeviceClient {
     private _subscription: Subscription | undefined;
     private _serviceUUID: string | undefined;
     private _characteristicUUID: string | undefined;
-    private _addDevice: (device: Device) => void;
+    private _devicesAdditionActions: DevicesAdditionActionsType;
     private _tryingToConnect: boolean;
 
     public _didDeviceTriedToConnectOnStartup: boolean;
 
-    constructor(bleManager: BleManager, bleDeviceId: string | undefined, serviceUUID: string, characteristicUUID: string, actions: BleDeviceActionTypes, addDevice: (device: Device) => void) {
+    constructor(bleManager: BleManager, bleDeviceId: string | undefined, serviceUUID: string, characteristicUUID: string, actions: BleDeviceActionTypes, devicesAdditionActions: DevicesAdditionActionsType) {
         this._bleManager = bleManager;
         this._bleDeviceId = bleDeviceId;
         this._actions = actions;
-        this._addDevice = addDevice;
+        this._devicesAdditionActions = devicesAdditionActions;
         this._subscription = undefined;
         this._serviceUUID = serviceUUID;
         this._characteristicUUID = characteristicUUID;
@@ -198,23 +203,27 @@ export class BleDeviceClient {
                                     const response = responseArray.slice(1);
                                     if (command.includes(BLE_DEVICE_COMMANDS.GetStats)) {
                                         const values = response.join(",").split(",");
-                                        const index = values[0].slice(2);
-                                        const color = "#" + values[1];
-                                        const current = parseInt(values[2]) / 1000;
-                                        const voltage = parseInt(values[3]) / 1000;
-                                        const power = current * voltage;
-                                        const temperature = values[4];
-                                        const bulbType = values[5] === "0" ? "Non-RGB" : "RGB";
-                                        !(values[0].includes("SVJ")) && this._addDevice({
-                                            index,
-                                            color,
-                                            bulbType,
-                                            temperature,
-                                            power: power.toString(),
-                                            voltage: voltage.toString(),
-                                            current: current.toString(),
+                                        if (values[0].includes("SVJ")) {
+                                            this._devicesAdditionActions.changeSvj(parseInt(values[1], 16));
+                                        } else {
+                                            const index = values[0].slice(2);
+                                            const color = "#" + values[1];
+                                            const current = values[5] === "0" ? 0.045 : 0.0045;
+                                            const voltage = parseInt(values[3]) / 1000;
+                                            const power = current * voltage;
+                                            const temperature = values[4];
+                                            const bulbType = values[5] === "0" ? "Non-RGB" : "RGB";
+                                            
+                                            this._devicesAdditionActions.add({
+                                                index,
+                                                color,
+                                                bulbType,
+                                                temperature,
+                                                power: power.toString(),
+                                                voltage: voltage.toString(),
+                                                current: current.toString(),
+                                            });
                                         }
-                                        );
                                     } else {
                                         this._actions.updateResponse(command, response);
                                     }

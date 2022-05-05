@@ -57,6 +57,7 @@
         "AllDevicesLiveData": "Įrenginių informacija",
         "IndividualDeviceLiveData": "Įrenginio informacija",
         "totalPowerConsumption": "Iš viso naudojama energijos",
+        "LightSensorThresHold": "^viesos Sensoriaus Reikšmė",
         "rgbCount": "RGB lempų skaičius",
         "nonRgbCount": "Non-RGB lempų skaičius"
     },
