@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     modalOverlay: {
+        zIndex: 9999,
         position: "absolute",
         top: 0,
         bottom: 0,
