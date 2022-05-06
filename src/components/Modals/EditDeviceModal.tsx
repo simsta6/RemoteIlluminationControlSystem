@@ -36,7 +36,7 @@ export const EditDeviceModal = (props: Props) => {
     }, []);
 
     return (
-        <>
+        <View>
             <Text style={{...styles.title, color: colors.text}}>{t("EditDeviceModal:ChangeDeviceName")}</Text>
             <TextInput
                 style={{
@@ -60,32 +60,14 @@ export const EditDeviceModal = (props: Props) => {
                     onPress={onCancel}
                 />
             </View>
-        </>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    modalView: {
-        borderRadius: 20,
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
     row: {
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center",
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
         alignItems: "center",
     },
     title: {

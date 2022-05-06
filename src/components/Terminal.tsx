@@ -63,7 +63,7 @@ export const Terminal = (props: Props) => {
         }
         
         return subscription?.remove;
-    }, [deviceId, serviceUUID, uuid, isDeviceConnected]);
+    }, [deviceId, serviceUUID, uuid, isDeviceConnected, bleDeviceClient._didDeviceTriedToConnectOnStartup]);
     
     return (
         <View style={styles.container}>
