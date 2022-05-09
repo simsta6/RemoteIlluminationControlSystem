@@ -76,19 +76,6 @@ const styles = StyleSheet.create({
         height: 10, 
         borderRadius: 10,
     },
-    modalView: {
-        borderRadius: 20,
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
     row: {
         flexDirection: "row",
         justifyContent: "space-between",
