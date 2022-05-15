@@ -265,4 +265,34 @@ export class BleDeviceClient {
         }
         return false;
     }
+
+    public async sendMessageWithValidation(message: string): Promise<boolean> {
+        if (this.validateCommand(message)) {
+            return this.sendMessage(message, false);
+        }
+        return Promise.resolve(false);
+    }
+
+    private validateCommand(command: string): boolean {
+        const regexExpressions = [
+            "LIST",
+            "STATS",
+            "ON",
+            "OFF",
+            "OK",
+            "ID[0-9A-F]{1,2}CLR[0-9A-F]{6}",
+            "ID[0-9A-F]{1,2}ST[1-5]",
+            "ID[0-9A-F]{1,2}ONF[0-1]",
+            "LX[0-9A-F]{1,3}"
+        ] as const;
+
+        for(let i = 0; i < regexExpressions.length; i++) {
+            const re = new RegExp(regexExpressions[i]);
+            if (re.exec(command)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

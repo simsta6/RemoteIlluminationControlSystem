@@ -92,7 +92,13 @@ export const Terminal = (props: Props) => {
                     <Button 
                         buttonStyle={styles.button} 
                         title={t("send")} 
-                        onPress={() => bleDeviceClient.sendMessage(message, false)} 
+                        onPress={() => 
+                            bleDeviceClient.sendMessageWithValidation(message.toUpperCase())
+                                .then(result => result && setConsoleOutputMessages(arr => {
+                                    arr.length > 200 && arr.shift();
+                                    return [...arr, formatMessageWithTime("Wrong command")];
+                                }))
+                        } 
                     />
                 </View>
                 <ScrollView
