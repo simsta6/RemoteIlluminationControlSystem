@@ -79,7 +79,10 @@
             "node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"
         ],
         "collectCoverage": true,
-        "coverageReporters": ["json", "html"],
+        "coverageReporters": [
+            "json",
+            "html"
+        ],
         "moduleNameMapper": {
             "react-i18next": "<rootDir>/__mocks__/react-i18next.ts"
         }

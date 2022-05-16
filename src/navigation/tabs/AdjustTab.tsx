@@ -67,7 +67,7 @@ export const AdjustTab = ({ bleDeviceClient }: Props) => {
                         } 
                     />
                 </View>
-                <DeviceCustomizer {...{ setIsConnectDevicesModalVisible, bleDeviceClient: bleDeviceClient, selectedDevice }}/>
+                <DeviceCustomizer {...{ setIsConnectDevicesModalVisible, bleDeviceClient, selectedDevice }}/>
             </View>
             <ConnectBleDeviceModal
                 bleDeviceClient={bleDeviceClient}

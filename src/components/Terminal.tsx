@@ -94,7 +94,7 @@ export const Terminal = (props: Props) => {
                         title={t("send")} 
                         onPress={() => 
                             bleDeviceClient.sendMessageWithValidation(message.toUpperCase())
-                                .then(result => result && setConsoleOutputMessages(arr => {
+                                .then(result => !result && setConsoleOutputMessages(arr => {
                                     arr.length > 200 && arr.shift();
                                     return [...arr, formatMessageWithTime("Wrong command")];
                                 }))

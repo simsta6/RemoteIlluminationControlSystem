@@ -66,16 +66,17 @@ export const DeviceCustomizer = (props: Props) => {
                 const colors = isRGBDevice ? [{[selectedDevice]: shadeColorIfNeeded(color, sliderValue)}] :
                     ids.map(id => {
                         const device = devices.find(dev => dev.index === id);
+                        const color = device?.bulbType === "Non-RGB" ? "#FFFFFF" : device?.color ?? "#FFFFFF";
                         return ({ 
-                            [id]:  shadeColorIfNeeded(device?.color ?? "#FFFFFF",
-                                device?.bulbType === "Non-RGB" && sliderValue < 15 ? 15 : sliderValue)});
+                            [id]:  shadeColorIfNeeded(color,
+                                device?.bulbType === "Non-RGB" && sliderValue < 2 ? 2 : sliderValue)});
                     });
 
                 const messageSent = await bleDeviceClient.changeDeviceColorOrBrightness(ids, Object.assign({}, ...colors ));
                 messageSent && devicesActions.changeColor(selectedDevice, color);
-                !messageSent && !bleDeviceClient.didDeviceTriedToConnectOnStartup && setHook && setIsConnectDevicesModalVisible(true);
+                !messageSent && setHook && setIsConnectDevicesModalVisible(true);
             } else {
-                setHook && !bleDeviceClient.didDeviceTriedToConnectOnStartup && setIsConnectDevicesModalVisible(true);
+                setHook && setIsConnectDevicesModalVisible(true);
             }
         }, 200);
         return () => {

@@ -27,6 +27,7 @@ const startBleScan = (
     if (!startScan) {
         bleManager.stopDeviceScan();
         setIsScanStarted(false);
+        setIsModalVisible(false);
         console.log("stopping scan");
         return;
     }
