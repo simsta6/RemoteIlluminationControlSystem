@@ -214,11 +214,11 @@ export class BleDeviceClient {
                                             this._devicesAdditionActions.changeSvj(parseInt(values[2], 16));
                                         } else {
                                             const index = values[0].slice(2);
-                                            const color = "#" + values[1];
+                                            const color = "#" + values[1].toUpperCase();
                                             const current = values[5] === "0" ? 0.045 : 0.0045;
                                             const voltage = parseInt(values[3], 16) / 1000;
                                             const power = current * voltage;
-                                            const temperature = values[4];
+                                            const temperature = parseInt(values[4], 16).toString();
                                             const bulbType = values[5] === "0" ? "Non-RGB" : "RGB";
                                             
                                             this._devicesAdditionActions.add({

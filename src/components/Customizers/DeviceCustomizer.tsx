@@ -64,7 +64,12 @@ export const DeviceCustomizer = (props: Props) => {
             if (bleDeviceId) {
                 const ids = getDevicesIdBySelectedDevice(devices, selectedDevice);
                 const colors = isRGBDevice ? [{[selectedDevice]: shadeColorIfNeeded(color, sliderValue)}] :
-                    ids.map(id => ({ [id]: shadeColorIfNeeded(devices.find(dev => dev.index === id)?.color ?? "#FFFFFF", sliderValue) }));
+                    ids.map(id => {
+                        const device = devices.find(dev => dev.index === id);
+                        return ({ 
+                            [id]:  shadeColorIfNeeded(device?.color ?? "#FFFFFF",
+                                device?.bulbType === "Non-RGB" && sliderValue < 15 ? 15 : sliderValue)});
+                    });
 
                 const messageSent = await bleDeviceClient.changeDeviceColorOrBrightness(ids, Object.assign({}, ...colors ));
                 messageSent && devicesActions.changeColor(selectedDevice, color);
@@ -83,7 +88,7 @@ export const DeviceCustomizer = (props: Props) => {
         <>
             <Slider
                 containerStyle={{width: "100%", marginTop: 6}}
-                minimumValue={2}
+                minimumValue={0}
                 maximumValue={100}
                 value={ sliderValue }
                 trackStyle={ styles.trackStyle }
