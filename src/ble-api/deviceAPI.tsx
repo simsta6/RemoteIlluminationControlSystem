@@ -216,7 +216,7 @@ export class BleDeviceClient {
                                             const index = values[0].slice(2);
                                             const color = "#" + values[1];
                                             const current = values[5] === "0" ? 0.045 : 0.0045;
-                                            const voltage = parseInt(values[3]) / 1000;
+                                            const voltage = parseInt(values[3], 16) / 1000;
                                             const power = current * voltage;
                                             const temperature = values[4];
                                             const bulbType = values[5] === "0" ? "Non-RGB" : "RGB";

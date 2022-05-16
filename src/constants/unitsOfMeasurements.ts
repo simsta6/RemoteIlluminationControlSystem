@@ -3,5 +3,6 @@ export const UNITS_OF_MEASUREMENTS = {
     POWER: "W",
     VOLTAGE: "V",
     CURRENT: "A",
-    LUX: "lx"
+    LUX: "lx",
+    "%": "%" 
 };

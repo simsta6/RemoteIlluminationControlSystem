@@ -32,6 +32,7 @@ describe("<DevicesListItem />", () => {
         jest.spyOn(hooks, "useAppColors").mockImplementation(() => ({ colors: colors as Colors }));
 
         jest.spyOn(connectedDevicesHooks, "useConnectedDevices").mockImplementation(() => [[{name: ""} as Device], {
+            changeSvj: () => ({}),
             add: () => ({}),
             remove: () => ({}),
             removeAll: () => ({}),

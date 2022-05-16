@@ -63,4 +63,4 @@ export const getAllDevices = (devices: Device[]): ItemType<string>[] => {
 };
 
 export const getUnitOfMeasurement = (unitName: string) => 
-    Object.entries(UNITS_OF_MEASUREMENTS).find(entry => entry[0].toUpperCase() === unitName.toUpperCase())?.[1] ?? unitName;
+    Object.entries(UNITS_OF_MEASUREMENTS).find(entry => entry[0].toUpperCase() === unitName.toUpperCase())?.[1];

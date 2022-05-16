@@ -75,6 +75,7 @@ describe("<DeviceCustomizer />", () => {
         jest.spyOn(colorSchemeHooks, "useAppColors").mockImplementation(() => ({ colors: colors as Colors }));
 
         jest.spyOn(connectedDevicesHooks, "useConnectedDevices").mockImplementation(() => [devices, {
+            changeSvj: () => ({}),
             add: () => ({}),
             remove: () => ({}),
             removeAll: () => ({}),
