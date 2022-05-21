@@ -59,15 +59,15 @@ export const DevicesListItem = (props: Props) => {
                 <View style={styles.centeredView} testID={"ModalCenteredView"} >
                     <View style={{...styles.modalView, width: width - 36, backgroundColor: colors.modal}}>
                         {
-                            deviceIndexInArray ? (
-                                <EditDeviceModal 
-                                    setIsModalVisible={setIsModalVisible}
-                                    deviceIndexInArray={deviceIndexInArray}
-                                />
-                            ) : (
+                            deviceIndexInArray === undefined ? (
                                 <EditLightSensorModal 
                                     setIsModalVisible={setIsModalVisible}
                                     onModalSave={onModalSave}
+                                />
+                            ) : (
+                                <EditDeviceModal 
+                                    setIsModalVisible={setIsModalVisible}
+                                    deviceIndexInArray={deviceIndexInArray}
                                 />
                             )
                         }
