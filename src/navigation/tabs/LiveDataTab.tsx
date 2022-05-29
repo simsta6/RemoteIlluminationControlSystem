@@ -34,9 +34,9 @@ export const LiveDataTab = (props: Props) => {
 
     const selectedDevice = React.useMemo(() =>
         devices.find(dev => dev.index === selectedDeviceId),
-    [selectedDeviceId, devices]);
+    [selectedDeviceId, devices.map(d => JSON.stringify(d)).join()]);
 
-    const selectedDeviceDataList = selectedDevice && Object.entries(selectedDevice)
+    const selectedDeviceDataList = React.useMemo(() => selectedDevice && Object.entries(selectedDevice)
         .filter(entry => entry[0].toUpperCase() !== "NAME")
         .filter(entry => entry[0].toUpperCase() !== "INDEX")
         .filter(entry => selectedDevice.bulbType === "Non-RGB" ? entry[0].toUpperCase() !== "COLOR" : true)
@@ -49,7 +49,7 @@ export const LiveDataTab = (props: Props) => {
             };
 
             return obj;
-        });
+        }), [selectedDevice]);
 
     const allDevicesData = React.useMemo(() => devices.reduce((acc, curr) => {
         return { ...acc,
@@ -57,7 +57,7 @@ export const LiveDataTab = (props: Props) => {
             rgbCount: acc.rgbCount + (curr.bulbType === "RGB" ? 1 : 0),
             nonRgbCount: acc.nonRgbCount + (curr.bulbType === "Non-RGB" ? 1 : 0),
         };
-    }, {power: 0, rgbCount: 0, nonRgbCount: 0}), [selectedDeviceDataList]);
+    }, {power: 0, rgbCount: 0, nonRgbCount: 0}), [devices]);
 
     const allDevicesDataList = [
         {itemName: t("LiveDataTab:totalPowerConsumption"), itemData: allDevicesData.power.toFixed(3), unit: "power"},
@@ -102,15 +102,17 @@ export const LiveDataTab = (props: Props) => {
                 </Text>
                 <View style={{paddingBottom: 6}}>
                     { 
-                        selectedDeviceDataList &&  selectedDeviceDataList.map((item, index) => (
-                            <LiveDataListItem 
-                                key={index.toString()} 
-                                {...item} 
-                                isLast={ selectedDeviceDataList.length - 1 === index }
-                                unitOfMeasurement={getUnitOfMeasurement(item.itemName)}
-                                RightSideIcon={isHexColor(item.itemData) ? <View style={{...styles.swatch, backgroundColor: item.itemData}}/> : undefined }
-                            />
-                        )) 
+                        selectedDeviceDataList &&  selectedDeviceDataList.map((item, index) => {
+                            const RightSideIcon = (item.itemName === "Color" && isHexColor(item.itemData) ? <View style={{...styles.swatch, backgroundColor: item.itemData}}/> : undefined);
+                            return (
+                                <LiveDataListItem 
+                                    key={index.toString()} 
+                                    {...item} 
+                                    isLast={ selectedDeviceDataList.length - 1 === index }
+                                    unitOfMeasurement={getUnitOfMeasurement(item.itemName)}
+                                    RightSideIcon={ RightSideIcon }
+                                />
+                            );}) 
                     }
                 </View>
             </ScrollView>

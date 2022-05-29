@@ -62,6 +62,9 @@ export const DeviceCustomizer = (props: Props) => {
         let setHook = true;
         const timeOut = setTimeout(async () => {
             if (bleDeviceId) {
+                if (devices.length === 0) {
+                    await bleDeviceClient.requestStats();
+                }
                 const ids = getDevicesIdBySelectedDevice(devices, selectedDevice);
                 const colors = isRGBDevice ? [{[selectedDevice]: shadeColorIfNeeded(color, sliderValue)}] :
                     ids.map(id => {
@@ -83,7 +86,7 @@ export const DeviceCustomizer = (props: Props) => {
             clearTimeout(timeOut);
             setHook = false;
         };
-    }, [color, sliderValue]);
+    }, [color, sliderValue, bleDeviceId]);
 
     return (
         <>

@@ -83,7 +83,7 @@ export class BleDeviceClient {
         return connectedDevice ? true : false;
     }
 
-    public async sendMessage(message: string, needResponse = true, timesToTry = 1): Promise<boolean> {
+    public async sendMessage(message: string, needResponse = true, timesToTry = 2): Promise<boolean> {
         const characteristicsUUID = this._characteristicUUID;
         const serviceUUID = this._serviceUUID;
         const bleDeviceId = this._bleDeviceId;
@@ -101,7 +101,7 @@ export class BleDeviceClient {
                     console.log(err);
                     return false;
                 });
-            return this._didDeviceTriedToConnectOnStartup; // to prevent sending message if this client did not tried to connect to device 
+            return true; // to prevent sending message if this client did not tried to connect to device 
         } else {
             if (timesToTry < 1) return false;
             await this.connectToDevice(bleDeviceId);
@@ -122,10 +122,9 @@ export class BleDeviceClient {
         return this._bleDeviceId;
     }
 
-    public async requestStats(): Promise<string> {
+    public async requestStats(): Promise<boolean> {
         const message = generateMessage(BLE_DEVICE_COMMANDS.GetStats);
-        await this.sendMessage(message, false);
-        return message;
+        return await this.sendMessage(message, false);
     }
 
     public async sendMessageToGetModuleColor(moduleId: string): Promise<boolean> {
@@ -140,7 +139,7 @@ export class BleDeviceClient {
             const message = generateMessage(BLE_DEVICE_COMMANDS.ChangeColorOrBrightness, id, color.substring(1, 7));
             return await this.sendMessage(message, false);
         }));
-        return result.some(res => res);
+        return !result.some(res => !res);
     }
 
     public async turnOnSpecificDevice(moduleIdOrIds: string[]): Promise<boolean> {
@@ -178,8 +177,6 @@ export class BleDeviceClient {
 
     public async changeLightSensorValue(newValue: number): Promise<boolean> {
         const message = generateMessage(BLE_DEVICE_COMMANDS.ChangeLightSensorValue, undefined, Math.round(newValue).toString(16));
-        console.log(message);
-        console.log(newValue);
         return await this.sendMessage(message, false);
     }
 
