@@ -5,6 +5,7 @@ import { BleDevice } from "../state/ble-device/bleDeviceTypes";
 import { Device } from "../state/devices/connectedDevicesTypes";
 import { BLE_DEVICE_COMMANDS, generateMessage, ReadModuleParameter, TurnOnOrOffParameter } from "./messageGenerator";
 import BluetoothStateManager from "react-native-bluetooth-state-manager";
+import Toast from "react-native-toast-message";
 
 type DevicesAdditionActionsType = {
     changeSvj: (newValue: number) => void;
@@ -67,7 +68,7 @@ export class BleDeviceClient {
                     });
                 })
                 .catch(err => {
-                    console.log(err);
+                    this.showError(err);
                     return undefined;
                 });
         }
@@ -98,7 +99,7 @@ export class BleDeviceClient {
                     }
                 })
                 .catch(err => {
-                    console.log(err);
+                    this.showError(err);
                     return false;
                 });
             return true; // to prevent sending message if this client did not tried to connect to device 
@@ -196,7 +197,7 @@ export class BleDeviceClient {
                                     return;
                                 }
 
-                                console.log(error);
+                                this.showError(error.message);
                                 return;
                             }
                             if (char?.value) {
@@ -240,7 +241,7 @@ export class BleDeviceClient {
                     }
                 })
                 .catch(err => {
-                    console.log(err);
+                    this.showError(err);
                     return undefined;
                 });
         }
@@ -291,5 +292,13 @@ export class BleDeviceClient {
         }
 
         return false;
+    }
+
+    private showError(err: string) {
+        Toast.show({
+            type: "error",
+            text1: "Error",
+            text2: err
+        });
     }
 }
